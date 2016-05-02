@@ -63,6 +63,8 @@ class User(models.Model):
     employee_id = models.ForeignKey(Employee,related_name='employee_ids')
     create_time = models.DateTimeField()
     modify_time = models.DateTimeField()
+    login_time = models.DateTimeField()
+    ip_address = models.IPAddressField()
 
     def __str__(self):
         return self.username
