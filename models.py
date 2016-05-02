@@ -1,17 +1,15 @@
 # mysite/firstapp/models.py
 #-*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 from django.db import models
+import django.utils.timezone as timezone
 
 # Create your models here.
-
-
 class Client(models.Model):
     id = models.AutoField('client_id',primary_key=True)
     company = models.CharField('company',max_length=128)
-    create_time = models.DateTimeField()
-    modify_time = models.DateTimeField()
+    create_time = models.DateTimeField(default=timezone.now)
+    modify_time = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.company
@@ -20,8 +18,8 @@ class Client(models.Model):
 class Project(models.Model):
     id = models.AutoField('project_id',primary_key=True)
     client_id = models.ForeignKey(Client,related_name='client_id')
-    create_time = models.DateTimeField()
-    modify_time = models.DateTimeField()
+    create_time = models.DateTimeField(default=timezone.now)
+    modify_time = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.id
@@ -37,8 +35,8 @@ class Contact(models.Model):
     pid = models.CharField('pid',max_length=128)
     birthday = models.DateField()
     project_id = models.ForeignKey(Project,related_name='project_ids')
-    create_time = models.DateTimeField()
-    modify_time = models.DateTimeField()
+    create_time = models.DateTimeField(default=timezone.now)
+    modify_time = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.name
@@ -47,8 +45,8 @@ class Employee(models.Model):
     id = models.AutoField('emplyee_id',primary_key=True)
     title = models.CharField('title',max_length=128)
     contact_id = models.ForeignKey(Contact,related_name='contact_ids')
-    create_time = models.DateTimeField()
-    modify_time = models.DateTimeField()
+    create_time = models.DateTimeField(default=timezone.now)
+    modify_time = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.title
@@ -61,9 +59,9 @@ class User(models.Model):
     password = models.CharField('password',max_length=128)
     client_id = models.ForeignKey(Client,related_name='client_ids')
     employee_id = models.ForeignKey(Employee,related_name='employee_ids')
-    create_time = models.DateTimeField()
-    modify_time = models.DateTimeField()
-    login_time = models.DateTimeField()
+    create_time = models.DateTimeField(default=timezone.now)
+    modify_time = models.DateTimeField(default=timezone.now)
+    login_time = models.DateTimeField(default=timezone.now)
     ip_address = models.IPAddressField()
 
     def __str__(self):
@@ -74,8 +72,8 @@ class EmployeeProject(models.Model):
     id = models.AutoField('employeeproject_id',primary_key=True)
     employee_id = models.ForeignKey(Employee,related_name='employee_id')
     project_id = models.ForeignKey(Project,related_name='project_id')
-    create_time = models.DateTimeField()
-    modify_time = models.DateTimeField()
+    create_time = models.DateTimeField(default=timezone.now)
+    modify_time = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.id
@@ -83,8 +81,8 @@ class EmployeeProject(models.Model):
 class Assignment(models.Model):
     id = models.AutoField('assignment_id',primary_key=True)
     employeeproject_id = models.ForeignKey(EmployeeProject,related_name='employeeproject_id')
-    create_time = models.DateTimeField()
-    modify_time = models.DateTimeField()
+    create_time = models.DateTimeField(default=timezone.now)
+    modify_time = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.id
@@ -94,8 +92,8 @@ class Skill(models.Model):
     id = models.AutoField('skill_id',primary_key=True)
     name = models.CharField('skill_name',max_length=128)
     employee_id = models.ForeignKey(Employee,related_name='skill_employee_id')
-    create_time = models.DateTimeField()
-    modify_time = models.DateTimeField()
+    create_time = models.DateTimeField(default=timezone.now)
+    modify_time = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.name
@@ -106,8 +104,8 @@ class PayCheck(models.Model):
     reason_code = models.CharField('reason_code',max_length=128)
     reason = models.CharField('reason',max_length=128)
     employee_id = models.ForeignKey(Employee,related_name='paycheck_employee_id')
-    create_time = models.DateTimeField()
-    modify_time = models.DateTimeField()
+    create_time = models.DateTimeField(default=timezone.now)
+    modify_time = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return id
@@ -115,8 +113,8 @@ class PayCheck(models.Model):
 
 class Blacklist(models.Model):
     id = models.AutoField('blacklist_id',primary_key=True)
-    create_time = models.DateTimeField()
-    modify_time = models.DateTimeField()
+    create_time = models.DateTimeField(default=timezone.now)
+    modify_time = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return id
