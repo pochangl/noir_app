@@ -4,9 +4,6 @@ from django.contrib import admin
 from . import models  #models指firstapp下的檔案
 
 # Register your models here.
-class TimeSetting(admin.ModelAdmin):
-    readonly_fields=('create_time','modify_time','login_time',)
-
 admin.site.register(models.User)
 admin.site.register(models.Client)
 admin.site.register(models.Employee)
