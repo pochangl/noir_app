@@ -62,7 +62,7 @@ class User(models.Model):
     create_time = models.DateTimeField(default=timezone.now)
     modify_time = models.DateTimeField(default=timezone.now)
     login_time = models.DateTimeField(default=timezone.now)
-    ip_address = models.IPAddressField()
+    ip_address = models.GenericIPAddressField(protocol='both',null=True,blank=True)
 
     def __str__(self):
         return self.username
