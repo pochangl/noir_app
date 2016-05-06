@@ -1,6 +1,7 @@
 from django.db import models
 from utils.models import TimeStampModel
 from account.models import Employee
+from account.models import Client
 # Create your models here.
 
 class Transaction(TimeStampModel):
@@ -17,5 +18,5 @@ class Debt(Transaction):
 
 
 class Receivable(Transaction):
-    client = models.ForeignKey(Client)
+    client = models.ForeignKey(Client, related_name='receivable')
 
