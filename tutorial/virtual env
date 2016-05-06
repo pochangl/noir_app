@@ -1,0 +1,8 @@
+command 1:
+   virtualenv -p python venv
+ 	build a virtual environment using /usr/bin/python within 'venv' bolder
+
+command 2:
+   source venv/bin/activate
+	activate virtual environment
+
