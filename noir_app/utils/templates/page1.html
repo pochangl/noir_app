@@ -4,20 +4,20 @@
         <meta charset='utf-8'>
     </head>
     <body>
-        <form id="1" action="../page2/" method="post">
+        <form id="" action="./page2/" method="post">
+            {% csrf_token %}
             <input type="hidden" name="redirect" value="../page2/" />
                 <input type="submit" name="project" value="派工" /><br>
-                {% csrf_token %}
         </form>
-        <form id="2" action="../page3/" method="post">
+        <form id="" action="./page3/" method="post">
+            {% csrf_token %}
             <input type="hidden" name="redirect" value="" />
                 <input type="submit" name="transaction" value="報支" /><br>
-                {% csrf_token %}
         </form>
-        <form id="3" action="../page4/" method="post">
+        <form id="" action="./page4/" method="post">
+            {% csrf_token %}
             <input type="hidden" name="redirect" value="" />
                 <input type="submit" name="day-off" value="請假" /><br>
-                {% csrf_token %}
         </form>
     </body>
 </html>

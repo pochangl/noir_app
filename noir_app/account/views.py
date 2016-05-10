@@ -1,9 +1,10 @@
 #-*- coding: utf-8 -*-
 from django.http import HttpResponse
-from django.template.loader import get_template
+#from django.template.loader import get_template
 from django import template
-from django.template import Context
+#from django.template import Context
 from django.shortcuts import render_to_response
+from django.template import RequestContext
 from django.views.generic import View
 #from firstapp.forms import MyForm
 from django.views.generic.edit import CreateView
@@ -28,7 +29,9 @@ def first_view(request, *args, **kwargs):  # args:positional argument;kwargs: na
 
 def login_page(request):
 
-    return render_to_response('loginpage.html', locals())
+    return render_to_response('loginpage.html',
+                              locals(),
+                              context_instance=RequestContext(request))
 
 
 '''

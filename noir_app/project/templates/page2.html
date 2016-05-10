@@ -6,9 +6,9 @@
     <body>
         {% for project in projects %}
             <form action="form_action.asp" method="get">
+            {% csrf_token %}
                 <input type="submit" name={{project.project_name}} value={{project.project_name}} />
             </form>
-            {% csrf_token %}
         {% empty %}
             <p> Nothing. </p>
         {% endfor %}
