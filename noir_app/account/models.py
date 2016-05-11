@@ -7,7 +7,7 @@ class Client(TimeStampModel):
     company_name = models.CharField(max_length=128)
 
     def __str__(self):
-        return self.company
+        return self.company_name
 
 
 class Contact(TimeStampModel):

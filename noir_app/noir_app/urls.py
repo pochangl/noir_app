@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from account.views import login_page
+from account.views import login
+from account.views import logout
+from account.views import index
 from utils.views import page_1
 from utils.views import page_2
 #from utils.views import page_3
@@ -25,7 +27,9 @@ from utils.views import page_2
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^loginpage/$', login_page),
+    url(r'^index/$', index),
+    url(r'^accounts/login/$', login),
+    url(r'^accounts/logout/$', logout),
     url(r'^page1/$', page_1),
     url(r'^page1/page2/$', page_2),
 #    url(r'^page1/page3/$', page_3),
@@ -33,3 +37,5 @@ urlpatterns = [
 #    url(r'^page5/$', page_5),
 #    url(r'^page6/$', page_6),
 ]
+
+

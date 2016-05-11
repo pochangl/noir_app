@@ -12,7 +12,6 @@ def page_1(request):
                               locals(),
                               context_instance=RequestContext(request))
 
-
 def page_2(request):
     projects = Project.objects.all()
     return render_to_response('page2.html',

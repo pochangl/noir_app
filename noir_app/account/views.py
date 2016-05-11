@@ -1,12 +1,11 @@
 #-*- coding: utf-8 -*-
+from django.contrib import auth
 from django.http import HttpResponse
-#from django.template.loader import get_template
+from django.http import HttpResponseRedirect
 from django import template
-#from django.template import Context
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.generic import View
-#from firstapp.forms import MyForm
 from django.views.generic.edit import CreateView
 from account.models import Client
 from account.models import Employee
@@ -24,33 +23,24 @@ from utils.models import TimeStampModel
 
 # Create your views here.
 
-def first_view(request, *args, **kwargs):  # args:positional argument;kwargs: named argument
-    return HttpResponse("<html><body>hihi %s %s</body></html>" % (args, kwargs))  #%s 把後面的參數依序丟到前面
+def login(request):
+    if request.user.is_authenticated(): 
+        return HttpResponseRedirect('/index/')
+    username = request.POST.get('username', '')
+    password = request.POST.get('password', '')
+    user = auth.authenticate(username=username, password=password)
+    if user is not None and user.is_active:
+        auth.login(request, user)
+        return HttpResponseRedirect('/page1/')
 
-def login_page(request):
+    else:
+        return render_to_response('login.html',
+               context_instance=RequestContext(request))
 
-    return render_to_response('loginpage.html',
-                              locals(),
-                              context_instance=RequestContext(request))
+def index(request):
+    return render_to_response('index.html',locals())
 
-
-'''
-class FirstView(View):
-    def get(self,request, *args, **kwargs):
-        return HttpResponse("<html><body>hihi %s %s</body></html>")
-
-
-class FirstTemplateView(CreateView):
-    template_name="loginpage.html"
-    model=User
-    fields=("name","password")
-    success_url="./"
-
-#    def get_context_data(self, **kwarge):
-#        return {'value':1,"data":dict(self.request.POST), "form":MyForm()}
-
-#    def post(self, request):
-#        MyForm(data=request.POST).save()
-#        return self.render_to_response(self.get_context_data())
-'''
+def logout(request):
+    auth.logout(request)
+    return HttpResponseRedirect('/index/')
 
