@@ -20,10 +20,12 @@ from account.views import logout
 from account.views import index
 from utils.views import page_1
 from utils.views import page_2
-#from utils.views import page_3
-#from utils.views import page_4
-#from utils.views import page_5
-#from utils.views import page_6
+from utils.views import page_3
+from transaction.views import page_4
+from transaction.views import page_5
+from transaction.views import page_6
+from transaction.views import page_7
+from transaction.views import page_8
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -32,10 +34,12 @@ urlpatterns = [
     url(r'^accounts/logout/$', logout),
     url(r'^page1/$', page_1),
     url(r'^page1/page2/$', page_2),
-#    url(r'^page1/page3/$', page_3),
-#    url(r'^page1/page4/$', page_4),
-#    url(r'^page5/$', page_5),
-#    url(r'^page6/$', page_6),
+    url(r'^page3/$', page_3),
+    url(r'^page1/page4/$', page_4),
+    url(r'^page5/$', page_5),
+    url(r'^page6/$', page_6),
+    url(r'^page1/page7/$', page_7),
+    url(r'^page8/$', page_8),
 ]
 
 

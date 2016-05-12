@@ -1,12 +1,12 @@
 <html>
     <head>
-        <title> page2 </title>
+        <title> page4 </title>
         <meta charset='utf-8'>
     </head>
     <body>
         <h3> 選擇工地 </h3>
         {% for project in projects %}
-            <form action="/page3/" method="get">
+            <form action="/page5/" method="get">
             {% csrf_token %}
                 {{project.client}}
                 <input type="submit" name="project_name" value={{project.project_name}} />

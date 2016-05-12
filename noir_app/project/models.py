@@ -17,18 +17,18 @@ class EmployeeProject(TimeStampModel):
     employee = models.ForeignKey(Employee, related_name='projects')
     project = models.ForeignKey(Project, related_name='employees')
 
-    def __str__(self):
+    def __int__(self):
         return self.id
 
 
 class Assignment(TimeStampModel):
     employeeproject_id = models.ForeignKey(EmployeeProject, related_name='employeeproject_id')
 
-    def __str__(self):
+    def __int__(self):
         return self.id
 
 
 class Blacklist(TimeStampModel):
 
-    def __str__(self):
+    def __int__(self):
         return id

@@ -6,18 +6,15 @@
     <body>
         <form id="" action="./page2/" method="post">
             {% csrf_token %}
-            <input type="hidden" name="redirect" value="../page2/" />
-                <input type="submit" name="project" value="派工" /><br>
-        </form>
-        <form id="" action="./page3/" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="redirect" value="" />
-                <input type="submit" name="transaction" value="報支" /><br>
+            <input type="submit" name="project" value="派工" /><br>
         </form>
         <form id="" action="./page4/" method="post">
             {% csrf_token %}
-            <input type="hidden" name="redirect" value="" />
-                <input type="submit" name="day-off" value="請假" /><br>
+            <input type="submit" name="transaction" value="報支" /><br>
+        </form>
+        <form id="" action="./page7/" method="post">
+            {% csrf_token %}
+            <input type="submit" name="day-off" value="請假" /><br>
         </form>
     </body>
 </html>

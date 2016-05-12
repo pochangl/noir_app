@@ -32,13 +32,13 @@ def login(request):
     if user is not None and user.is_active:
         auth.login(request, user)
         return HttpResponseRedirect('/page1/')
-
     else:
         return render_to_response('login.html',
                context_instance=RequestContext(request))
 
 def index(request):
     return render_to_response('index.html',locals())
+
 
 def logout(request):
     auth.logout(request)

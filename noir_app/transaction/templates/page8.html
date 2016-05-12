@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <title> page8 </title>
+        <meta charset='utf-8'>
+    </head>
+    <body>
+        <form id="" action="" method="post">
+            {% csrf_token %}
+            <h3> 員工姓名：{{employee.contact.name}} </h3>
+            <label for="personal_leave">請假日期:</label>
+            <input type="date" name="personal_leave" value="" id="personal_leave"> <br />
+            <label for="personal_leave_start">開始時間:</label>
+            <input type="time" name="personal_leave_start" value="" id="personal_leave_start"> <br />
+            <label for="personal_leave_stop">結束時間:</label>
+            <input type="time" name="personal_leave_stop" value="" id="personal_leave_stop"> <br />
+            <input type="submit" value="請假確認" />
+            <input type="submit" value="回首頁" />
+        </form>
+    </body>
+</html>

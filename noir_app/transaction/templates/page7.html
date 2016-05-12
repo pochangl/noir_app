@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title> page7 </title>
+        <meta charset='utf-8'>
+    </head>
+    <body>
+        <h3> 選擇員工 </h3>
+        {% for employee in employees %}
+            <form action="/page8/" method="get">
+            {% csrf_token %}
+                {{employee.title}}
+                <input type="submit" name="employees_name" value={{employee.contact.name}} />
+            </form>
+        {% empty %}
+            <p> Nothing. </p>
+        {% endfor %}
+    </body>
+</html>
