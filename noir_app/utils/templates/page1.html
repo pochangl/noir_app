@@ -1,10 +1,7 @@
-<html>
-    <head>
-        <title> page1 </title>
-        <meta charset='utf-8'>
-    </head>
-    <body>
-        <form id="" action="./page2/" method="post">
+{% extends 'base.html' %}
+
+    {% block body %}
+        <form id="" action="/page2/" method="post">
             {% csrf_token %}
             <input type="submit" name="project" value="派工" /><br>
         </form>
@@ -16,5 +13,5 @@
             {% csrf_token %}
             <input type="submit" name="day-off" value="請假" /><br>
         </form>
-    </body>
-</html>
+    {% endblock %}
+

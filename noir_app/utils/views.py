@@ -1,35 +1,83 @@
 #-*- coding: utf-8 -*-
 from django import template
-from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from account.models import Client, Employee, Contact
 from project.models import Project
 from project.models import EmployeeProject
-from account.models import Client
-from account.models import Employee
+from account.forms import  ProjectForm, Page3Form
+from django.views.generic.base import TemplateView
+from django.views.generic.edit import FormView, CreateView
+from django.views.generic.list import ListView
 
 
-@login_required(login_url='/index/')
-def page_1(request):
-    return render_to_response('page1.html',
-                              locals(),
-                              context_instance=RequestContext(request))
+class Page1View(LoginRequiredMixin, TemplateView):
+    login_url = '/index/'
+    redirect_field_name = 'redirect_to'
+    template_name = 'page1.html'
 
-@login_required(login_url='/index/')
-def page_2(request):
-    projects = Project.objects.all()
-    projects_name = request.POST.get('projects_name', '')
-    return render_to_response('page2.html',
-                              locals(),
-                              context_instance=RequestContext(request))
+    def get_context_data(self, **kwargs):
+        context = super(Page1View, self).get_context_data(**kwargs)
+        return context
 
-@login_required(login_url='/index/')
-def page_3(request):
-    project_name = request.GET['project_name']
-    employeeprojects = EmployeeProject.objects.all()
-    return render_to_response('page3.html',
-                              locals(),
-                              context_instance=RequestContext(request))
+    def post(self, request, *args, **kwargs):
+        #form = ProjectForm(request.POST)
+        #if form.is_valid():
+        #    form.save()
+        return render_to_response('page1.html', 
+                                  context_instance=RequestContext(request))
+        
+        
+class Page2View(LoginRequiredMixin, ListView):
+    template_name = 'page2.html'
+    #form_class = ProjectForm
+    success_url = '/page2/'
+    model = Client
+    #fields = ('client', 'project_name',)
+    context_object_name = 'projects'
+    
+    def get_queryset(self):
+        return Client.objects.prefetch_related("projects").all()
+    
+    def get_context_data(self, **kwargs):
+        context = super(Page2View, self).get_context_data(**kwargs)
+        #context['whatever'] = "more stuff"
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        form = ProjectForm(request.POST)
+        #if form.is_valid():
+        #    form.save()
+        return render_to_response('page2.html', 
+                                  {'form':form}, 
+                                  context_instance=RequestContext(request))
+'''
+    def get(self, request, *args, **kwargs):
+        form = ProjectForm(request.GET)
+        return render_to_response('page2.html', 
+                                  {'form':form}, 
+                                  context_instance=RequestContext(request))
+'''
+        
+class Page3View(LoginRequiredMixin, ListView):
+    template_name = 'page3.html'
+    model = Contact
+    #fields = ('employee', 'project',)
+        
+    def get_context_data(self, **kwargs):
+        context = super(Page3View, self).get_context_data(**kwargs)
+        return context
+    
+    def get_queryset(self):
+        return Contact.objects.prefetch_related("employees").all()
 
+    
+    def post(self, request, *args, **kwargs):
+        form = Page3Form(request.POST)
+        #if form.is_valid():
+        #    form.save()
+        return render_to_response('page3.html', 
+                                  {'form':form}, 
+                                  context_instance=RequestContext(request))

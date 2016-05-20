@@ -1,6 +1,6 @@
+#-*- coding: utf-8 -*-
 from django.db import models
 from utils.models import TimeStampModel
-
 
 # Create your models here.
 class Client(TimeStampModel):
@@ -36,3 +36,4 @@ class Skill(TimeStampModel):
 
     def __str__(self):
         return self.name
+    

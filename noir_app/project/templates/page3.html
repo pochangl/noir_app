@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+    {% block body %}
+        <h3> 工地名稱{{contact.project}} </h3>
+        <form action="/page1/" method="POST">{% csrf_token %}
+        <table>
+            <tr>
+                <th>選取</th>
+                <th>姓名</th>
+                <th>電話</th>
+                <th>手機</th>
+            </tr>
+            {% for contact in object_list %}
+                <tr>
+                    <td> <input type="checkbox" name="id" value="{{r.id}}"> </td>{% csrf_token %}
+                    <td> {{ contact.name }} </td>
+                    <td> {{ contact.phone }} </td>
+                    <td> {{ contact.mobile }} </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <input type="submit" value="派工確認">
+        <input type="submit" value="回首頁" />
+        </form>
+    {% endblock %}
+

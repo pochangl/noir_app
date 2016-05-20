@@ -1,9 +1,6 @@
-<html>
-    <head>
-        <title> page6 </title>
-        <meta charset='utf-8'>
-    </head>
-    <body>
+{% extends 'base.html' %}
+
+    {% block body %}
         <form id="" action="" method="post">
             {% csrf_token %}
             <h3> 工地名稱：{{project.project_name}} </h3>
@@ -15,5 +12,5 @@
             <input type="submit" value="報支確認" />
             <input type="submit" value="回首頁" />
         </form>
-    </body>
-</html>
+    {% endblock %}
+

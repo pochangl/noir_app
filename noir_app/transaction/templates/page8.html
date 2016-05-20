@@ -1,9 +1,6 @@
-<html>
-    <head>
-        <title> page8 </title>
-        <meta charset='utf-8'>
-    </head>
-    <body>
+{% extends 'base.html' %}
+
+    {% block body %}
         <form id="" action="" method="post">
             {% csrf_token %}
             <h3> 員工姓名：{{employee.contact.name}} </h3>
@@ -16,5 +13,5 @@
             <input type="submit" value="請假確認" />
             <input type="submit" value="回首頁" />
         </form>
-    </body>
-</html>
+    {% endblock %}
+
