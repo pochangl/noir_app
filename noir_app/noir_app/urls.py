@@ -20,7 +20,7 @@ from django.views.generic.list import ListView
 from django.contrib import admin
 from django.contrib.auth.views import logout
 from account.views import LoginView, logout, index
-from utils.views import Page1View, Page2View, Page3View
+from utils.views import MainMenuView, ChooseProjectView, ProjectView
 from transaction.views import page_4, page_5, page_6, page_7, page_8
 from project.models import Project
 from utils.models import TimeStampModel
@@ -28,13 +28,12 @@ from utils.models import TimeStampModel
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     #url(r'^$', index),
-    url(r'^$', RedirectView.as_view(url='/index/')),    #若未指定好像不會自動轉址到index
-    url(r'^index/$', index, name='index'),
+    url(r'^$', index, name='index'),
     url(r'^accounts/login/$', LoginView.as_view(), name='login'),
     url(r'^accounts/logout/$', logout),
-    url(r'^page1/$', Page1View.as_view(), name='page1'),
-    url(r'^page2/$', Page2View.as_view(), name='page2'),
-    url(r'^page3/$', Page3View.as_view(), name='page3'),
+    url(r'^page1/$', MainMenuView.as_view(), name='main_menu'),
+    url(r'^page2/$', ChooseProjectView.as_view(), name='choose_project'),
+    url(r'^page3/(?P<pk>[0-9]+)/$', ProjectView.as_view(), name='project'),
     url(r'^page1/page4/$', page_4),
     url(r'^page5/$', page_5),
     url(r'^page6/$', page_6),

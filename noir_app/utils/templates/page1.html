@@ -1,10 +1,7 @@
 {% extends 'base.html' %}
 
     {% block body %}
-        <form id="" action="/page2/" method="post">
-            {% csrf_token %}
-            <input type="submit" value="派工" /><br>
-        </form>
+        <a href="{% url 'choose_project'%}">派工</a>
         <form id="" action="./page4/" method="post">
             {% csrf_token %}
             <input type="submit" value="報支" /><br>

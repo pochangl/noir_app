@@ -6,8 +6,6 @@ from django.shortcuts import render_to_response    #, render
 from django.template import loader, RequestContext
 from django.views.generic import View
 from django.views.generic.edit import FormView
-from django.contrib.auth.forms import AuthenticationForm
-from account.forms import  LoginForm
 from account.models import Client, Employee, Contact, Skill
 from project.models import Project, EmployeeProject, Assignment, Blacklist
 from transaction.models import Transaction, PayCheck, Debt, Receivable
@@ -17,42 +15,19 @@ from django.contrib.auth.forms import AuthenticationForm
 # Create your views here.
 class LoginView(FormView):
     template_name = 'login.html'
-    form_class = LoginForm
-    success_url = '/page1/'
-    
-    def form_valid(self, form):
-        return FormView.form_valid(self, form)
-    
-    def form_invalid(self, form):
-        return FormView.form_invalid(self, form)
+    form_class = AuthenticationForm
 
-    def post(self, request, *args, **kwargs):
-        if request.user.is_authenticated(): 
-            return HttpResponseRedirect('/index/')
-        if request.method == 'POST':
-            form = LoginForm(request.POST)
-        username = request.POST.get('username', '')
-        password = request.POST.get('password', '')
-        user = auth.authenticate(username=username, password=password)
-        if user is not None and user.is_active:
-            auth.login(request, user)
-            return HttpResponseRedirect('/page1/')
-        else:
-            return render_to_response('login.html', 
-                                      {'form':form}, 
-                                      context_instance=RequestContext(request))
-    
-    def get(self, request):
-        form = LoginForm(request.GET)
-#        return HttpResponseRedirect('/accounts/login/')   #無限迴圈
-        return render_to_response('login.html', 
-                                      {'form':form},    #form表需回傳才有值
-                                      context_instance=RequestContext(request))
-    
+    def get_success_url(self):
+        return reverse('main_menu')
+
+    def form_valid(self, form):
+        user = form.get_user()
+        auth.login(self.request, user)
+        return super(LoginView, self).form_valid(form)
     
 def logout(request):
     auth.logout(request)
-    return HttpResponseRedirect('/index/')
+    return HttpResponseRedirect(reverse('index'))
 
 def index(request):
     return render_to_response('index.html',context_instance=RequestContext(request))
