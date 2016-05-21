@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from account.models import Client, Employee, Contact
 from project.models import Project
 from project.models import EmployeeProject
-from account.forms import  ProjectForm, Page3Form
+from account.forms import  ProjectForm
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView, CreateView
 from django.views.generic.list import ListView
@@ -23,20 +23,23 @@ class Page1View(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        #form = ProjectForm(request.POST)
-        #if form.is_valid():
-        #    form.save()
         return render_to_response('page1.html', 
                                   context_instance=RequestContext(request))
         
         
-class Page2View(LoginRequiredMixin, ListView):
+class Page2View(LoginRequiredMixin, TemplateView):
     template_name = 'page2.html'
-    #form_class = ProjectForm
-    success_url = '/page2/'
+    form_class = ProjectForm
+    success_url = '/page3/'
     model = Client
-    #fields = ('client', 'project_name',)
-    context_object_name = 'projects'
+    fields = ('client', 'project_name',)
+#    context_object_name = 'projects'
+
+    def form_valid(self, form):
+        return FormView.form_valid(self, form)
+    
+    def form_invalid(self, form):
+        return FormView.form_invalid(self, form)
     
     def get_queryset(self):
         return Client.objects.prefetch_related("projects").all()
@@ -45,26 +48,23 @@ class Page2View(LoginRequiredMixin, ListView):
         context = super(Page2View, self).get_context_data(**kwargs)
         #context['whatever'] = "more stuff"
         return context
-    
+
     def post(self, request, *args, **kwargs):
         form = ProjectForm(request.POST)
-        #if form.is_valid():
-        #    form.save()
         return render_to_response('page2.html', 
                                   {'form':form}, 
                                   context_instance=RequestContext(request))
-'''
+
     def get(self, request, *args, **kwargs):
         form = ProjectForm(request.GET)
         return render_to_response('page2.html', 
                                   {'form':form}, 
                                   context_instance=RequestContext(request))
-'''
-        
+
+      
 class Page3View(LoginRequiredMixin, ListView):
     template_name = 'page3.html'
     model = Contact
-    #fields = ('employee', 'project',)
         
     def get_context_data(self, **kwargs):
         context = super(Page3View, self).get_context_data(**kwargs)
@@ -73,11 +73,7 @@ class Page3View(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Contact.objects.prefetch_related("employees").all()
 
-    
     def post(self, request, *args, **kwargs):
-        form = Page3Form(request.POST)
-        #if form.is_valid():
-        #    form.save()
         return render_to_response('page3.html', 
                                   {'form':form}, 
                                   context_instance=RequestContext(request))

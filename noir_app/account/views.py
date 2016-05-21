@@ -5,8 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response    #, render
 from django.template import loader, RequestContext
 from django.views.generic import View
-from django.views.generic.edit import CreateView, FormView
-from django.views.generic.list import ListView
+from django.views.generic.edit import FormView
 from django.contrib.auth.forms import AuthenticationForm
 from account.forms import  LoginForm
 from account.models import Client, Employee, Contact, Skill

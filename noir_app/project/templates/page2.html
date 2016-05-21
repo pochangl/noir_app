@@ -3,16 +3,17 @@
     {% block body %}
         <h3> 選擇工地 </h3>
 	    {% for client in object_list %}
-<form  action="/page3/" method="POST">{% csrf_token %}
-    <input type="submit" name="choise_project_name" value={{ client.company_name }}-{{ project.project_name }} />
-</form>
-	        {% for project in client.projects.all %}
-		        <form  action="/page3/" method="POST">{% csrf_token %}
-			        <input type="submit" name="choise_project_name" value={{ client.company_name }}-{{ project.project_name }} />
-	            </form>
-            {% endfor %}
+            {{ client.company_name }}
         {% empty %}
             <p> Nothing. </p>
         {% endfor %}
+        
+        {% for project in client.projects.all %}
+            <form  action="/page3/" method="POST">{% csrf_token %}
+                <input type="submit" value={{ client.company_name }}-{{ project.project_name }} />
+            </form>
+        {% endfor %}
+            
+            
     {% endblock %}
 
