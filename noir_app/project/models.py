@@ -7,10 +7,10 @@ from account.models import Client, Employee
 
 class Project(TimeStampModel):
     client = models.ForeignKey(Client, related_name='projects')
-    project_name = models.CharField(max_length=128)
+    name = models.CharField(max_length=128)
 
     def __str__(self):
-        return self.project_name
+        return self.name
 
 
 class EmployeeProject(TimeStampModel):

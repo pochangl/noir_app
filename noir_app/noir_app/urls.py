@@ -15,33 +15,36 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import patterns, include, url
-from django.views.generic import TemplateView, RedirectView
-from django.views.generic.list import ListView
 from django.contrib import admin
-from django.contrib.auth.views import logout
-from account.views import LoginView, logout, index
-from utils.views import MainMenuView, ChooseProjectView, ProjectView
-from transaction.views import page_4, page_5, page_6, page_7, page_8
-from project.models import Project
-from utils.models import TimeStampModel
+
+from account.views import LoginView, logout, index, MainMenuView
+from project.views import ChooseProjectView, ChooseProjectEmployeeView
+from transaction.views import ChooseTransactionView, ChooseTransactionEmployeeView, page_6, page_7, page_8
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    #url(r'^$', index),
     url(r'^$', index, name='index'),
     url(r'^accounts/login/$', LoginView.as_view(), name='login'),
-    url(r'^accounts/logout/$', logout),
-    url(r'^page1/$', MainMenuView.as_view(), name='main_menu'),
-    url(r'^page2/$', ChooseProjectView.as_view(), name='choose_project'),
-    url(r'^page3/(?P<pk>[0-9]+)/$', ProjectView.as_view(), name='project'),
-    url(r'^page1/page4/$', page_4),
-    url(r'^page5/$', page_5),
-    url(r'^page6/$', page_6),
-    url(r'^page1/page7/$', page_7),
-    url(r'^page8/$', page_8),
+    url(r'^accounts/logout/$', logout, name='logout'),
+    url(r'^main_menu/$', MainMenuView.as_view(), name='main_menu'),
+    
+    url(r'^project/$', 
+        ChooseProjectView.as_view(), 
+        name='choose_project'),
+    url(r'^project/(?P<project_pk>[0-9]+)/$', 
+        ChooseProjectEmployeeView.as_view(), 
+        name='choose_project_employee'),
+    
+    url(r'^transaction/$', 
+        ChooseTransactionView.as_view(), 
+        name='transaction_choose_project'),
+    url(r'^transaction/(?P<pk>[0-9]+)/$', 
+        ChooseTransactionEmployeeView.as_view(), 
+        name='transaction_choose_employee'),
+    url(r'^transaction/(?P<pk>[0-9]+\d+)/$', 
+        page_6, 
+        name='transaction_make_paycheck'),
+    
+    url(r'^page1/page7/$', page_7, name='choose_day_off'),
+    url(r'^page8/$', page_8, name='choose_day_off_employee'),
 ]
-'''
-    url(r'^update/(?P(pk))/'),
-    # http:/localhost:8000/update/3/
-'''
-

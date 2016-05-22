@@ -1,16 +1,20 @@
 #-*- coding: utf-8 -*-
+from django.views.generic import FormView, TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django import template, forms
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import auth
-from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response    #, render
 from django.template import loader, RequestContext
-from django.views.generic import View
-from django.views.generic.edit import FormView
+
 from account.models import Client, Employee, Contact, Skill
 from project.models import Project, EmployeeProject, Assignment, Blacklist
 from transaction.models import Transaction, PayCheck, Debt, Receivable
 from utils.models import TimeStampModel
-from django.contrib.auth.forms import AuthenticationForm
+
 
 # Create your views here.
 class LoginView(FormView):
@@ -25,9 +29,15 @@ class LoginView(FormView):
         auth.login(self.request, user)
         return super(LoginView, self).form_valid(form)
     
+    
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect(reverse('index'))
 
+
 def index(request):
     return render_to_response('index.html',context_instance=RequestContext(request))
+
+
+class MainMenuView(LoginRequiredMixin, TemplateView):
+    template_name = 'main_menu.html'

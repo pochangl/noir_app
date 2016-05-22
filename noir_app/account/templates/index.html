@@ -4,9 +4,9 @@
         <h3>Welcome.</h3>
         {% if request.user.is_authenticated %}
             <p>{{request.user}} 歡迎登入。</p>
-            <p>點此<a href="/accounts/logout/">登出</a></p>
-            <p>點此轉至<a href="/page1/">Menu</a>畫面</p>
+            <p><a href="{% url 'logout'%}">登出</a></p>
+            <p><a href="{% url 'main_menu'%}">main_menu</a></p>
         {% else %}
-            <p>您尚未登入喔~<a href="/accounts/login/">登入</a></p>
+            <p><a href="{% url 'login'%}">登入</a></p>
         {% endif %}
     {% endblock %}

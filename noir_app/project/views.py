@@ -3,35 +3,26 @@ from django import template
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.core.urlresolvers import reverse
+
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, DetailView
+
 from account.models import Client, Employee, Contact
 from project.models import Project
 from project.models import EmployeeProject
-from account.forms import  ProjectForm
-from django.views.generic import ListView, DetailView, FormView, CreateView, TemplateView
-
-
-class MainMenuView(LoginRequiredMixin, TemplateView):
-    template_name = 'page1.html'
-
-    def get_login_url(self):
-        return reverse("login")
-
 
 class ChooseProjectView(LoginRequiredMixin, ListView):
-    template_name = 'page2.html'
-    form_class = ProjectForm
-    success_url = '/page3/'
+    template_name = 'choose_project.html'
     model = Project
-    fields = ('client', 'project_name',)
-
+    fields = ('client', 'name',)
 
       
-class ProjectView(LoginRequiredMixin, DetailView):
-    template_name = 'page3.html'
+class ChooseProjectEmployeeView(LoginRequiredMixin, DetailView):
+    template_name = 'choose_project_employee.html'
     model = Project
 
     def get_context_data(self, **kwargs):
-        context = super(ProjectView, self).get_context_data(**kwargs)
+        context = super(ChooseProjectEmployeeView, self).get_context_data(**kwargs)
         context["employee_list"] = Employee.objects.all()
         return context

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+    {% block body %}
+        <h2> 工地名稱: {{object.name}} </h2>
+        <h3> 選擇員工: </h3>
+        {% for employee in employee_list %}
+            <a href="{% url 'transaction_make_paycheck' pk=employee.pk %}">{{ employee.contact.name }}</a></br>
+        {% empty %}
+            <p> Nothing. </p>
+        {% endfor %}    
+        </form>
+    {% endblock %}
