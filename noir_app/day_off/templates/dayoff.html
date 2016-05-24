@@ -3,7 +3,7 @@
     {% block body %}
         <h3> 選擇員工 </h3>
         {% for employee in employees %}
-            <form action="/page8/" method="get">
+            <form action="/dayoff_employee/" method="get">
             {% csrf_token %}
                 {{employee.title}}
                 <input type="submit" name="employees_name" value={{employee.contact.name}} />

@@ -16,17 +16,17 @@ from account.models import Client, Employee
 # Create your views here.
 
 @login_required(login_url='/index/')
-def page_7(request):
+def dayoff(request):
     employees = Employee.objects.all()
     employees_name = request.POST.get('employees_name', '')
-    return render_to_response('page7.html',
+    return render_to_response('dayoff.html',
                               locals(),
                               context_instance=RequestContext(request))
 
-def page_8(request):
+def dayoff_employee(request):
     normal_man_hour = request.POST.get('normal_man_hour', '')
     overtime_man_hour = request.POST.get('overtime_man_hour', '')
-    return render_to_response('page8.html',
+    return render_to_response('dayoff_employee.html',
                               locals(),
                               context_instance=RequestContext(request))
 
