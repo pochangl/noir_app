@@ -19,7 +19,8 @@ from django.contrib import admin
 
 from account.views import LoginView, logout, index, MainMenuView
 from project.views import ChooseProjectView, ChooseProjectEmployeeView
-from transaction.views import ChooseTransactionView, ChooseTransactionEmployeeView, TransactionMakePaycheckView, page_7, page_8
+from transaction.views import ChooseTransactionView, ChooseTransactionEmployeeView, TransactionMakePaycheckView
+from day_off.views import page_7, page_8
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -46,6 +47,6 @@ urlpatterns = [
         name='transaction_make_paycheck'),
     #.as_View()未輸入，會出現 TypeError: __init__() takes exactly 1 argument (4 given)
     
-    url(r'^page1/page7/$', page_7, name='choose_day_off'),
-    url(r'^page8/$', page_8, name='choose_day_off_employee'),
+    url(r'^page1/page7/$', page_7, name='dayoff'),
+    url(r'^page8/$', page_8, name='dayoff_employee'),
 ]

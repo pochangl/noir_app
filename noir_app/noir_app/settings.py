@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'project',
     'transaction',
     'utils',
+    'day_off',
 )
 
 MIDDLEWARE_CLASSES = (
