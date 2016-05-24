@@ -3,7 +3,7 @@
     {% block body %}
         <h3> 選擇工地: </h3>
         {% for project in object_list %}
-            <a href="{% url 'transaction_choose_employee' pk=project.pk %}">{{ project.name }}</a></br>
+            <a href="{% url 'transaction_choose_employee' project_pk=project.pk %}">{{ project.name }}</a></br>
         {% empty %}
             <p> Nothing. </p>
         {% endfor %}    

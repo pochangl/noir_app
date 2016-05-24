@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
     {% block body %}
-        <h3> 工地名稱: {{object.name}} </h3>
+        <h3> 工地名稱: {{ object.name }} </h3>
         <form action="" method="POST">{% csrf_token %}
 	        <table>
 	            <tr>
@@ -12,11 +12,13 @@
 	            </tr>
 	            {% for employee in employee_list %}
 	                <tr>
-	                    <td> <input type="checkbox" name="id" value="{{employee.id}}"> </td>{% csrf_token %}
+	                    <td> <input type="checkbox" name="id" value="{{employee.pk}}"> </td>{% csrf_token %}
 	                    <td> {{ employee.contact.name }} </td>
 	                    <td> {{ employee.contact.phone }} </td>
 	                    <td> {{ employee.contact.mobile }} </td>
 	                </tr>
+	            {% empty %}
+                    <p> Nothing. </p>
 	            {% endfor %}
 	        </table>
 	        <input type="submit" value="派工確認"/>

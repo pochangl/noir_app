@@ -21,7 +21,10 @@ class ChooseProjectView(LoginRequiredMixin, ListView):
 class ChooseProjectEmployeeView(LoginRequiredMixin, DetailView):
     template_name = 'choose_project_employee.html'
     model = Project
-
+    pk_url_kwarg = 'project_pk'
+    #用ListView就無法顯示project name
+    #用DetailView必須指定pk_url_kwarg，否則會跳未指定pk的錯誤
+    
     def get_context_data(self, **kwargs):
         context = super(ChooseProjectEmployeeView, self).get_context_data(**kwargs)
         context["employee_list"] = Employee.objects.all()

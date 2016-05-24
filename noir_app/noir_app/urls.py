@@ -19,7 +19,7 @@ from django.contrib import admin
 
 from account.views import LoginView, logout, index, MainMenuView
 from project.views import ChooseProjectView, ChooseProjectEmployeeView
-from transaction.views import ChooseTransactionView, ChooseTransactionEmployeeView, page_6, page_7, page_8
+from transaction.views import ChooseTransactionView, ChooseTransactionEmployeeView, TransactionMakePaycheckView, page_7, page_8
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -31,18 +31,18 @@ urlpatterns = [
     url(r'^project/$', 
         ChooseProjectView.as_view(), 
         name='choose_project'),
-    url(r'^project/(?P<project_pk>[0-9]+)/$', 
+    url(r'^project/(?:project-(?P<project_pk>[0-9]+))/$', 
         ChooseProjectEmployeeView.as_view(), 
         name='choose_project_employee'),
     
     url(r'^transaction/$', 
         ChooseTransactionView.as_view(), 
         name='transaction_choose_project'),
-    url(r'^transaction/(?P<pk>[0-9]+)/$', 
+    url(r'^transaction/(?:project-(?P<project_pk>[0-9]+))/$', 
         ChooseTransactionEmployeeView.as_view(), 
         name='transaction_choose_employee'),
-    url(r'^transaction/(?P<pk>[0-9]+\d+)/$', 
-        page_6, 
+    url(r'^transaction/(?:project-(?P<project_pk>[0-9]+))/(?:employee-(?P<employee_pk>[0-9]+))/$', 
+        TransactionMakePaycheckView, 
         name='transaction_make_paycheck'),
     
     url(r'^page1/page7/$', page_7, name='choose_day_off'),
