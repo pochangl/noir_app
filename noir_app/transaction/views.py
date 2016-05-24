@@ -35,20 +35,18 @@ class ChooseTransactionEmployeeView(LoginRequiredMixin, DetailView):
         context["employee_list"] = Employee.objects.all()
         return context
 
-class TransactionMakePaycheckView(LoginRequiredMixin, UpdateView):
-    template_name = 'transaction_choose_employee.html'
-    
-'''
-class TransactionMakePaycheckView(LoginRequiredMixin, DetailView):
-    template_name = 'transaction_choose_employee.html'
+
+class TransactionMakePaycheckView(LoginRequiredMixin, CreateView):
+    template_name = 'transaction_make_paycheck.html'
     model = Project
+    fields = ('client', 'name',)
     pk_url_kwarg = 'project_pk'
     
     def get_context_data(self, **kwargs):
         context = super(TransactionMakePaycheckView, self).get_context_data(**kwargs)
         context["employee_list"] = Employee.objects.all()
         return context
-'''
+    
 '''
 def page_6(request):
     normal_man_hour = request.POST.get('normal_man_hour', '')

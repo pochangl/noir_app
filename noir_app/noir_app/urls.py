@@ -42,8 +42,9 @@ urlpatterns = [
         ChooseTransactionEmployeeView.as_view(), 
         name='transaction_choose_employee'),
     url(r'^transaction/(?:project-(?P<project_pk>[0-9]+))/(?:employee-(?P<employee_pk>[0-9]+))/$', 
-        TransactionMakePaycheckView, 
+        TransactionMakePaycheckView.as_view(),
         name='transaction_make_paycheck'),
+    #.as_View()未輸入，會出現 TypeError: __init__() takes exactly 1 argument (4 given)
     
     url(r'^page1/page7/$', page_7, name='choose_day_off'),
     url(r'^page8/$', page_8, name='choose_day_off_employee'),
