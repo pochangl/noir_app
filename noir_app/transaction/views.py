@@ -1,7 +1,6 @@
 #-*- coding: utf-8 -*-
 from django import template
-from django.http import HttpResponse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
@@ -13,7 +12,7 @@ from django.views.generic import ListView, UpdateView, DetailView, CreateView, T
 
 from transaction.models import Transaction
 from project.models import Project, EmployeeProject
-from account.models import Client, Employee
+from account.models import Client, Employee, Contact
 
 
 class ChooseTransactionView(LoginRequiredMixin, ListView):
@@ -29,6 +28,11 @@ class ChooseTransactionEmployeeView(LoginRequiredMixin, DetailView):
     template_name = 'transaction_choose_employee.html'
     model = Project
     pk_url_kwarg = 'project_pk'
+    #用ListView會出現錯誤
+    #NoReverseMatch: Reverse for 'transaction_make_paycheck' with arguments '()' 
+    #and keyword arguments '{u'project_pk': '', u'employee_pk': 1}' not found. 
+    #1 pattern(s) tried: ['transaction/(?:project-(?P<project_pk>[0-9]+))/
+    #(?:employee-(?P<employee_pk>[0-9]+))/$'][26/May/2016 13
     
     def get_context_data(self, **kwargs):
         context = super(ChooseTransactionEmployeeView, self).get_context_data(**kwargs)
@@ -36,16 +40,35 @@ class ChooseTransactionEmployeeView(LoginRequiredMixin, DetailView):
         return context
 
 
-class TransactionMakePaycheckView(LoginRequiredMixin, CreateView):
+class TransactionMakePaycheckView(LoginRequiredMixin, DetailView):
     template_name = 'transaction_make_paycheck.html'
-    model = Project
-    fields = ('client', 'name',)
-    pk_url_kwarg = 'project_pk'
+    model = Employee
+    fields = ('contact', 'title',)
+    pk_url_kwarg = 'employee_pk'
+    pk_project_kwarg = 'project_pk'
     
+    def get_object(self,queryset=None):  
+        cnum=int(self.kwargs.get(self.pk_url_kwarg,None))  
+        pnum=int(self.kwargs.get(self.pk_project_kwarg,None))  
+        query=self.get_queryset()  
+        try:  
+            obj=query[pnum-1].projects.all()[cnum-1]  
+        except IndexError:  
+            raise Http404  
+        return obj 
+        
     def get_context_data(self, **kwargs):
         context = super(TransactionMakePaycheckView, self).get_context_data(**kwargs)
-        context["employee_list"] = Employee.objects.all()
+        #context["employee_list"] = Employee.objects.all()
         return context
+      
+      
+      
+      
+ 
+
+    
+    
     
 '''
 def page_6(request):

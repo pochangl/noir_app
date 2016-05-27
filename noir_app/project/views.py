@@ -9,8 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView
 
 from account.models import Client, Employee, Contact
-from project.models import Project
-from project.models import EmployeeProject
+from project.models import Project, EmployeeProject
 
 class ChooseProjectView(LoginRequiredMixin, ListView):
     template_name = 'choose_project.html'
