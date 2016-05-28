@@ -21,8 +21,16 @@ from account.views import LoginView, logout, index, MainMenuView
 from project.views import ChooseProjectView, ChooseProjectEmployeeView
 from transaction.views import ChooseTransactionView, ChooseTransactionEmployeeView, TransactionMakePaycheckView
 from day_off.views import DayoffView, Dayoff_Employee
+from tastypie.api import Api
+
+from project.resources import EmployeeProjectResource
+
+v1_api = Api(api_name='v1')
+v1_api.register(EmployeeProjectResource())
+
 
 urlpatterns = [
+    url(r'^api/', include(v1_api.urls)),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', index, name='index'),
     url(r'^accounts/login/$', LoginView.as_view(), name='login'),
