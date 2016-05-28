@@ -46,35 +46,8 @@ class TransactionMakePaycheckView(LoginRequiredMixin, DetailView):
     fields = ('contact', 'title',)
     pk_url_kwarg = 'employee_pk'
     pk_project_kwarg = 'project_pk'
-    
-    def get_object(self,queryset=None):  
-        cnum=int(self.kwargs.get(self.pk_url_kwarg,None))  
-        pnum=int(self.kwargs.get(self.pk_project_kwarg,None))  
-        query=self.get_queryset()  
-        try:  
-            obj=query[pnum-1].projects.all()[cnum-1]  
-        except IndexError:  
-            raise Http404  
-        return obj 
-        
+
     def get_context_data(self, **kwargs):
         context = super(TransactionMakePaycheckView, self).get_context_data(**kwargs)
         #context["employee_list"] = Employee.objects.all()
         return context
-      
-      
-      
-      
- 
-
-    
-    
-    
-'''
-def page_6(request):
-    normal_man_hour = request.POST.get('normal_man_hour', '')
-    overtime_man_hour = request.POST.get('overtime_man_hour', '')
-    return render_to_response('transaction_make_paycheck.html',
-                              locals(),
-                              context_instance=RequestContext(request))
-'''
