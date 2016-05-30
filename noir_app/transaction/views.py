@@ -10,9 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, UpdateView, DetailView, CreateView, TemplateView
 
-from transaction.models import Transaction
-from project.models import Project, EmployeeProject
-from account.models import Client, Employee, Contact
+from account.models import Client, Employee, Contact, Project, EmployeeProject, Transaction
 
 
 class ChooseTransactionView(LoginRequiredMixin, ListView):

@@ -9,8 +9,7 @@ from django.forms.models import modelform_factory
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView
 
-from account.models import Client, Employee, Contact
-from project.models import Project, EmployeeProject
+from account.models import Client, Employee, Contact, Project, EmployeeProject
 from .forms import SubmitForm
 
 class ChooseProjectView(LoginRequiredMixin, ListView):

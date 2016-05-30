@@ -10,9 +10,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response    #, render
 from django.template import loader, RequestContext
 
-from account.models import Client, Employee, Contact, Skill
-from project.models import Project, EmployeeProject, Assignment, Blacklist
-from transaction.models import Transaction, PayCheck, Debt, Receivable
+from account.models import Client, Employee, Contact, Skill, Project, EmployeeProject, Assignment, Blacklist, Transaction, PayCheck, Debt, Receivable
 from utils.models import TimeStampModel
 
 

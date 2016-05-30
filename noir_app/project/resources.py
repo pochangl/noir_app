@@ -1,5 +1,5 @@
 from tastypie.resources import ModelResource, fields
-from . import models
+from account import models
 from account import models as account_models
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import ReadOnlyAuthorization
