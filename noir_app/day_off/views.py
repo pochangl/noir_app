@@ -10,7 +10,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, DetailView
 
-from account.models import Client, Employee, Contact, Project, EmployeeProject, Transaction
+from account.models import Client, Employee, Contact, Skill, EmployeeProject, Blacklist
+from project.models import Project, Assignment
+from transaction.models import Transaction, PayCheck, Debt, Receivable
 
 # Create your views here.
 class DayoffView(LoginRequiredMixin, ListView):
