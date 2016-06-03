@@ -23,7 +23,7 @@ from transaction.views import ChooseTransactionView, ChooseTransactionEmployeeVi
 from day_off.views import DayoffView, Dayoff_Employee
 from tastypie.api import Api
 
-from project.resources import EmployeeProjectResource
+from account.resources import EmployeeProjectResource
 
 v1_api = Api(api_name='v1')
 v1_api.register(EmployeeProjectResource())

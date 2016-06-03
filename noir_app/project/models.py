@@ -13,6 +13,7 @@ class Project(TimeStampModel):
     def __str__(self):
         return self.name
 
+    
 class Assignment(TimeStampModel):
     employeeproject = models.ForeignKey("account.EmployeeProject", related_name='assignment')
     assignment = models.CharField(max_length=128)
@@ -26,3 +27,4 @@ class Assignment(TimeStampModel):
     
     def __int__(self):
         return self.id
+    

@@ -1,12 +1,9 @@
 from tastypie.resources import ModelResource, fields
-from account import models
-from account import models as account_models
+from project import models
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import ReadOnlyAuthorization
-from project import models
+
 #from account.resources import ContactResource, ClientResource
-
-
 class ProjectResource(ModelResource):
     #contact = fields.OneToOneField(ContactResource, attribute="contact", full=True)
     contact = fields.OneToOneField("account.ContactResource", attribute="contact", related_name="projects")
@@ -14,22 +11,17 @@ class ProjectResource(ModelResource):
     
     class Meta:
         queryset = models.Project.objects.all()
+        resource_name = "project"
         fields = ("id","name",)
-
-
-class EmployeeResource(ModelResource):
-    class Meta:
-        queryset = account_models.Employee.objects.all()
-        fields = ("id", "name",)
-
-
-class EmployeeProjectResource(ModelResource):
-    project = fields.ForeignKey("project.ProjectResource", attribute="project", related_name="employees")
-    employee = fields.ForeignKey("accnout.EmployeeResource", attribute="employee", related_name="projects")
-
-    class Meta:
-        queryset = account_models.EmployeeProject.objects.all()
-        resource_name = "employee_project"
-        fields = ("id", )
         authentcation = ApiKeyAuthentication()
-        authorization = ReadOnlyAuthorization()
+
+
+class AssignmentResource(ModelResource):
+    employee_project = fields.ForeignKey("account.EmployeeProjectResource", attribute="employee_project", related_name="assignments")
+
+    class Meta:
+        queryset = models.Assignment.objects.all()
+        resource_name = "assignment"
+        fields = ("id", "assignment", "start_time", "end_time", "check_in", "check_out", "status", "pay", "actual_pay", )
+        authentcation = ApiKeyAuthentication()
+        

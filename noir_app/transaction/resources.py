@@ -24,3 +24,23 @@ class ReceivableResource(ModelResource):
         fields = ("id",)
         authentcation = ApiKeyAuthentication()
         
+        
+class PayCheckResource(ModelResource):
+    employee = fields.OneToOneField("account.Employee", attribute="employee", related_name="paychecks")
+    
+    class Meta:
+        queryset = models.PayCheck.objects.all()
+        resource_name = "paycheck"
+        fields = ("id","amount", "reason_code", "reason", "paycheckcol")
+        authentcation = ApiKeyAuthentication()
+        
+        
+class TransactionResource(ModelResource):
+    receivable = fields.OneToOneField("transaction.ReceivableResource", attribute="receivable", related_name="transactions")
+    paycheck = fields.OneToOneField("transaction.PayCheck", attribute="paycheck", related_name="transactions")
+    
+    class Meta:
+        queryset = models.Transaction.objects.all()
+        resource_name = "transaction"
+        fields = ("id",)
+        authentcation = ApiKeyAuthentication()
