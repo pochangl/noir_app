@@ -28,6 +28,33 @@ from account.resources import EmployeeProjectResource
 v1_api = Api(api_name='v1')
 v1_api.register(EmployeeProjectResource())
 
+project_patterns = [
+    url(r'^$', 
+        ChooseProjectView.as_view(), 
+        name='choose_project'),
+    url(r'^(?:project-(?P<project_pk>[0-9]+))/$', 
+        ChooseProjectEmployeeView.as_view(), 
+        name='choose_project_employee'),                    
+]
+
+
+transaction_patterns = [
+    url(r'^$', 
+        ChooseTransactionView.as_view(), 
+        name='transaction_choose_project'),
+    url(r'^(?:project-(?P<project_pk>[0-9]+))/$', 
+        ChooseTransactionEmployeeView.as_view(), 
+        name='transaction_choose_employee'),
+    url(r'^(?:project-(?P<project_pk>[0-9]+))/(?:employee-(?P<employee_pk>[0-9]+))/$', 
+        TransactionMakePaycheckView.as_view(),
+        name='transaction_make_paycheck'),
+]
+
+dayoff_patterns = [
+    url(r'^$', DayoffView.as_view(), name='dayoff'),
+    url(r'^(?:employee-(?P<employee_pk>[0-9]+))/$', Dayoff_Employee.as_view(), name='dayoff_employee'),
+]
+
 
 urlpatterns = [
     url(r'^api/', include(v1_api.urls)),
@@ -37,24 +64,7 @@ urlpatterns = [
     url(r'^accounts/logout/$', logout, name='logout'),
     url(r'^main_menu/$', MainMenuView.as_view(), name='main_menu'),
     
-    url(r'^project/$', 
-        ChooseProjectView.as_view(), 
-        name='choose_project'),
-    url(r'^project/(?:project-(?P<project_pk>[0-9]+))/$', 
-        ChooseProjectEmployeeView.as_view(), 
-        name='choose_project_employee'),
-    
-    url(r'^transaction/$', 
-        ChooseTransactionView.as_view(), 
-        name='transaction_choose_project'),
-    url(r'^transaction/(?:project-(?P<project_pk>[0-9]+))/$', 
-        ChooseTransactionEmployeeView.as_view(), 
-        name='transaction_choose_employee'),
-    url(r'^transaction/(?:project-(?P<project_pk>[0-9]+))/(?:employee-(?P<employee_pk>[0-9]+))/$', 
-        TransactionMakePaycheckView.as_view(),
-        name='transaction_make_paycheck'),
-    #.as_View()未輸入，會出現 TypeError: __init__() takes exactly 1 argument (4 given)
-    
-    url(r'^dayoff/$', DayoffView.as_view(), name='dayoff'),
-    url(r'^dayoff/(?:employee-(?P<employee_pk>[0-9]+))/$', Dayoff_Employee.as_view(), name='dayoff_employee'),
+    url(r'^project/', include(project_patterns)),
+    url(r'^transaction/', include(transaction_patterns)),
+    url(r'^dayoff/', include(dayoff_patterns)),
 ]
