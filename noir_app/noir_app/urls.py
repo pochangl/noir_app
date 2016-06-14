@@ -17,54 +17,40 @@ Including another URLconf
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-from account.views import LoginView, logout, index, MainMenuView
-from project.views import ChooseProjectView, ChooseProjectEmployeeView
-from transaction.views import ChooseTransactionView, ChooseTransactionEmployeeView, TransactionMakePaycheckView
-from day_off.views import DayoffView, Dayoff_Employee
+
 from tastypie.api import Api
 
-from account.resources import EmployeeProjectResource
+from account.resources import ContactResource, ClientResource, EmployeeResource, DayOffResource
+from account.resources import SkillResource, EmployeeProjectResource, EmployeePreferenceResource
+from account.resources import ProjectPreferenceResource
+from project.resources import ProjectResource, AssignmentResource
+from transaction.resources import DebtResource, ReceivableResource, PayCheckResource, TransactionResource
 
 v1_api = Api(api_name='v1')
+v1_api.register(ContactResource())
+v1_api.register(ClientResource())
+v1_api.register(EmployeeResource())
+v1_api.register(DayOffResource())
+v1_api.register(SkillResource())
 v1_api.register(EmployeeProjectResource())
+v1_api.register(EmployeePreferenceResource())
+v1_api.register(ProjectPreferenceResource())
 
-project_patterns = [
-    url(r'^$', 
-        ChooseProjectView.as_view(), 
-        name='choose_project'),
-    url(r'^(?:project-(?P<project_pk>[0-9]+))/$', 
-        ChooseProjectEmployeeView.as_view(), 
-        name='choose_project_employee'),                    
-]
+v1_api.register(ProjectResource())
+v1_api.register(AssignmentResource())
 
-
-transaction_patterns = [
-    url(r'^$', 
-        ChooseTransactionView.as_view(), 
-        name='transaction_choose_project'),
-    url(r'^(?:project-(?P<project_pk>[0-9]+))/$', 
-        ChooseTransactionEmployeeView.as_view(), 
-        name='transaction_choose_employee'),
-    url(r'^(?:project-(?P<project_pk>[0-9]+))/(?:employee-(?P<employee_pk>[0-9]+))/$', 
-        TransactionMakePaycheckView.as_view(),
-        name='transaction_make_paycheck'),
-]
-
-dayoff_patterns = [
-    url(r'^$', DayoffView.as_view(), name='dayoff'),
-    url(r'^(?:employee-(?P<employee_pk>[0-9]+))/$', Dayoff_Employee.as_view(), name='dayoff_employee'),
-]
+v1_api.register(DebtResource())
+v1_api.register(ReceivableResource())
+v1_api.register(PayCheckResource())
+v1_api.register(TransactionResource())
 
 
-urlpatterns = [
+urlpatterns = patterns('',
     url(r'^api/', include(v1_api.urls)),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', index, name='index'),
-    url(r'^accounts/login/$', LoginView.as_view(), name='login'),
-    url(r'^accounts/logout/$', logout, name='logout'),
-    url(r'^main_menu/$', MainMenuView.as_view(), name='main_menu'),
-    
-    url(r'^project/', include(project_patterns)),
-    url(r'^transaction/', include(transaction_patterns)),
-    url(r'^dayoff/', include(dayoff_patterns)),
-]
+
+    url(r'^account/', include('account.urls')),
+    url(r'^project/', include('project.urls')),
+    url(r'^transaction/', include('transaction.urls')),
+    url(r'^dayoff/', include('day_off.urls')),
+)

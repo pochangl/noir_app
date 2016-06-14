@@ -1,6 +1,5 @@
 from tastypie.resources import ModelResource, fields
-from account import models
-from account import models as account_models
+from transaction import models
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import ReadOnlyAuthorization
 
@@ -16,7 +15,7 @@ class DebtResource(ModelResource):
 
 
 class ReceivableResource(ModelResource):
-    client = fields.OneToOneField("Account.ClientResource", attribute="client", related_name="receivables")
+    client = fields.OneToOneField("account.ClientResource", attribute="client", related_name="receivables")
     
     class Meta:
         queryset = models.Receivable.objects.all()
