@@ -15,15 +15,16 @@ class Project(TimeStampModel):
 
     
 class Assignment(TimeStampModel):
-    employeeproject = models.ForeignKey("account.EmployeeProject", related_name='assignment')
-    assignment = models.CharField(max_length=128)
-    start_time = models.DateTimeField(auto_now = False)
-    end_time = models.DateTimeField(auto_now = False)
-    check_in = models.DateTimeField(auto_now = False)
-    check_out = models.DateTimeField(auto_now = False)
-    status = models.CharField(max_length=128)
-    pay = models.IntegerField()
-    actual_pay = models.IntegerField()
+    employeeproject = models.ForeignKey("account.EmployeeProject", related_name='assignment', null=True, blank=True)
+    #id = models.IntegerField(null=True, blank=True)
+    assignment = models.CharField(max_length=128, null=True, blank=True)
+    start_time = models.DateTimeField(auto_now=False, null=True, blank=True)
+    end_time = models.DateTimeField(auto_now=False, null=True, blank=True)
+    check_in = models.DateTimeField(auto_now=False, null=True, blank=True)
+    check_out = models.DateTimeField(auto_now=False, null=True, blank=True)
+    status = models.CharField(max_length=128, null=True, blank=True)
+    pay = models.IntegerField(null=True, blank=True)
+    actual_pay = models.IntegerField(null=True, blank=True)
     
     def __int__(self):
         return self.id

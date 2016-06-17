@@ -17,6 +17,7 @@ Including another URLconf
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
+from account.views import index
 
 from tastypie.api import Api
 
@@ -48,7 +49,8 @@ v1_api.register(TransactionResource())
 urlpatterns = patterns('',
     url(r'^api/', include(v1_api.urls)),
     url(r'^admin/', include(admin.site.urls)),
-
+    url(r'^$', index, name='index'),
+    
     url(r'^account/', include('account.urls')),
     url(r'^project/', include('project.urls')),
     url(r'^transaction/', include('transaction.urls')),

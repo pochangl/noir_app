@@ -1,9 +1,11 @@
 #-*- coding: utf-8 -*-
 from django import forms
+from project.models import Assignment
 
 
-class SubmitForm(forms.Form):
+class AssignmentForm(forms.ModelForm):
     template_name = 'choose_project_employee.html'
-    client = forms.CharField()
-    name = forms.CharField()
-
+    class Meta:
+        model = Assignment
+        exclude = ('employeeproject', 'assignment', 'start_time', 'end_time', 'check_in',
+                   'check_out', 'status', 'pay', 'actual_pay',)
