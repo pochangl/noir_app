@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
 
     {% block body %}
-        <h3> 工地名稱: {{ assignment.employeeproject.project.contact.name }} </h3>
-        <form action="" name="AssignmentForm" method="POST">{% csrf_token %}
-            <label >姓名:</label><input type="text" name={{ assignment.assignment }} value="" id="assignment"> <br />
-            <label >上工時間:</label><input type="text" name={{ assignment.check_in }} value="" id="check_in"> <br />
+        <h3> 工地名稱: {{ assignment.employeeproject.project.name }} </h3>
+        <form action="" name="" method="POST">{% csrf_token %}
+            {{ form.as_p }}
             <input type="submit" value="派工確認" /><br />
         </form>
     {% endblock %}

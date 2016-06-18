@@ -24,7 +24,7 @@ class PayCheck(TimeStampModel):
     amount = models.IntegerField()
     reason_code = models.CharField(max_length=128)
     reason = models.CharField(max_length=128)
-    paycheckcol = models.CharField(max_length=128)
+    paycheck = models.CharField(max_length=128)
     
     def __int__(self):
         return self.id

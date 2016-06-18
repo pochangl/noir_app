@@ -23,15 +23,24 @@ class ChooseProjectView(LoginRequiredMixin, ListView):
 class ChooseProjectEmployeeView(LoginRequiredMixin, CreateView):
     template_name = 'choose_project_employee.html'
     model = Assignment
-    #fields = ('employeeproject', 'assignment', 'start_time', 'end_time', 'check_in',
-    #          'check_out', 'status', 'pay', 'actual_pay',)
+    fields = ('employeeproject', 'assignment', 'start_time', 'end_time', 'check_in',
+              'check_out', 'status', 'pay', 'actual_pay',)
     pk_url_kwarg = 'project_pk'
-    form_class = AssignmentForm
+    #form_class = AssignmentForm
+    
     #用ListView就無法顯示project name
     #用DetailView必須指定pk_url_kwarg，否則會跳未指定pk的錯誤
-def form_valid(self, form):
-        form.instance.id = self.request.id
+    def form_valid(self, form):
+        #form.instance.id = self.request.POST.get(id)
+        #form.assignment = self.request.POST.get('assignment')
+        form.save()
         return super(ChooseProjectEmployeeView, self).form_valid(form)
+    
+    def get_context_data(self, **kwargs):
+        context = super(ChooseProjectEmployeeView, self).get_context_data(**kwargs)
+        context["employee_list"] = Employee.objects.all()
+        context["project_list"] = Project.objects.all()
+        return context
     
     #    def get_form(self, form_class):
 #        form = super(ChooseProjectEmployeeView, self).get_form(form_class)
@@ -52,11 +61,7 @@ def form_valid(self, form):
 #        form.save()
 #        return super(ChooseProjectEmployeeView, self).form_valid(form)
     
-#    def get_context_data(self, **kwargs):
-#        context = super(ChooseProjectEmployeeView, self).get_context_data(**kwargs)
-#        context["employee_list"] = Employee.objects.all()
-#        context["project_list"] = Project.objects.all()
-#        return context
+
 
     #def post(self, request, *args, **kwargs):
         #case1,以object存；好像可以run，但不知道到底存了什麼？

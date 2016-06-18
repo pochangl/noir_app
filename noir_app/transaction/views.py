@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, UpdateView, DetailView, CreateView, TemplateView
+from django.views.generic import ListView, DetailView, CreateView
 
 from account.models import Client, Employee, Contact, Skill, EmployeeProject, Blacklist
 from project.models import Project, Assignment
@@ -40,13 +40,19 @@ class ChooseTransactionEmployeeView(LoginRequiredMixin, DetailView):
         return context
 
 
-class TransactionMakePaycheckView(LoginRequiredMixin, DetailView):
+class TransactionMakePaycheckView(LoginRequiredMixin, CreateView):
     template_name = 'transaction_make_paycheck.html'
-    model = Employee
-    fields = ('contact', 'title',)
+    model = PayCheck
+    fields = ('employee', 'amount', 'reason_code', 'reason', 'paycheck')
     pk_url_kwarg = 'employee_pk'
     pk_project_kwarg = 'project_pk'
 
+    def form_valid(self, form):
+        #form.instance.id = self.request.POST.get(id)
+        #form.assignment = self.request.POST.get('assignment')
+        form.save()
+        return super(TransactionMakePaycheckView, self).form_valid(form)
+    
     def get_context_data(self, **kwargs):
         context = super(TransactionMakePaycheckView, self).get_context_data(**kwargs)
         #context["employee_list"] = Employee.objects.all()
