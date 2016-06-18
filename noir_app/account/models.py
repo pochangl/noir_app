@@ -25,57 +25,16 @@ class Client(TimeStampModel):
 
 
 class Employee(TimeStampModel):
-    contact = models.OneToOneField("account.Contact", related_name='employees')
-    debt = models.ForeignKey("transaction.Debt", related_name='employees')
+    contact = models.ForeignKey(Contact, related_name='employees')
     title = models.CharField(max_length=128)
 
-    def __int__(self):
-        return self.id
-    
-    
-class DayOff(TimeStampModel):
-    employee = models.ForeignKey("account.Employee", related_name='dayoffs')
-    start_time = models.DateTimeField(auto_now = False)
-    end_time = models.DateTimeField(auto_now = False)
+    def __str__(self):
+        return self.contact.name
 
-    def __int__(self):
-        return self.id
-
-
-class Blacklist(TimeStampModel):
-
-    def __int__(self):
-        return id
-    
 
 class Skill(Employee):
-    employee = models.ForeignKey("account.Employee", related_name='skills')
+    employee = models.ForeignKey(Employee, related_name='skills')
     name = models.CharField(max_length=128)
 
     def __str__(self):
-        return self.name
-
-class EmployeeProject(TimeStampModel):
-    employee = models.ForeignKey("account.Employee", related_name='employee_projects')
-    project = models.ForeignKey("project.Project", related_name='employee_projects')
-
-    def __int__(self):
-        return self.id
-
-
-class EmployeePreference(TimeStampModel):
-    employee_project = models.ForeignKey("account.EmployeeProject", related_name='employee_preferences')
-    employee_preference = models.CharField(max_length=128)
-
-    def __int__(self):
-        return self.id
-    
-    
-class ProjectPreference(TimeStampModel):
-    employee_project = models.ForeignKey("account.EmployeeProject", related_name='project_preferences')
-    employee_priority = models.CharField(max_length=128)
-    project_priority = models.CharField(max_length=128)
-
-    def __int__(self):
-        return self.id
-    
+        return "%s - %s" % (self.employee, self.name)
