@@ -3,7 +3,7 @@ from transaction.views import ChooseTransactionView, ChooseTransactionEmployeeVi
 from transaction.views import TransactionMakePaycheckView
 from transaction.models import PayCheck
 
-urlpatterns = patterns('',
+urlpatterns = (
     url(r'^$', 
         ChooseTransactionView.as_view(), 
         name='transaction_choose_project'),

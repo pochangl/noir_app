@@ -46,7 +46,7 @@ v1_api.register(PayCheckResource())
 v1_api.register(TransactionResource())
 
 
-urlpatterns = patterns('',
+urlpatterns = (
     url(r'^api/', include(v1_api.urls)),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', index, name='index'),
