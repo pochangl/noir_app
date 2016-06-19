@@ -43,7 +43,7 @@ class ChooseTransactionEmployeeView(LoginRequiredMixin, DetailView):
 class TransactionMakePaycheckView(LoginRequiredMixin, CreateView):
     template_name = 'transaction_make_paycheck.html'
     model = PayCheck
-    fields = ('employee', 'reason_code', 'reason',)
+    fields = ('employee', 'amount', 'reason_code', 'reason',)
     pk_url_kwarg = 'employee_pk'
     pk_project_kwarg = 'project_pk'
 

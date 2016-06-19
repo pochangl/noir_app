@@ -32,9 +32,9 @@ class Employee(TimeStampModel):
         return self.contact.name
 
 
-class Skill(Employee):
+class Skill(TimeStampModel):
     employee = models.ForeignKey(Employee, related_name='skills')
     name = models.CharField(max_length=128)
 
     def __str__(self):
-        return "%s - %s" % (self.employee, self.name)
+        return "%s - %s" % (self.employee.contact.name, self.name)

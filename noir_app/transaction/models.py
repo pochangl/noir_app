@@ -4,22 +4,25 @@ from django.db import models
 from utils.models import TimeStampModel
 from account.models import Client, Employee
 
-
+# Create your models here.
 class Transaction(TimeStampModel):
     amount = models.IntegerField()
     note = models.CharField(max_length=1024)
-
-# Create your models here.
+#    class Meta:
+#        abstract = True
+        #將Transaction轉為虛擬的table,避免徒增一堆transaction的資料;
+        #但Debt,Receivable,PayCheck會抓不到東西,故改回原來的
+        
 class Debt(Transaction):
     
     def __str__(self):
-        return self.id
+        return str(self.amount)
 
 class Receivable(Transaction):
     client = models.ForeignKey(Client, related_name='receivables')
 
     def __str__(self):
-        return self.id
+        return self.client.company
 
 
 class PayCheck(Transaction):
@@ -28,4 +31,4 @@ class PayCheck(Transaction):
     reason = models.CharField(max_length=128)
 
     def __str__(self):
-        return "%s" % (self.employee)
+        return self.employee.contact.name

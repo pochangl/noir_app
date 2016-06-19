@@ -3,7 +3,7 @@ from tastypie.resources import ModelResource, fields
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import ReadOnlyAuthorization
 
-from transaction.models import Transaction, Debt, Receivable, PayCheck
+from transaction.models import Debt, Receivable, PayCheck, Transaction
 
 #from account.resources import ClientResource, EmployeeResource
 
@@ -22,7 +22,7 @@ class DebtResource(TransactionResource):
     class Meta:
         queryset = Debt.objects.all()
         resource_name = "debt"
-        fields = ("id",)
+        fields = ("id", "amount", "note",)
         authentcation = ApiKeyAuthentication()
 
 
@@ -32,7 +32,7 @@ class ReceivableResource(TransactionResource):
     class Meta:
         queryset = Receivable.objects.all()
         resource_name = "receivable"
-        fields = ("id",)
+        fields = ("id", "amount", "note",)
         authentcation = ApiKeyAuthentication()
         
         
@@ -42,6 +42,6 @@ class PayCheckResource(TransactionResource):
     class Meta:
         queryset = PayCheck.objects.all()
         resource_name = "paycheck"
-        fields = ("id", "reason_code", "reason",)
+        fields = ("id", "amount", "note", "reason_code", "reason",)
         authentcation = ApiKeyAuthentication()
         

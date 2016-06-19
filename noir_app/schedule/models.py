@@ -13,14 +13,14 @@ class DayOff(TimeStampModel):
     end_time = models.DateTimeField()
     
     def __str__(self):
-        return "%s: %s" % (self.employee, self.start_time)
+        return "%s: %s" % (self.employee.contact.name, self.start_time)
 
 
 class EmployeePreference(TimeStampModel):
     employee_project = models.ForeignKey(EmployeeProject, related_name='employee_preferences')
     employee_preference = models.IntegerField(default=0)
 
-    def __str__(self):
+    def __repr__(self):
         return "%s: %s" % (self.employee_project, self.employee_preference)
     
     
@@ -29,6 +29,6 @@ class ProjectPreference(TimeStampModel):
     employee_priority = models.CharField(max_length=128)
     project_priority = models.CharField(max_length=128)
 
-    def __str__(self):
+    def __repr__(self):
         return "%s: %s: %s" % (self.employee_project, self.employee_priority, self.project_priority)
     
