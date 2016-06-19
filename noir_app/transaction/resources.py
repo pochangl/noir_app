@@ -1,45 +1,47 @@
 from tastypie.resources import ModelResource, fields
-from transaction import models
+
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import ReadOnlyAuthorization
 
-#from account.resources import ClientResource
+from transaction.models import Transaction, Debt, Receivable, PayCheck
+
+#from account.resources import ClientResource, EmployeeResource
 
 
-class DebtResource(ModelResource):
+class TransactionResource(ModelResource):
+
     class Meta:
-        queryset = models.Debt.objects.all()
+        queryset = Transaction.objects.all()
+        resource_name = "transaction"
+        fields = ("id", "amount", "note")
+        authentcation = ApiKeyAuthentication()
+        
+        
+class DebtResource(TransactionResource):
+    
+    class Meta:
+        queryset = Debt.objects.all()
         resource_name = "debt"
-        fields = ("id", "amount",)
+        fields = ("id",)
         authentcation = ApiKeyAuthentication()
 
 
-class ReceivableResource(ModelResource):
-    client = fields.OneToOneField("account.ClientResource", attribute="client", related_name="receivables")
+class ReceivableResource(TransactionResource):
+    client = fields.ForeignKey("account.ClientResource", attribute="client", related_name="receivables")
     
     class Meta:
-        queryset = models.Receivable.objects.all()
+        queryset = Receivable.objects.all()
         resource_name = "receivable"
         fields = ("id",)
         authentcation = ApiKeyAuthentication()
         
         
-class PayCheckResource(ModelResource):
-    employee = fields.OneToOneField("account.Employee", attribute="employee", related_name="paychecks")
+class PayCheckResource(TransactionResource):
+    employee = fields.ForeignKey("account.EmployeeResource", attribute="employee", related_name="paychecks")
     
     class Meta:
-        queryset = models.PayCheck.objects.all()
+        queryset = PayCheck.objects.all()
         resource_name = "paycheck"
-        fields = ("id","amount", "reason_code", "reason", "paycheckcol")
+        fields = ("id", "reason_code", "reason",)
         authentcation = ApiKeyAuthentication()
         
-        
-class TransactionResource(ModelResource):
-    receivable = fields.OneToOneField("transaction.ReceivableResource", attribute="receivable", related_name="transactions")
-    paycheck = fields.OneToOneField("transaction.PayCheck", attribute="paycheck", related_name="transactions")
-    
-    class Meta:
-        queryset = models.Transaction.objects.all()
-        resource_name = "transaction"
-        fields = ("id",)
-        authentcation = ApiKeyAuthentication()

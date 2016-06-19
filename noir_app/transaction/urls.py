@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url
 from transaction.views import ChooseTransactionView, ChooseTransactionEmployeeView
 from transaction.views import TransactionMakePaycheckView
+
 from transaction.models import PayCheck
 
 urlpatterns = (

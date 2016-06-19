@@ -1,15 +1,16 @@
 from django.db import models
 
-# Create your models here.
+from utils.models import TimeStampModel
+
 from account.models import Employee
 from project.models import EmployeeProject
     
-    
+
+# Create your models here.    
 class DayOff(TimeStampModel):
     employee = models.ForeignKey(Employee, related_name='dayoffs')
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-
     
     def __str__(self):
         return "%s: %s" % (self.employee, self.start_time)
@@ -29,4 +30,5 @@ class ProjectPreference(TimeStampModel):
     project_priority = models.CharField(max_length=128)
 
     def __str__(self):
-        return self.id
+        return "%s: %s: %s" % (self.employee_project, self.employee_priority, self.project_priority)
+    

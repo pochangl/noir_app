@@ -1,7 +1,7 @@
 #-*- coding: utf-8 -*-
 from django.db import models
 from utils.models import TimeStampModel
-# Circular import dependency in Python,將project.models及transaction.models移至account.models
+
 
 # Create your models here.
 class Contact(TimeStampModel):

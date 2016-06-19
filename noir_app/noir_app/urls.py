@@ -21,29 +21,30 @@ from account.views import index
 
 from tastypie.api import Api
 
-from account.resources import ContactResource, ClientResource, EmployeeResource, DayOffResource
-from account.resources import SkillResource, EmployeeProjectResource, EmployeePreferenceResource
-from account.resources import ProjectPreferenceResource
-from project.resources import ProjectResource, AssignmentResource
+from account.resources import ContactResource, ClientResource, EmployeeResource, SkillResource
+from project.resources import ProjectResource, AssignmentResource, EmployeeProjectResource
 from transaction.resources import DebtResource, ReceivableResource, PayCheckResource, TransactionResource
+from schedule.resources import DayOffResource, EmployeePreferenceResource, ProjectPreferenceResource
 
 v1_api = Api(api_name='v1')
+
 v1_api.register(ContactResource())
 v1_api.register(ClientResource())
 v1_api.register(EmployeeResource())
-v1_api.register(DayOffResource())
 v1_api.register(SkillResource())
-v1_api.register(EmployeeProjectResource())
-v1_api.register(EmployeePreferenceResource())
-v1_api.register(ProjectPreferenceResource())
 
 v1_api.register(ProjectResource())
 v1_api.register(AssignmentResource())
+v1_api.register(EmployeeProjectResource())
 
 v1_api.register(DebtResource())
 v1_api.register(ReceivableResource())
 v1_api.register(PayCheckResource())
 v1_api.register(TransactionResource())
+
+v1_api.register(DayOffResource())
+v1_api.register(EmployeePreferenceResource())
+v1_api.register(ProjectPreferenceResource())
 
 
 urlpatterns = (
@@ -54,5 +55,5 @@ urlpatterns = (
     url(r'^account/', include('account.urls')),
     url(r'^project/', include('project.urls')),
     url(r'^transaction/', include('transaction.urls')),
-    url(r'^dayoff/', include('day_off.urls')),
+    url(r'^schedule/', include('schedule.urls')),
 )

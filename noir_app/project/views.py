@@ -9,9 +9,9 @@ from django.forms.models import modelform_factory
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView
 
-from account.models import Client, Employee, Contact, Skill, EmployeeProject, Blacklist
+from account.models import Employee
 from project.models import Project, Assignment
-from transaction.models import Transaction, PayCheck, Debt, Receivable
+
 from .forms import AssignmentForm
 
 class ChooseProjectView(LoginRequiredMixin, ListView):
@@ -23,9 +23,7 @@ class ChooseProjectView(LoginRequiredMixin, ListView):
 class ChooseProjectEmployeeView(LoginRequiredMixin, CreateView):
     template_name = 'choose_project_employee.html'
     model = Assignment
-    fields = ('employeeproject', 'assignment', 'start_time', 'end_time', 'check_in',
-              'check_out', 'status', 'pay', 'actual_pay',)
-    pk_url_kwarg = 'project_pk'
+    form_class = AssignmentForm
     #form_class = AssignmentForm
     
     #用ListView就無法顯示project name

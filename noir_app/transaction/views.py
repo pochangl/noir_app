@@ -10,9 +10,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView
 
-from account.models import Client, Employee, Contact, Skill, EmployeeProject, Blacklist
-from project.models import Project, Assignment
-from transaction.models import Transaction, PayCheck, Debt, Receivable
+from account.models import Employee
+from project.models import Project
+from transaction.models import PayCheck
 
 
 class ChooseTransactionView(LoginRequiredMixin, ListView):
@@ -43,7 +43,7 @@ class ChooseTransactionEmployeeView(LoginRequiredMixin, DetailView):
 class TransactionMakePaycheckView(LoginRequiredMixin, CreateView):
     template_name = 'transaction_make_paycheck.html'
     model = PayCheck
-    fields = ('employee', 'amount', 'reason_code', 'reason', 'paycheck')
+    fields = ('employee', 'reason_code', 'reason',)
     pk_url_kwarg = 'employee_pk'
     pk_project_kwarg = 'project_pk'
 

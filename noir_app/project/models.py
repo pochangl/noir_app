@@ -1,9 +1,8 @@
 #-*- coding: utf-8 -*-
-# Circular import dependency in Python,將project.models移至account.models
 from django.db import models
 from utils.models import TimeStampModel
-from account.models import Contact, Client
 
+from account.models import Contact, Client, Employee
 
 # Create your models here.
 class Project(TimeStampModel):
@@ -35,4 +34,4 @@ class Assignment(TimeStampModel):
     actual_pay = models.IntegerField()
 
     def __str__(self):
-        return "%s - %s" % (self.employeeproject)
+        return "%s" % (self.employeeproject)

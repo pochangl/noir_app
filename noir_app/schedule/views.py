@@ -10,23 +10,22 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, DetailView
 
-from account.models import Client, Employee, Contact, Skill, EmployeeProject, Blacklist
-from project.models import Project, Assignment
-from transaction.models import Transaction, PayCheck, Debt, Receivable
+from account.models import Employee, Contact
+
 
 # Create your views here.
-class DayoffView(LoginRequiredMixin, ListView):
-    template_name = 'dayoff.html'
+class ScheduleView(LoginRequiredMixin, ListView):
+    template_name = 'schedule.html'
     model = Employee
     fields = ('title',)
     
-class Dayoff_Employee(LoginRequiredMixin, DetailView):
-    template_name = 'dayoff_employee.html'
+class Schedule_Employee(LoginRequiredMixin, DetailView):
+    template_name = 'schedule_employee.html'
     model = Employee
     pk_url_kwarg = 'employee_pk'
     
     def get_context_data(self, **kwargs):
-        context = super(Dayoff_Employee, self).get_context_data(**kwargs)
+        context = super(Schedule_Employee, self).get_context_data(**kwargs)
         context["contact_list"] = Contact.objects.all()
         return context
   
