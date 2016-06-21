@@ -1,0 +1,14 @@
+[
+    {
+        "display": "Project",
+        "url": "/project/"
+    },
+    {
+        "display": "Transaction",
+        "url": "/transaction/"
+    },
+    {
+        "display": "Schedule",
+        "url": "/schedule/"
+    }
+]

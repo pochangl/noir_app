@@ -1,11 +1,15 @@
 {% load staticfiles%}
 <html>
     <head>
-        <meta charset="utf-8">
+        <meta charset="utf-8" />
         <title>{% block head %}noir_app{% endblock %}</title>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.6.2/remarkable.min.js"></script>
     </head>
     <body>
-        <script src={% static 'account.js' %}></script>
         <nav>
             | <a href="{% url 'index'%}">回首頁</a> |
             {% if request.user.is_authenticated %}
@@ -17,6 +21,8 @@
             {% endif %}
         </nav>
         {% block body %}{% endblock %}
+        <div id="content"></div>
+        <script type="text/babel" src="/static/base.js"></script>
     </body>
 </html>
 

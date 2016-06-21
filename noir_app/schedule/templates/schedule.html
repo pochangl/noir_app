@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+    {% block body %}
+        <h3> 選擇員工: </h3>
+        {% for employee in object_list %}
+            <a href="{% url 'schedule_employee' employee_pk=employee.pk %}">{{ employee.contact.name }}</a></br>
+        {% empty %}
+            <p> Nothing. </p>
+        {% endfor %}  
+    {% endblock %}
+
