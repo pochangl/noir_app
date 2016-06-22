@@ -1,8 +1,18 @@
 [
     {
-        "name": "Charlie", "comment": "hihi"
+        "display": "HomePage",
+        "url": "/index/"
     },
     {
-        "name": "edward", "comment": "react"
+        "display": "login",
+        "url": "/accounts/login/"
+    },
+    {
+        "display": "logout",
+        "url": "/accounts/logout/"
+    },
+    {
+        "display": "register",
+        "url": "/accounts/register/"
     }
 ]

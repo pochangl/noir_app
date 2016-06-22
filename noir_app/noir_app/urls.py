@@ -52,7 +52,7 @@ urlpatterns = (
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', index, name='index'),
     
-    url(r'^account/', include('account.urls')),
+    url(r'^', include('account.urls')),
     url(r'^project/', include('project.urls')),
     url(r'^transaction/', include('transaction.urls')),
     url(r'^schedule/', include('schedule.urls')),
