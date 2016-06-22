@@ -44,8 +44,8 @@ class TransactionMakePaycheckView(LoginRequiredMixin, CreateView):
     template_name = 'transaction_make_paycheck.html'
     model = PayCheck
     fields = ('employee', 'amount', 'reason_code', 'reason',)
-    pk_url_kwarg = 'employee_pk'
-    pk_project_kwarg = 'project_pk'
+    #pk_url_kwarg = 'employee_pk'
+    #pk_project_kwarg = 'project_pk'
 
     def form_valid(self, form):
         #form.instance.id = self.request.POST.get(id)

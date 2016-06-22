@@ -22,7 +22,7 @@ class ScheduleView(LoginRequiredMixin, ListView):
 class Schedule_Employee(LoginRequiredMixin, CreateView):
     template_name = 'schedule_employee.html'
     model = DayOff
-    pk_url_kwarg = 'employee_pk'
+    #pk_url_kwarg = 'employee_pk'
     fields = ('employee', 'start_time', 'end_time')
     
     def form_valid(self, form):

@@ -17,5 +17,5 @@ function myFunction(arr) {
         out += '<a href="' + arr[i].url + '">' + 
         arr[i].display + '</a><br>';
     }
-    document.getElementById("content2").innerHTML = out;
+    document.getElementById("content_main_menu").innerHTML = out;
 }
