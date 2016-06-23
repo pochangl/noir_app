@@ -1,10 +1,13 @@
 {% extends 'base.html' %}
 
     {% block body %}
-        <form id="" action="" method="post">{% csrf_token %}
+        <form id="" action="" method="POST">{% csrf_token %}
             <h3> 員工姓名：{{employee.contact.name}} </h3>
             {{ form.as_p }}
             <input type="submit" value="請假確認" />
         </form>
+
+        <div id="content_schedule"></div>
+        <script type="text/babel" src="/static/schedule.js"></script>
     {% endblock %}
 

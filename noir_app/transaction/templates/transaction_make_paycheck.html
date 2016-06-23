@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
 
     {% block body %}
-        <form id="" action="" method="POST">{% csrf_token %}
-            <h3> 工地名稱：{{paycheck.employee.employeeproject.project.name}} </h3>
-            <h3> 員工姓名：{{paycheck.employee.name}} </h3>
+        <h3> 工地名稱：{{paycheck.employee.employeeproject.project.name}} </h3>
+        <h3> 員工姓名：{{paycheck.employee.name}} </h3>
+        <form action="" name="" method="POST">{% csrf_token %}
             {{ form.as_p }}
-            <input type="submit" value="報支確認" />
+            <input type="submit" value="報支確認" /><br />
         </form>
+
+        <div id="content_transaction"></div>
+        <script type="text/babel" src="/static/transaction.js"></script>
     {% endblock %}
 

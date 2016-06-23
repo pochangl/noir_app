@@ -2,24 +2,28 @@ var Comment = React.createClass({
     render: function(){
         return(
             <div className="comment">
-                <p> {this.props.comment.name    } </p>
-                <p> {this.props.comment.comment } </p>
+                <p> {this.props.comment.employee } </p>
+                <p> {this.props.comment.start_time } </p>
+                <p> {this.props.comment.end_time } </p>
             </div>
         );
-    }
+	    }
 });
 
 var CommentForm = React.createClass({
     getInitialState: function(){
         return{
-            name: "", comment: "dddddd"
+            employee: "",  start_time: "", end_time: ""
         };
     },
-    changeName: function(e){
-        this.setState({name: e.target.value});  
+    changeEmployee: function(e){
+        this.setState({employee: e.target.value});  
     },
-    changeComment: function(e){
-        this.setState({comment: e.target.value});  
+    changeStart_time: function(e){
+        this.setState({start_time: e.target.value});  
+    },
+    changeEnd_time: function(e){
+        this.setState({end_time: e.target.value});  
     },
     click: function(){
         console.log(this.props);
@@ -28,9 +32,17 @@ var CommentForm = React.createClass({
     render: function(){
         return(
             <div className="commentForm">
-                <input type="text" placeholder="Name" value={this.state.name} onChange={this.changeName}/>
-                <input type="text" placeholder="Comment" value={this.state.comment} onChange={this.changeComment}/>
-                <input type="submit" value="confirm" onClick={this.click} />
+                <p><input type="text" placeholder="employee" 
+						  value={this.state.employee} 
+						  onChange={this.changeEmployee}/></p>
+                <p><input type="text" placeholder="start_time" 
+                          value={this.state.start_time}
+                          onChange={this.changeStart_time}/></p>
+                <p><input type="text" placeholder="end_time" 
+                          value={this.state.end_time}
+                          onChange={this.changeEnd_time}/></p>
+                <input type="submit" value="confirm"
+                       onClick={this.click} />
             </div>
         );
     }
@@ -44,7 +56,7 @@ var CommentList = React.createClass({
         
         return(
             <div className="commentList">
-                Hello, I am a commentList.
+                休假員工：
                 { comments }
             </div>
         );
@@ -72,26 +84,12 @@ var CommentBox = React.createClass({
 });
 
 $.ajax({
-    url: "/static/project.json",
+    url: "/static/schedule.json",
     dataType:'json',
     success: function(data){
         ReactDOM.render(
             <CommentBox comments={data}/>,
-            document.getElementById('content_project')
-        );
-    },
-    error: function(data){
-        alert("fail");
-    },
-});
-
-$.ajax({
-    url: "/static/project.json",
-    dataType:'json',
-    success: function(data){
-        ReactDOM.render(
-            <CommentBox comments={data}/>,
-            document.getElementById('content_project')
+            document.getElementById('content_schedule')
         );
     },
     error: function(data){
