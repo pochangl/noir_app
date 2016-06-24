@@ -1,13 +1,14 @@
 var ProjectList = React.createClass({
 	render: function(){
-		var comments = this.props.projects.map(funcition(value, index){
+		var projects = this.props.projects.map(function(value, index){
 			return <Project project={value} key={index} />;
 		});
 		
 		return(
 			<div className="projectList">
 				選擇工地：
-				{ comments}
+				{ projects }
+			</div>
 		);
 	}
 });
@@ -20,17 +21,16 @@ var Project = React.createClass({
 				<p> { this.props.project.name} </p>
 			</div>
 		);
-		
 	}
 });
 
 
 $.ajax({
-	url: "project_list.json",
+	url: "./project_list.json",
 	dataType:"json",
 	success: function(data){
-		ReactDom.render(
-			<ProjectList projects={data} />,
+		ReactDOM.render(
+			<ProjectList projects={data.objects} />,
 			document.getElementById("project_list")	
 		);
 	},
