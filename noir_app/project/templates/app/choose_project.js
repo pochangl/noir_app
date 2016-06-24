@@ -16,10 +16,9 @@ var ProjectList = React.createClass({
 var Project = React.createClass({
 	render: function(){
 		return(
-			<div className="project">
-				<p> { this.props.project.id} </p>
-				<p> { this.props.project.name} </p>
-			</div>
+			<a href="#">
+				{ this.props.project.id}: { this.props.project.name}
+			</a>
 		);
 	}
 });
