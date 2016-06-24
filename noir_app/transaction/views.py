@@ -15,10 +15,10 @@ from project.models import Project
 from transaction.models import PayCheck
 
 
-class ChooseTransactionView(LoginRequiredMixin, ListView):
-    template_name = 'transaction_choose_project.html'
-    model = Project
-    fields = ('client', 'name',)
+class ChooseEmployeeView(LoginRequiredMixin, ListView):
+    template_name = 'choose_employee.html'
+    model = Employee
+    fields = ('contact', 'title',)
     #如果用UpdateView或DetailView，都會出現錯誤：
     #Generic detail view ChooseTransactionView must be called with either an object pk or a slug.
     #用CreateView則不會出現model資料
