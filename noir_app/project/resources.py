@@ -10,10 +10,7 @@ from project.models import Project, Assignment, EmployeeProject
 
 
 class ProjectResource(ModelResource):
-    #contact = fields.OneToOneField(ContactResource, attribute="contact", full=True)
-    contact = fields.ForeignKey("account.ContactResource", attribute="contact", related_name="projects")
-    client = fields.ForeignKey("account.ClientResource", attribute="client", related_name="projects")
-    
+
     class Meta:
         queryset = Project.objects.all()
         resource_name = "project"
