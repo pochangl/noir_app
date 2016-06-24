@@ -25,12 +25,12 @@ var Employee = React.createClass({
 
 
 $.ajax({
-	url: "/static/employee_list.json",
+	url: "/static/tran_employee_list.json",
 	dataType:"json",
 	success: function(data){
 		ReactDOM.render(
 			<EmployeeList employees={data.objects} />,
-			document.getElementById("employee_list")	
+			document.getElementById("tran_employee_list")	
 		);
 	},
 	error: function(data){

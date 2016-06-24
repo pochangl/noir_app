@@ -15,8 +15,8 @@ from project.models import Project
 from transaction.models import PayCheck
 
 
-class ChooseEmployeeView(LoginRequiredMixin, ListView):
-    template_name = 'choose_employee.html'
+class TranChooseEmployeeView(LoginRequiredMixin, ListView):
+    template_name = 'tran_choose_employee.html'
     model = Employee
     fields = ('contact', 'title',)
     #如果用UpdateView或DetailView，都會出現錯誤：
