@@ -16,16 +16,16 @@ var ProjectList = React.createClass({
 var Project = React.createClass({
 	render: function(){
 		return(
-			<a href="#">
-				{ this.props.project.id}: { this.props.project.name}
-			</a>
+			<p><a href="#">
+				{this.props.project.id}: {this.props.project.name}
+			</a></p>
 		);
 	}
 });
 
 
 $.ajax({
-	url: "./project_list.json",
+	url: "/static/project_list.json",
 	dataType:"json",
 	success: function(data){
 		ReactDOM.render(

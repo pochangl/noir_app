@@ -1,5 +1,4 @@
-[
-    {
+{objects:[{
         "display": "Project",
         "url": "/project/"
     },
@@ -11,4 +10,4 @@
         "display": "Schedule",
         "url": "/schedule/"
     }
-]
+]}

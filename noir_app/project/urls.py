@@ -6,6 +6,6 @@ from project.models import Assignment
 
 urlpatterns = (
     url(r'^$', 
-        ChooseProjectEmployeeView.as_view(model=Assignment, success_url='/account/main_menu/'), 
-        name='assignment'),            
+        ChooseProjectView.as_view(), 
+        name='project'),         
 )
