@@ -14,10 +14,10 @@ from account.models import Employee, Contact
 from schedule.models import DayOff
 
 # Create your views here.
-class ScheduleView(LoginRequiredMixin, ListView):
-    template_name = 'schedule.html'
+class SchChooseEmployeeView(LoginRequiredMixin, ListView):
+    template_name = 'sch_choose_employee.html'
     model = Employee
-    fields = ('title',)
+    fields = ('contact', 'title',)
     
 class Schedule_Employee(LoginRequiredMixin, CreateView):
     template_name = 'schedule_employee.html'
