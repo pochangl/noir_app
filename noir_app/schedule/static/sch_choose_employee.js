@@ -16,7 +16,7 @@ var EmployeeList = React.createClass({
 var Employee = React.createClass({
 	render: function(){
 		return(
-			<p><a href="#">
+			<p><a href="/schedule/dayoff/">
 				{this.props.employee.id}: {this.props.employee.name}
 			</a></p>
 		);

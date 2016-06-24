@@ -16,7 +16,7 @@ var ProjectList = React.createClass({
 var Project = React.createClass({
 	render: function(){
 		return(
-			<p><a href="#">
+			<p><a href="/project/assignment/">
 				{this.props.project.id}: {this.props.project.name}
 			</a></p>
 		);
