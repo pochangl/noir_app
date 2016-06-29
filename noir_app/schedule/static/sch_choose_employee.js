@@ -17,7 +17,7 @@ var Employee = React.createClass({
 	render: function(){
 		return(
 			<p><a href="/schedule/dayoff/">
-				{this.props.employee.id}: {this.props.employee.name}
+				{this.props.employee.id}: {this.props.employee.title}
 			</a></p>
 		);
 	}
@@ -25,7 +25,7 @@ var Employee = React.createClass({
 
 
 $.ajax({
-	url: "/static/sch_employee_list.json",
+	url: "http://localhost:8000/api/v1/employee/?format=json",
 	dataType:"json",
 	success: function(data){
 		ReactDOM.render(

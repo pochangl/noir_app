@@ -25,7 +25,7 @@ var Project = React.createClass({
 
 
 $.ajax({
-	url: "/static/project_list.json",
+	url: "http://localhost:8000/api/v1/project/?format=json",
 	dataType:"json",
 	success: function(data){
 		ReactDOM.render(

@@ -24,6 +24,7 @@ class LoginView(FormView):
         auth.login(self.request, user)
         return super(LoginView, self).form_valid(form)
     
+    
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect(reverse('index'))

@@ -5,7 +5,7 @@ from tastypie.authorization import ReadOnlyAuthorization
 
 from transaction.models import Debt, Receivable, PayCheck, Transaction
 
-#from account.resources import ClientResource, EmployeeResource
+from account.resources import ClientResource, EmployeeResource
 
 
 class TransactionResource(ModelResource):
@@ -27,7 +27,7 @@ class DebtResource(TransactionResource):
 
 
 class ReceivableResource(TransactionResource):
-    client = fields.ForeignKey("account.ClientResource", attribute="client", related_name="receivables")
+    client = fields.ForeignKey(ClientResource, attribute="client", related_name="receivables")
     
     class Meta:
         queryset = Receivable.objects.all()
@@ -37,7 +37,7 @@ class ReceivableResource(TransactionResource):
         
         
 class PayCheckResource(TransactionResource):
-    employee = fields.ForeignKey("account.EmployeeResource", attribute="employee", related_name="paychecks")
+    employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="paychecks")
     
     class Meta:
         queryset = PayCheck.objects.all()

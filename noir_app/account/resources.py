@@ -24,7 +24,7 @@ class ClientResource(ModelResource):
 
 
 class EmployeeResource(ModelResource):
-    contact = fields.ForeignKey("account.ContactResource", attribute="contact", related_name="employees")
+    contact = fields.ForeignKey(ContactResource, attribute="contact", related_name="employees")
     
     class Meta:
         queryset = Employee.objects.all()
@@ -34,7 +34,7 @@ class EmployeeResource(ModelResource):
        
    
 class SkillResource(ModelResource):
-    employee = fields.ForeignKey("account.EmployeeResource", attribute="employee", related_name="skills")
+    employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="skills")
     
     class Meta:
         queryset = Skill.objects.all()

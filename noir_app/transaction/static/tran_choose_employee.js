@@ -6,7 +6,7 @@ var EmployeeList = React.createClass({
 		
 		return(
 			<div className="employeeList">
-				選擇工地：
+				選擇員工：
 				{ employees }
 			</div>
 		);
@@ -17,15 +17,16 @@ var Employee = React.createClass({
 	render: function(){
 		return(
 			<p><a href="/transaction/paycheck/">
-				{this.props.employee.id}: {this.props.employee.name}
+				{this.props.employee.id}-{this.props.employee.title}
 			</a></p>
 		);
 	}
 });
-
+//{this.props.employee.contact.name}無效
 
 $.ajax({
-	url: "/static/tran_employee_list.json",
+//	url: "/static/tran_employee_list.json",
+	url: "http://localhost:8000/api/v1/employee/?format=json",
 	dataType:"json",
 	success: function(data){
 		ReactDOM.render(
@@ -37,3 +38,18 @@ $.ajax({
 		alert("fail");
 	},
 });
+//
+//$.ajax({
+////	url: "/static/tran_employee_list.json",
+//	url: "http://localhost:8000/api/v1/contact/?format=json",
+//	dataType:"json",
+//	success: function(data){
+//		ReactDOM.render(
+//			<ContactList contacts={data.objects} />,
+//			document.getElementById("tran_contact_list")	
+//		);
+//	},
+//	error: function(data){
+//		alert("fail");
+//	},
+//});

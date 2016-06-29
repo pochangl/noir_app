@@ -3,14 +3,18 @@ from tastypie.resources import ModelResource, fields
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import ReadOnlyAuthorization
 
+#from account.models import Contact, Client
 from project.models import Project, Assignment, EmployeeProject
 
-#from account.resources import ContactResource, ClientResource, EmployeeResource
-#from project.resources import EmployeeProjectResource, ProjectResource
+from account.resources import ContactResource, ClientResource, EmployeeResource
 
 
 class ProjectResource(ModelResource):
-
+#    contact = fields.ForeignKey(ContactResource, 'contact')
+#    client = fields.ForeignKey(ContactResource, 'client')    
+    contact = fields.ForeignKey(ContactResource, attribute="contact", related_name="contact")
+    cleint = fields.ForeignKey(ClientResource, attribute="client", related_name="client")
+    
     class Meta:
         queryset = Project.objects.all()
         resource_name = "project"
@@ -19,8 +23,8 @@ class ProjectResource(ModelResource):
         
         
 class EmployeeProjectResource(ModelResource):
-    employee = fields.ForeignKey("account.EmployeeResource", attribute="employee", related_name="employee_projects")
-    project = fields.ForeignKey("project.ProjectResource", attribute="project", related_name="employee_projects")
+    employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="employee_projects")
+    project = fields.ForeignKey(ProjectResource, attribute="project", related_name="employee_projects")
 
     class Meta:
         queryset = EmployeeProject.objects.all()
@@ -31,7 +35,7 @@ class EmployeeProjectResource(ModelResource):
 
 
 class AssignmentResource(ModelResource):
-    employee_project = fields.ForeignKey("account.EmployeeProjectResource", attribute="employee_project", related_name="assignments")
+    employee_project = fields.ForeignKey(EmployeeProjectResource, attribute="employee_project", related_name="assignments")
 
     class Meta:
         queryset = Assignment.objects.all()
