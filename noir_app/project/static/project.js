@@ -2,7 +2,7 @@ var Comment = React.createClass({
     render: function(){
         return(
             <div className="comment">
-                <p> {this.props.comment.employeeproject } </p>
+                <p> {this.props.comment.employee_project } </p>
                 <p> {this.props.comment.assignment } </p>
                 <p> {this.props.comment.start_time } </p>
                 <p> {this.props.comment.end_time } </p>
@@ -14,12 +14,12 @@ var Comment = React.createClass({
 var CommentForm = React.createClass({
     getInitialState: function(){
         return{
-            employeeproject: "", assignment: "", start_time: "", end_time: "", check_in: "", check_out: "", 
+            employee_project: "", assignment: "", start_time: "", end_time: "", check_in: "", check_out: "", 
             status: "", pay: "", actual_pay: ""
         };
     },
     changeEmployeeproject: function(e){
-        this.setState({employeeproject: e.target.value});  
+        this.setState({employee_project: e.target.value});  
     },
     changeAssignment: function(e){
         this.setState({assignment: e.target.value});  
@@ -52,8 +52,8 @@ var CommentForm = React.createClass({
     render: function(){
         return(
             <div className="commentForm">
-                <p><input type="text" placeholder="employeeproject" 
-                                   value={this.state.employeeproject} onChange={this.changeEmployeeproject}/></p>
+                <p><input type="text" placeholder="employee_project" 
+                                   value={this.state.employee_project} onChange={this.changeEmployeeproject}/></p>
                 <p><input type="text" placeholder="assignment" 
                                    value={this.state.assignment} onChange={this.changeAssignment}/></p>
                 <p><input type="text" placeholder="start_time" 
@@ -112,11 +112,12 @@ var CommentBox = React.createClass({
 });
 
 $.ajax({
-    url: "/static/project.json",
+//    url: "/static/project.json",
+    url: "http://localhost:8000/api/v1/assignment/?format=json",
     dataType:'json',
     success: function(data){
         ReactDOM.render(
-            <CommentBox comments={data}/>,
+            <CommentBox comments={data.objects}/>,
             document.getElementById('content_project')
         );
     },

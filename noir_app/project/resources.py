@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 from tastypie.resources import ModelResource, fields
 
 from tastypie.authentication import ApiKeyAuthentication
@@ -10,8 +11,6 @@ from account.resources import ContactResource, ClientResource, EmployeeResource
 
 
 class ProjectResource(ModelResource):
-#    contact = fields.ForeignKey(ContactResource, 'contact')
-#    client = fields.ForeignKey(ContactResource, 'client')    
     contact = fields.ForeignKey(ContactResource, attribute="contact", related_name="contact")
     cleint = fields.ForeignKey(ClientResource, attribute="client", related_name="client")
     
@@ -35,12 +34,12 @@ class EmployeeProjectResource(ModelResource):
 
 
 class AssignmentResource(ModelResource):
-    employee_project = fields.ForeignKey(EmployeeProjectResource, attribute="employee_project", related_name="assignments")
+    employee_project = fields.ForeignKey(EmployeeProjectResource, attribute="employee_project", related_name="employee_projects")
 
     class Meta:
         queryset = Assignment.objects.all()
         resource_name = "assignment"
-        fields = ("id", "assignment", "start_time", "end_time", "check_in", 
-                  "check_out", "status", "pay", "actual_pay", )
+        fields = ("id", "employeeproject", "assignment", "start_time", "end_time",
+                  "check_in", "check_out", "status", "pay", "actual_pay", )
         authentcation = ApiKeyAuthentication()
         

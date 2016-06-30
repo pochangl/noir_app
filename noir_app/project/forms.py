@@ -7,6 +7,6 @@ class AssignmentForm(ModelForm):
     template_name = 'choose_project_employee.html'
     class Meta:
         model = Assignment
-        fields = ('employeeproject', 'assignment', 'start_time', 'end_time', 'check_in',
+        fields = ('employee_project', 'assignment', 'start_time', 'end_time', 'check_in',
                    'check_out', 'status', 'pay', 'actual_pay',)
     #不知道為何用form.py引入就沒有資料顯示了？

@@ -14,8 +14,8 @@ function myFunction(arr) {
     var out = "";
     var i;
     for(i = 0; i < arr.length; i++) {
-        out += '<a href="' + arr[i].url + '">' + 
-        arr[i].display + '</a><br>';
+        out += '<p><a href="' + arr[i].url + '">' + 
+        arr[i].display + '</a></p>';
     }
     document.getElementById("content_main_menu").innerHTML = out;
 }

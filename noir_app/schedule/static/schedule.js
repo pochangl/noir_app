@@ -9,7 +9,6 @@ var Comment = React.createClass({
         );
 	    }
 });
-
 var CommentForm = React.createClass({
     getInitialState: function(){
         return{
@@ -84,11 +83,12 @@ var CommentBox = React.createClass({
 });
 
 $.ajax({
-    url: "/static/schedule.json",
+//	url:"/static/schedule.json",
+    url: "http://localhost:8000/api/v1/dayoff/?format=json",
     dataType:'json',
     success: function(data){
         ReactDOM.render(
-            <CommentBox comments={data}/>,
+            <CommentBox comments={data.objects}/>,
             document.getElementById('content_schedule')
         );
     },
@@ -96,4 +96,20 @@ $.ajax({
         alert("fail");
     },
 });
-
+//
+//// This may require the ``json2.js`` library for older browsers.
+//var testdata = JSON.stringify({
+////    "employee": "Mark",
+//    "start_time": "2016-01-02T08:00:0",
+//    "id": "1",
+//    "end_time": "2016-01-02T17:00:0",
+//});
+//
+//$.ajax({
+//  url: 'http://localhost:8000/api/v1/dayoff/?format=json',
+//  type: 'POST',
+//  contentType: 'application/json',
+//  data: testdata,
+//  dataType: 'json',
+//  processData: false
+//})

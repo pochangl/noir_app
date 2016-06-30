@@ -24,7 +24,7 @@ class EmployeeProject(TimeStampModel):
 
 
 class Assignment(TimeStampModel):
-    employeeproject = models.ForeignKey(EmployeeProject, related_name='assignment')
+    employee_project = models.ForeignKey(EmployeeProject, related_name='assignments')
     assignment = models.CharField(max_length=128)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
@@ -34,5 +34,5 @@ class Assignment(TimeStampModel):
     pay = models.IntegerField()
     actual_pay = models.IntegerField()
 
-    def __repr__(self):
-        return self.employeeproject
+    def __str__(self):
+        return self.assignment

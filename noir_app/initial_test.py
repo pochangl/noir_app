@@ -51,12 +51,12 @@ pProjectEP4 = EmployeeProject(employee=pAccountE2, project=pProject1)
 pProjectEP4.save()
 
 
-pProjectA = Assignment(employeeproject=pProjectEP1, assignment="assignment A",
+pProjectA = Assignment(employee_project=pProjectEP1, assignment="assignment A",
                        start_time="2016-01-01 08:00", end_time="2016-01-01 17:00",
                        check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",
                        status="approved", pay="1000", actual_pay="1000")
 pProjectA.save()
-pProjectA = Assignment(employeeproject=pProjectEP2, assignment="assignment B",
+pProjectA = Assignment(employee_project=pProjectEP2, assignment="assignment B",
                        start_time="2016-01-01 08:00", end_time="2016-01-01 17:00",
                        check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",
                        status="approved", pay="1000", actual_pay="1000")
