@@ -37,7 +37,7 @@ class ReceivableResource(TransactionResource):
         
         
 class PayCheckResource(TransactionResource):
-    employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="paychecks")
+    employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="paychecks",full=True)
     
     class Meta:
         queryset = PayCheck.objects.all()

@@ -11,7 +11,7 @@ class ContactResource(ModelResource):
     class Meta:
         queryset = Contact.objects.all()
         resource_name = "contact"
-        fields = ("id", "name", "title", "address", "phone", "mobile", "pid", "birthday",)
+        fields = ("id", "name")
         authentcation = ApiKeyAuthentication()
 
 
@@ -24,7 +24,7 @@ class ClientResource(ModelResource):
 
 
 class EmployeeResource(ModelResource):
-    contact = fields.ForeignKey(ContactResource, attribute="contact", related_name="employees")
+    contact = fields.ForeignKey(ContactResource, attribute="contact", related_name="employees",full=True)
     
     class Meta:
         queryset = Employee.objects.all()
