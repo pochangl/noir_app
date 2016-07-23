@@ -8,11 +8,12 @@ import {ProjectDetailPage} from './detail'
 })
 
 export class ProjectListPage {
-	projects = [{"id":1,"name":"工地 1"},{"id":2,"name":"工地 2"},{"id":3,"name":"工地 3"}];
+	projects = [];
 
-	constructor(private nav: NavController){
+	constructor(public nav: NavController){
+		this. projects = [{"id":1,"name":"工地 1"},{"id":2,"name":"工地 2"},{"id":3,"name":"工地 3"}];
 	}
 	click(project){
-		this.nav.push(ProjectDetailPage, project);
+		this.nav.push(ProjectDetailPage, { project: project });
 	}
 }

@@ -7,11 +7,12 @@ import {NavController, NavParams} from 'ionic-angular';
 })
 
 export class ProjectDetailPage {
+	project;
     selectedItem: any;
 	employees = [{name: "Employee 1"}, {name: "Employee 2"}, {name: "Employee 3"}];
 
-	constructor(private nav: NavController, navParams: NavParams){
-		this.selectedItem = navParams.get('project');
+	constructor(params: NavParams) {
+		this.project = params.data.project;
 	}
 	click(employee){
 	    employee.selected = !employee.selected;
