@@ -8,7 +8,7 @@
 	<ion-list>
 		<ion-item *ngFor="let employee of employees">
 			<ion-label>{{ employee.name }}</ion-label>
-			<ion-checkbox checked="{{employee.selected}}"></ion-checkbox>
+			<ion-checkbox checked="{{employee.selected}}" ngModel="employee.selected"></ion-checkbox>
 		</ion-item>
 	</ion-list>
 </ion-content> 

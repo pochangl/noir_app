@@ -10,6 +10,7 @@ import {DayOffListPage} from './pages/schedule/list';
 @Component({
   templateUrl: 'build/app.html'
 })
+
 class MyApp {
   @ViewChild(Nav) nav: Nav;
 

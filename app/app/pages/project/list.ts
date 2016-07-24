@@ -13,6 +13,6 @@ export class ProjectListPage {
 	constructor(private nav: NavController){
 	}
 	click(project){
-		this.nav.push(ProjectDetailPage, project);
+		this.nav.push(ProjectDetailPage, {project: project});
 	}
 }
