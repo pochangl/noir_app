@@ -1,14 +1,14 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{ project.name }} ( {{ number_count }} / {{ project.number_needed }} )</ion-title>
+    <ion-title>{{ project.name }} ( {{ numberCount() }} / {{ project.number_needed }} )</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding class="ProjectDetailPage">
 	<ion-list>
 		<ion-item *ngFor="let employee of employees">
-			<ion-label>{{ employee.name }}-{{number_count}}</ion-label>
-			<ion-checkbox checked="{{employee.selected}}"></ion-checkbox>
+			<ion-label>{{ employee.name }}</ion-label>
+			<ion-checkbox checked="{{employee.selected}}" ngModel="employee.selected"></ion-checkbox>       
 		</ion-item>
 	</ion-list>
 </ion-content> 
