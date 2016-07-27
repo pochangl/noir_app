@@ -2,6 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {ionicBootstrap, Platform, MenuController, Nav} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {SignInPage} from './pages/general/sign_in';
+import {HomePageV2} from './pages/general/home_v2';
 import {HomePage} from './pages/general/home';
 import {ProjectListPage} from './pages/project/list';
 import {PayCheckListPage} from './pages/transaction/list';
@@ -27,6 +28,7 @@ class MyApp {
     // set our app's pages
     this.pages = [    
       { title: '使用者登錄', component: SignInPage },
+      { title: '主選單_v2', component: HomePageV2 },
       { title: '主選單', component: HomePage },
       { title: '選擇工地', component: ProjectListPage},
       { title: '請假', component: DayOffListPage},
