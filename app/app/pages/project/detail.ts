@@ -9,24 +9,17 @@ import 'rxjs/add/operator/map';
 
 export class ProjectDetailPage {
     public dataObject;
-	number_count = 0;
     
 	project;
     selectedItem: any;
 	employees = [{name: "Employee 1", selected: false}, {name: "Employee 2", selected: false}, {name: "Employee 3", selected: false}];
 
-	constructor(
-		params: NavParams,
-		private http: Http
-	){
+	constructor(params: NavParams){
 		this.project = params.data.project;
 	}
 	
-	numberCount(){
-		return this.number_count;
-	}
-    
-	ngModel(employee){
-	    employee.selected = !employee.selected;
+	count(){
+		//return this.employees.filter(function(item){return !! item.selected;}).length;
+		return this.employees.filter(item=>!!item.selected).length;
 	}
 }

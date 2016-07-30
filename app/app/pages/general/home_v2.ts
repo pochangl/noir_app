@@ -1,9 +1,12 @@
 import {Component} from '@angular/core';
 import {Loading, NavController, NavParams} from 'ionic-angular';
+import {Http} from '@angular/http';
+
 import {ProjectDetailPage} from '../project/detail'
 import {HomePage} from '../general/home';
 import {PayCheckPage} from '../transaction/paycheck';
 import {DayOffPage} from '../schedule/dayoff';
+
 
 @Component({
     templateUrl: 'build/pages/general/home_v2.html'
@@ -12,7 +15,10 @@ export class HomePageV2 {
 	//slide page of project
   	projects = [];
   	number_count = 0;
-	constructor(private nav: NavController){
+
+	constructor(
+		private nav: NavController
+	){
 		this. projects = [{"id":1,"name":"工地 1","number_needed":"1"},{"id":2,"name":"工地 2","number_needed":"2"},{"id":3,"name":"工地 3","number_needed":"3"}];
 	}
 	numberCount(){
