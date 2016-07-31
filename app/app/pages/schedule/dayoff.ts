@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
+import {Http} from '@angular/http';
 
 
 @Component({
@@ -7,10 +8,9 @@ import {NavController, NavParams} from 'ionic-angular';
 })
 
 export class DayOffPage {
-    selectedItem: any;
-	employees = [{name: "Employee 1"}, {name: "Employee 2"}, {name: "Employee 3"}];
-
-	constructor(private nav: NavController, navParams: NavParams){
-		this.selectedItem = navParams.get('project');
+	employee;
+	
+	constructor(params: NavParams, private http: Http){
+		this.employee = params.data.employee;
 	}
 }

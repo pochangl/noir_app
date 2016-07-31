@@ -1,7 +1,7 @@
 from tastypie.resources import ModelResource, fields
 
 from tastypie.authentication import ApiKeyAuthentication
-from tastypie.authorization import ReadOnlyAuthorization
+from tastypie.authorization import ReadOnlyAuthorization, DjangoAuthorization
 
 from transaction.models import Debt, Receivable, PayCheck, Transaction
 
@@ -37,11 +37,13 @@ class ReceivableResource(TransactionResource):
         
         
 class PayCheckResource(TransactionResource):
-    employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="paychecks",full=True)
+    employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="paychecks", full=True)
     
     class Meta:
         queryset = PayCheck.objects.all()
         resource_name = "paycheck"
-        fields = ("id", "amount", "note", "reason_code", "reason",)
+        fields = ("id", "amount", "reason_code", "reason",)
+        allowed_methods = ['get','post','put']
         authentcation = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
         

@@ -6,8 +6,8 @@ from account.models import Client, Employee
 
 # Create your models here.
 class Transaction(TimeStampModel):
-    amount = models.IntegerField()
-    note = models.CharField(max_length=1024)
+    amount = models.IntegerField(null=True, blank=True)
+    note = models.CharField(max_length=1024, null=True, blank=True)
 #    class Meta:
 #        abstract = True
         #將Transaction轉為虛擬的table,避免徒增一堆transaction的資料;

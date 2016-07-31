@@ -11,15 +11,22 @@ export class ProjectDetailPage {
     public dataObject;
     
 	project;
+	employees: any;
     selectedItem: any;
-	employees = [{name: "Employee 1", selected: false}, {name: "Employee 2", selected: false}, {name: "Employee 3", selected: false}];
 
-	constructor(params: NavParams){
+	constructor(params: NavParams, private http: Http){
 		this.project = params.data.project;
+		this.http.get(
+			'/api/v1/employee/?format=json'
+		).map(response => response.json()
+		).subscribe((data)=>{
+			this.employees = data.objects;
+		});
 	}
 	
 	count(){
 		//return this.employees.filter(function(item){return !! item.selected;}).length;
-		return this.employees.filter(item=>!!item.selected).length;
+		//return this.employees.filter(item=>!!item.selected).length;
+		return 0;
 	}
 }

@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
+import {Http} from '@angular/http';
 import {ProjectDetailPage} from './detail'
 
 @Component({
@@ -7,16 +8,19 @@ import {ProjectDetailPage} from './detail'
 })
 
 export class ProjectListPage {
-	projects = [];
-	employees = [];
-	constructor(private nav: NavController){
-		this. projects = [{"id":1,"name":"工地 1","number_needed":"1"},{"id":2,"name":"工地 2","number_needed":"2"},{"id":3,"name":"工地 3","number_needed":"3"}];
-		this.employees = [{name: "Employee 1", selected: false}, {name: "Employee 2", selected: false}, {name: "Employee 3", selected: false}];
+	projects: any;
+	constructor(private nav: NavController, private http: Http){
+		this.projects = [];
+		this.http.get(
+			'/api/v1/project/?format=json'
+		).map(response => response.json()
+		).subscribe((data)=>{
+			this.projects = data.objects;
+		});
+		
+
 	}
 	click(project){
 		this.nav.push(ProjectDetailPage, { project: project });
-	}	
-	count(){
-		return this.employees.filter(item=>!!item.selected).length;
 	}
 }

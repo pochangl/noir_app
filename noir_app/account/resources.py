@@ -2,7 +2,7 @@ from tastypie.resources import ModelResource, fields
 #from django.db import models
 
 from tastypie.authentication import ApiKeyAuthentication
-from tastypie.authorization import ReadOnlyAuthorization
+from tastypie.authorization import ReadOnlyAuthorization, DjangoAuthorization
 
 from account.models import Contact, Client, Employee, Skill
 
@@ -30,7 +30,9 @@ class EmployeeResource(ModelResource):
         queryset = Employee.objects.all()
         resource_name = "employee"
         fields = ("id","title",)
+        allowed_methods = ['get','post','put']
         authentcation = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
        
    
 class SkillResource(ModelResource):

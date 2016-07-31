@@ -7,7 +7,7 @@ var Comment = React.createClass({
                 <p> {this.props.comment.end_time } </p>
             </div>
         );
-	    }
+	}
 });
 var CommentForm = React.createClass({
     getInitialState: function(){
@@ -55,7 +55,7 @@ var CommentList = React.createClass({
         
         return(
             <div className="commentList">
-                休假員工：
+                <h3>請假資料：</h3>
                 { comments }
             </div>
         );

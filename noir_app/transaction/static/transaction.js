@@ -1,24 +1,23 @@
-var Comment = React.createClass({
+var PyacheckInformation = React.createClass({
     render: function(){
         return(
-            <div className="comment">
-                <p> {this.props.comment.employee.contact.name } </p>
-                <p> {this.props.comment.amount } </p>
-                <p> {this.props.comment.reason_code } </p>
-                <p> {this.props.comment.reason } </p>
+            <div className="information">
+                <p> {this.props.information.amount } </p>
+                <p> {this.props.information.reason_code } </p>
+                <p> {this.props.information.reason } </p>
             </div>
         );
     }
 });
+//<p> {this.props.information.employee.contact.name } </p>
+//<p> {this.props.information.id } </p>
 
-var CommentForm = React.createClass({
+var PyacheckInformationForm = React.createClass({
     getInitialState: function(){
         return{
-            employee: "", amount: "", reason_code: "", reason: ""
+//            employee: "", amount: "", reason_code: "", reason: ""
+            amount: "", reason_code: "", reason: ""
         };
-    },
-    changeEmployee: function(e){
-        this.setState({employee: e.target.value});  
     },
     changeAmount: function(e){
         this.setState({amount: e.target.value});  
@@ -31,14 +30,26 @@ var CommentForm = React.createClass({
     },
     click: function(){
         console.log(this.props);
-        this.props.newComment(this.state);
-    },      
+        this.props.newPaycheckInformation(this.state);
+	    $.ajax({
+			type: 'GET',
+			url: "/api/v1/paycheck/?format=json",
+			data: JSON.stringify({
+				"amount":"0",
+				"reason_code":"0",
+				"reason":"0"
+			}),
+			error: function(e) {
+				console.log(e);
+			},
+			dataType: 'json',
+			contentType: 'application/json',
+	    });
+    }, 
       
     render: function(){
         return(
-            <div className="commentForm">
-                <p><input type="text" placeholder="employee" 
-                                   value={this.state.employee} onChange={this.changeEmployee}/></p>
+            <div className="informationForm">
                 <p><input type="text" placeholder="amount" 
                                    value={this.state.amount} onChange={this.changeAmount}/></p>
                 <p><input type="text" placeholder="reason_code" 
@@ -50,67 +61,94 @@ var CommentForm = React.createClass({
         );
     }
 });
+//changeEmployee: function(e){
+//this.setState({employee: e.target.value});  
+//},
 
-var CommentList = React.createClass({
+//<p><input type="text" placeholder="employee" 
+//value={this.state.employee} onChange={this.changeEmployee}/></p>
+
+//<input type="hidden" name="_csrf" value="<%= _csrf %>" />
+
+var PyacheckInformationList = React.createClass({
     render: function(){
-        var comments = this.props.comments.map(function(value, index){
-            return <Comment comment={value} key={index}/>;
+        var informations = this.props.informations.map(function(value, index){
+            return <PyacheckInformation information={value} key={index}/>;
         });
         
         return(
-            <div className="commentList">
-                指定員工：
-                { comments }
+            <div className="informationList">
+                <h3>Paycheck Informantion：</h3>
+                { informations }
             </div>
         );
     }
 });
 
 
-var CommentBox = React.createClass({
+var PyacheckInformationBox = React.createClass({
     getInitialState: function(){
-        console.log(this.props.comments);
-        return {comments: this.props.comments};
+        console.log(this.props.informations);
+        return {informations: this.props.informations};
     },
-    newComment: function(data){
-        this.state.comments.push(data);
-        this.setState({state: this.state.comments});
-        console.log(data);
-	    $.ajax({
-//		      url: this.props.url,
-		      url: "http://localhost:8000/api/v1/paycheck/?format=json",
-		      dataType: 'json',
-		      type: 'POST',
-		      data: data,
-		      
-		      success: function(data){
-		    	  console.log(data);
-		    	  this.setState({data: data});
-		      },
-		      error: function(data){
-		          alert("fail");
-		      },
-	    });      
+    newPaycheckInformation: function(data){
+        this.state.informations.push(data);
+        this.setState({state: this.state.informations});
     },
+// 
+//    handlePaycheckInformationSubmit: function(information) {
+//        // TODO: submit to the server and refresh the list
+//    	var information_form = $(information).serialize();
+//    	console.log(this.props);
+//	    $.ajax({
+//			type: 'GET',
+//			url: "/api/v1/paycheck/?format=json",
+//			data: { amount: "0", reason_code: "0", reason: "0"},
+//	    });
+//    },
     
     render: function(){
         return(
-            <div className="commentBox">
-                <CommentList comments={this.state.comments} />
-                <CommentForm newComment={this.newComment} />
+            <div className="informationBox">
+                <PyacheckInformationList informations={this.state.informations} />
+                <PyacheckInformationForm newPaycheckInformation={this.newPaycheckInformation} />
             </div>
         );
     }
 });
+//this.state.informations.push(data);
+
+//url: this.props.url,
+//dataType: 'json',
+//data: { csrfmiddlewaretoken: "{{ csrf_token }}", data:"data"},
+//contentType: 'application/json',
+
+//success: function(data){
+//console.log(data);
+//this.setState({data: data});
+//},
+//error: function(data){
+//alert("fail");
+//},
+
+//<PyacheckInformationForm newPyacheckInformation={this.newPyacheckInformation} />
+
+//        success: function(data) {
+//          this.setState({data: data});
+//        }.bind(this),
+//        error: function(xhr, status, err) {
+//          console.error(this.props.url, status, err.toString());
+//        }.bind(this)
+
+
 
 
 $.ajax({
-//    url: "/static/transaction.json",
-    url: "http://localhost:8000/api/v1/paycheck/?format=json",
+    url: "/api/v1/paycheck/?format=json",
     dataType:'json',
     success: function(data){
         ReactDOM.render(
-            <CommentBox comments={data.objects}/>,
+            <PyacheckInformationBox informations={data.objects}/>,
             document.getElementById('content_transaction')
         );
     },
