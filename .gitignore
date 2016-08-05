@@ -77,3 +77,6 @@ node_modules/
 venv/
 *~
 .metadata/
+
+# pydev
+noir_app/.pydevproject
