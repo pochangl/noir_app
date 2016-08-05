@@ -21,7 +21,7 @@ from account.views import index
 
 from tastypie.api import Api
 
-from account.resources import ContactResource, ClientResource, EmployeeResource, SkillResource
+from account.resources import ContactResource, ClientResource, EmployeeResource, SkillResource, RegistrationResource
 from project.resources import ProjectResource, AssignmentResource, EmployeeProjectResource
 from transaction.resources import DebtResource, ReceivableResource, PayCheckResource, TransactionResource
 from schedule.resources import DayOffResource, EmployeePreferenceResource, ProjectPreferenceResource
@@ -32,6 +32,7 @@ v1_api.register(ContactResource())
 v1_api.register(ClientResource())
 v1_api.register(EmployeeResource())
 v1_api.register(SkillResource())
+v1_api.register(RegistrationResource())
 
 v1_api.register(ProjectResource())
 v1_api.register(AssignmentResource())
