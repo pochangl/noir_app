@@ -65,18 +65,33 @@ class RegistrationToken(TimeStampModel):
         unique_together = (("user", "token"),)
  
     def is_valid(self):
+        """
+            檢查是否未使用
+        """
         return not self.used and self.expiration > now()
 
     def generate_key(self):
+        """
+            產生TOKEN
+        """
         # Get a random UUID.
         new_uuid = uuid.uuid4()
         # Hmac that beast.
         return hmac.new(new_uuid.bytes, digestmod=sha1).hexdigest()[:settings.REG_TOKEN_LENGTH]
 
     def save(self, *args, **kwargs):
+        """
+            儲存至DB前, 檢查是否有token, 沒的話生成一組新的
+        """
         if not self.token:
             self.token = self.generate_key()
             self.expiration = now() + timedelta(seconds = settings.REG_EXP_DURATION)
             
         return super(RegistrationToken, self).save(*args, **kwargs)
 
+    def mark_used(self):
+        """
+            標記為己使用, 別人便不能使用
+        """
+        self.used = now()
+        super(RegistrationToken, self).save()

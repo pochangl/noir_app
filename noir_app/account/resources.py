@@ -48,8 +48,9 @@ class RegistrationResource(Resource):
             raise Unauthorized()
         except RegistrationToken.DoesNotExist: # 找不到TOKEN
             raise NotFound()
-        if not token.is_valid(): # TOKEN 過期或己使用
+        if not token.is_valid(): # TOKEN 己失效
             raise NotFound()
+        token.mark_used()
         user = token.user
         # 重新設定API KEY
         user.api_key.key = False
