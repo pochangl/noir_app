@@ -1,16 +1,24 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
+import {Http} from '@angular/http';
 import {ProjectDetailPage} from './detail'
-
 
 @Component({
 	templateUrl: 'build/pages/project/list.html'
 })
 
 export class ProjectListPage {
-	projects = [{"id":1,"name":"工地 1"},{"id":2,"name":"工地 2"},{"id":3,"name":"工地 3"}];
+	projects: any;
+	constructor(private nav: NavController, private http: Http){
+		this.projects = [];
+		this.http.get(
+			'/api/v1/project/?format=json'
+		).map(response => response.json()
+		).subscribe((data)=>{
+			this.projects = data.objects;
+		});
+		
 
-	constructor(private nav: NavController){
 	}
 	click(project){
 		this.nav.push(ProjectDetailPage, {project: project});

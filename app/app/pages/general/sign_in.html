@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar>
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>使用者登錄</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+	<ion-list>
+
+	  <ion-item>
+		<ion-label fixed>Username</ion-label>
+		<ion-input type="text" value=""></ion-input>
+	  </ion-item>
+
+	  <ion-item>
+		<ion-label fixed>Password</ion-label>
+		<ion-input type="password"></ion-input>
+	  </ion-item>
+
+	</ion-list>
+	
+	<div padding>
+	  <button block (click)="sign_in()">Sign In</button>
+	</div>
+</ion-content>

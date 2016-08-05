@@ -70,7 +70,9 @@ target/
 # mirations
 migrations/
 
-
+#ionic
+reactionic-kitchensink-master/
+node_modules/
 
 venv/
 *~
