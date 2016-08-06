@@ -10,9 +10,11 @@ import {DebtPage} from '../transaction/debt';
 
 export class DebtListPage {
 	employees: any;
-
+	title: any;
+	
 	constructor(private nav: NavController, private http: Http){
 		this.employees = [];
+		this.title = "借款-"
 		this.http.get(
 			'/api/v1/employee/?format=json'
 		).map(response => response.json()

@@ -13,7 +13,7 @@ export class PayCheckListPage {
 	
 	constructor(private nav: NavController, private http: Http){
 		this.employees = [];
-		this.title = "薪資";
+		this.title = "薪資-";
 		this.http.get(
 			'/api/v1/employee/?format=json'
 		).map(response => response.json()

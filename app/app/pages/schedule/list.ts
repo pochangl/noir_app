@@ -9,9 +9,11 @@ import {DayOffPage} from '../schedule/dayoff';
 
 export class DayOffListPage {
 	employees: any;
-
+	title: any;
+	
 	constructor(private nav: NavController, private http: Http){
 		this.employees = [];
+		this.title="休假-";
 		this.http.get(
 			'/api/v1/employee/?format=json'
 		).map(response => response.json()
