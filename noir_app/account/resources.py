@@ -87,6 +87,7 @@ class EmployeeResource(ModelResource):
         allowed_methods = ['get','post','put']
         authentcation = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
+        include_resource_uri = False
        
    
 class SkillResource(ModelResource):

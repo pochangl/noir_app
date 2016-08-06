@@ -37,12 +37,16 @@ class ReceivableResource(TransactionResource):
         
         
 class PayCheckResource(TransactionResource):
-    employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="paychecks", full=True)
-    
+    employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="paychecks", readonly=True)
+
     class Meta:
         queryset = PayCheck.objects.all()
         resource_name = "paycheck"
-        fields = ("id", "amount", "reason_code", "reason",)
+        include_resource_uri = False
+        fields = ("id", "amount", "reason_code", "reason")
+        filtering = {
+            "employee": ('exact',),
+        }
         allowed_methods = ['get','post','put']
         authentcation = ApiKeyAuthentication()
         authorization = DjangoAuthorization()

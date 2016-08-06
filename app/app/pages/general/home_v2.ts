@@ -11,6 +11,7 @@ import {DayOffPage} from '../schedule/dayoff';
 @Component({
     templateUrl: 'build/pages/general/home_v2.html'
 })
+
 export class HomePageV2 {  
 	//slide page of project
   	projects = [];

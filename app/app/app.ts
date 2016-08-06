@@ -5,8 +5,9 @@ import {SignInPage} from './pages/general/sign_in';
 import {HomePageV2} from './pages/general/home_v2';
 import {HomePage} from './pages/general/home';
 import {ProjectListPage} from './pages/project/list';
-import {PayCheckListPage} from './pages/transaction/list';
 import {DayOffListPage} from './pages/schedule/list';
+import {PayCheckListPage} from './pages/transaction/paychecklist';
+import {DebtListPage} from './pages/transaction/debtlist';
 
 
 @Component({
@@ -33,7 +34,8 @@ class MyApp {
       { title: '主選單', component: HomePage },
       { title: '選擇工地', component: ProjectListPage},
       { title: '請假', component: DayOffListPage},
-      { title: '支款', component: PayCheckListPage}
+      { title: '薪資', component: PayCheckListPage},
+      { title: '借款', component: DebtListPage}
     ];
   }
 

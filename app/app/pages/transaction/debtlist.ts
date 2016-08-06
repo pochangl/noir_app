@@ -1,14 +1,14 @@
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {Http} from '@angular/http';
-import {PayCheckPage} from '../transaction/paycheck';
-
+import {DebtPage} from '../transaction/debt';
 
 @Component({
 	templateUrl: 'build/pages/account/list.html'
 })
 
-export class PayCheckListPage {
+
+export class DebtListPage {
 	employees: any;
 
 	constructor(private nav: NavController, private http: Http){
@@ -21,6 +21,6 @@ export class PayCheckListPage {
 		});
 	}
 	click(employee){
-		this.nav.push(PayCheckPage, {employee: employee});
+		this.nav.push(DebtPage, {employee: employee});
 	}
 }

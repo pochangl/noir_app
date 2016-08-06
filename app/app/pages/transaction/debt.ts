@@ -9,45 +9,45 @@ import 'rxjs/Rx';
 import {Injectable} from '@angular/core';  
 
 @Component({
-	templateUrl: 'build/pages/transaction/paycheck.html'
+	templateUrl: 'build/pages/transaction/debt.html'
 })
 
-export class PayCheckPage {
+export class DebtPage {
 	title: "工資";
 	employee: any;
-	paychecks: any;
-	//paycheck: any;
+	debts: any;
+	//debt: any;
 	
 	constructor(private nav: NavController, 
 				params: NavParams, 
 				private http: Http
 		){
-		//this.pacheck = {};
-		this.paychecks = [];
+		//this.debt = {};
+		this.debts = [];
 		this.employee = params.data.employee;
 		this.http.get(
-			//'/api/v1/paycheck/'+ this.employee.id +'?user='+this.employee.id+'&format=json'
-			'/api/v1/paycheck/?employee='+this.employee.id+'&format=json'
+			//'/api/v1/debt/'+ this.employee.id +'?user='+this.employee.id+'&format=json'
+			'/api/v1/debt/?employee='+this.employee.id+'&format=json'
 		).map(response => response.json()
 		).subscribe((data)=>{
-			this.paychecks = data.objects;
+			this.debts = data.objects;
 		});
 	}
 	amount(){
-		if(this.paychecks.length <= 0){
+		if(this.debts.length <= 0){
 			return 0;
 		}else{
-			//return this.paycheck.amount;
-			return this.paychecks.map(paycheck=>paycheck.amount).reduce((prev, new_v)=>prev+new_v);
+			//return this.debt.amount;
+			return this.debts.map(debt=>debt.amount).reduce((prev, new_v)=>prev+new_v);
 		}
 	}
 	submit(){
-		if(this.paychecks.amount === undefined){
+		if(this.debts.amount === undefined){
 			alert("not ready");
 			return;
 		}
 		this.http.put(
-			'/api/v1/paycheck/?employee='+ this.employee.id +'&format=json', {"amount": this.amount}
+			'/api/v1/debt/?employee='+ this.employee.id +'&format=json', {"amount": this.amount}
 		).map(response => response.json()
 		);
 		this.nav.push(HomePage);

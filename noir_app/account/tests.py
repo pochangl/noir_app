@@ -77,6 +77,7 @@ class UserSetupMixin(object):
             "password": self.get_password(user.username)})
         return client
 
+
 class RegistrationTokenTest(UserSetupMixin, TestCase):
     url = "%s?format=json" % reverse("api_dispatch_detail", kwargs={"api_name": "v1", "resource_name": "registration"})
 

@@ -1,8 +1,9 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {ProjectListPage} from '../project/list';
-import {PayCheckListPage} from '../transaction/list';
 import {DayOffListPage} from '../schedule/list';
+import {PayCheckListPage} from '../transaction/paychecklist';
+import {DebtListPage} from '../transaction/debtlist';
 
 
 @Component({
@@ -16,10 +17,13 @@ export class HomePage {
 	project(){
 		this.nav.push(ProjectListPage);
 	}
-	debt(){
-		this.nav.push(PayCheckListPage);
-	}
 	dayoff(){
 		this.nav.push(DayOffListPage);
+	}
+	paycheck(){
+		this.nav.push(PayCheckListPage);
+	}
+	debt(){
+		this.nav.push(DebtListPage);
 	}
 }
