@@ -14,9 +14,10 @@ class Transaction(TimeStampModel):
         #但Debt,Receivable,PayCheck會抓不到東西,故改回原來的
         
 class Debt(Transaction):
+    employee = models.ForeignKey(Employee, related_name='debts')
     
     def __str__(self):
-        return str(self.amount)
+        return self.employee.contact.name
 
 class Receivable(Transaction):
     client = models.ForeignKey(Client, related_name='receivables')

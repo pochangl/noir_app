@@ -63,9 +63,9 @@ pProjectA = Assignment(employee_project=pProjectEP2, assignment="assignment B",
 pProjectA.save()
 
 #transaction設定
-pTransactionD = Debt(amount="1000", note="Note")
+pTransactionD = Debt(amount="1500", note="Note", employee=pAccountE1)
 pTransactionD.save()
-pTransactionD = Debt(amount="2000", note="Note")
+pTransactionD = Debt(amount="2500", note="Note", employee=pAccountE2)
 pTransactionD.save()
 
 pTransactionR = Receivable(amount="3000", note="Note", client=pAccountC1)

@@ -14,42 +14,40 @@ import {Injectable} from '@angular/core';
 
 export class DebtPage {
 	title: "工資";
-	employee: any;
-	debts: any;
-	//debt: any;
+	debt: any;
+	employee_name: any;
 	
 	constructor(private nav: NavController, 
 				params: NavParams, 
 				private http: Http
 		){
-		//this.debt = {};
-		this.debts = [];
-		this.employee = params.data.employee;
+		this.debt = params.data.debt;
+		
+		this.employee_name = [];
 		this.http.get(
-			//'/api/v1/debt/'+ this.employee.id +'?user='+this.employee.id+'&format=json'
-			'/api/v1/debt/?employee='+this.employee.id+'&format=json'
+			this.debt.employee
 		).map(response => response.json()
 		).subscribe((data)=>{
-			this.debts = data.objects;
+			this.employee_name = data.contact.name;
 		});
 	}
 	amount(){
-		if(this.debts.length <= 0){
+		if(this.debt.length <= 0){
 			return 0;
 		}else{
 			//return this.debt.amount;
-			return this.debts.map(debt=>debt.amount).reduce((prev, new_v)=>prev+new_v);
+			return this.debt.amount;
 		}
 	}
 	submit(){
-		if(this.debts.amount === undefined){
+		if(this.debt.amount === undefined){
 			alert("not ready");
 			return;
 		}
-		this.http.put(
-			'/api/v1/debt/?employee='+ this.employee.id +'&format=json', {"amount": this.amount}
-		).map(response => response.json()
-		);
+		//this.http.put(
+		//	'/api/v1/debt/?employee='+ this.employee.id +'&format=json', {"amount": this.amount}
+		//).map(response => response.json()
+		//);
 		this.nav.push(HomePage);
 	}
 }

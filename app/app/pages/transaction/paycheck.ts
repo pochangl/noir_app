@@ -14,42 +14,40 @@ import {Injectable} from '@angular/core';
 
 export class PayCheckPage {
 	title: "工資";
-	employee: any;
-	paychecks: any;
-	//paycheck: any;
+	paycheck: any;
+	employee_name: any;
 	
 	constructor(private nav: NavController, 
 				params: NavParams, 
 				private http: Http
 		){
-		//this.pacheck = {};
-		this.paychecks = [];
-		this.employee = params.data.employee;
+		this.paycheck = params.data.paycheck;
+		
+		this.employee_name = [];
 		this.http.get(
-			//'/api/v1/paycheck/'+ this.employee.id +'?user='+this.employee.id+'&format=json'
-			'/api/v1/paycheck/?employee='+this.employee.id+'&format=json'
+			this.paycheck.employee
 		).map(response => response.json()
 		).subscribe((data)=>{
-			this.paychecks = data.objects;
+			this.employee_name = data.contact.name;
 		});
 	}
 	amount(){
-		if(this.paychecks.length <= 0){
+		if(this.paycheck.length <= 0){
 			return 0;
 		}else{
 			//return this.paycheck.amount;
-			return this.paychecks.map(paycheck=>paycheck.amount).reduce((prev, new_v)=>prev+new_v);
+			return this.paycheck.amount;
 		}
 	}
 	submit(){
-		if(this.paychecks.amount === undefined){
+		if(this.paycheck.amount === undefined){
 			alert("not ready");
 			return;
 		}
-		this.http.put(
-			'/api/v1/paycheck/?employee='+ this.employee.id +'&format=json', {"amount": this.amount}
-		).map(response => response.json()
-		);
+		//this.http.put(
+		//	'/api/v1/paycheck/?employee='+ this.paycheck.employee.id +'&format=json', {"amount": this.amount}
+		//).map(response => response.json()
+		//);
 		this.nav.push(HomePage);
 	}
 }
