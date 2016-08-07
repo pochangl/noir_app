@@ -9,7 +9,13 @@ import {ProjectDetailPage} from './detail'
 
 export class ProjectListPage {
 	projects: any;
-	constructor(private nav: NavController, private http: Http){
+	assignments: any;
+	
+	constructor(
+				private nav: NavController, 
+				params: NavParams, 
+				private http: Http
+		){
 		this.projects = [];
 		this.http.get(
 			'/api/v1/project/?format=json'
@@ -18,8 +24,19 @@ export class ProjectListPage {
 			this.projects = data.objects;
 		});
 		
-
+		this.assignments = [];
+		this.http.get(
+			'/api/v1/assignment/?format=json'
+		).map(response => response.json()
+		).subscribe((data)=>{
+			this.assignments = data.objects;
+		});
 	}
+	
+	count(){
+		return this.assignments.filter(item=>!!item.selected).length;
+	}
+	
 	click(project){
 		this.nav.push(ProjectDetailPage, {project: project});
 	}

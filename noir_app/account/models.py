@@ -34,7 +34,7 @@ class Client(TimeStampModel):
 class Employee(TimeStampModel):
     contact = models.ForeignKey(Contact, related_name='employees')
     title = models.CharField(max_length=128)
-
+    
     def __str__(self):
         return self.contact.name
 

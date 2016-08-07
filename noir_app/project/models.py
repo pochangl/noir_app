@@ -10,6 +10,7 @@ class Project(TimeStampModel):
     contact = models.ForeignKey(Contact, related_name='projects')
     client = models.ForeignKey(Client, related_name='projects')
     name = models.CharField(max_length=128)
+    number_needed = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -33,6 +34,7 @@ class Assignment(TimeStampModel):
     status = models.CharField(max_length=128)
     pay = models.IntegerField()
     actual_pay = models.IntegerField()
+    selected = models.BooleanField()
 
     def __str__(self):
         return self.assignment

@@ -36,9 +36,9 @@ pAccountS2 = Skill(employee=pAccountE2, name="welder")
 pAccountS2.save()
 
 #project設定
-pProject1 = Project(contact=pAccount1, client=pAccountC1, name="SkyTower")
+pProject1 = Project(contact=pAccount1, client=pAccountC1, name="SkyTower", number_needed="2")
 pProject1.save()
-pProject2 = Project(contact=pAccount2, client=pAccountC2, name="MoonLand")
+pProject2 = Project(contact=pAccount2, client=pAccountC2, name="MoonLand", number_needed="3")
 pProject2.save()
 
 pProjectEP1 = EmployeeProject(employee=pAccountE1, project=pProject1)
@@ -54,29 +54,29 @@ pProjectEP4.save()
 pProjectA = Assignment(employee_project=pProjectEP1, assignment="assignment A",
                        start_time="2016-01-01 08:00", end_time="2016-01-01 17:00",
                        check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",
-                       status="approved", pay="1000", actual_pay="1000")
+                       status="approved", pay="1000", actual_pay="1000", slected=True)
 pProjectA.save()
 pProjectA = Assignment(employee_project=pProjectEP2, assignment="assignment B",
                        start_time="2016-01-01 08:00", end_time="2016-01-01 17:00",
                        check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",
-                       status="approved", pay="1000", actual_pay="1000")
+                       status="approved", pay="1000", actual_pay="1000", slected=True)
 pProjectA.save()
 
 #transaction設定
-pTransactionD = Debt(amount="0", note="Note")
+pTransactionD = Debt(amount="1000", note="Note")
 pTransactionD.save()
-pTransactionD = Debt(amount="0", note="Note")
+pTransactionD = Debt(amount="2000", note="Note")
 pTransactionD.save()
 
-pTransactionR = Receivable(amount="0", note="Note", client=pAccountC1)
+pTransactionR = Receivable(amount="3000", note="Note", client=pAccountC1)
 pTransactionR.save()
-pTransactionR = Receivable(amount="0", note="Note", client=pAccountC2)
+pTransactionR = Receivable(amount="4000", note="Note", client=pAccountC2)
 pTransactionR.save()
 
-pTransactionP1 = PayCheck(amount="0", note="Note", employee=pAccountE1,
+pTransactionP1 = PayCheck(amount="5000", note="Note", employee=pAccountE1,
                          reason_code="reason_code",reason="salary")
 pTransactionP1.save()
-pTransactionP2 = PayCheck(amount="0", note="Note", employee=pAccountE2,
+pTransactionP2 = PayCheck(amount="6000", note="Note", employee=pAccountE2,
                          reason_code="reason_code",reason="bonus")
 pTransactionP2.save()
 
