@@ -1,7 +1,7 @@
 from tastypie.resources import ModelResource, fields
 
 from tastypie.authentication import ApiKeyAuthentication
-from tastypie.authorization import ReadOnlyAuthorization
+from tastypie.authorization import ReadOnlyAuthorization, DjangoAuthorization
 
 from schedule.models import DayOff, EmployeePreference, ProjectPreference
         
@@ -14,8 +14,14 @@ class DayOffResource(ModelResource):
     class Meta:
         queryset = DayOff.objects.all()
         resource_name = "dayoff"
-        fields = ("id","start_time", "end_time",)
+        include_resource_uri = False
+        fields = ("id", "start_date", "start_time", "end_date", "end_time",)
+        filtering = {
+            "employee": ('exact',),
+        }
+        allowed_methods = ['get','post','put']
         authentcation = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
  
  
 class EmployeePreferenceResource(ModelResource):

@@ -39,7 +39,7 @@ class AssignmentResource(ModelResource):
     class Meta:
         queryset = Assignment.objects.all()
         resource_name = "assignment"
-        fields = ("id", "employeeproject", "assignment", "start_time", "end_time",
+        fields = ("id", "employee_project", "assignment", "start_time", "end_time",
                   "check_in", "check_out", "status", "pay", "actual_pay","selected", )
         authentcation = ApiKeyAuthentication()
         

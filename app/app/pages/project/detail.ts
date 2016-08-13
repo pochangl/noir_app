@@ -9,8 +9,9 @@ import {HomePage} from '../general/home';
 })
 
 export class ProjectDetailPage {
-	project;
+	project: any;
 	assignments: any;
+	employee_project: any;
 
 	constructor(
 				private nav: NavController, 
@@ -21,15 +22,23 @@ export class ProjectDetailPage {
 		
 		this.assignments = [];
 		this.http.get(
-			'/api/v1/assignment/?user='+ this.project.id+'&format=json'
+			'/api/v1/assignment/?user='+ this.project.id +'&format=json'
 		).map(response => response.json()
 		).subscribe((data)=>{
 			this.assignments = data.objects;
 		});
+		
+		this.employee_project = [];
+//		this.http.get(
+//			'/api/v1/employee_project/?project=/api/v1/employee_project/'+ this.project.id +'/?format=json'
+//		).map(response => response.json()
+//		).subscribe((data)=>{
+//			this.employee_project = data;
+//		});
 	}
 	
 	employee_name(){
-		//return this.assignments.filter(item=>item.employee_project.id=this.project.id).employee.contact.name;
+		//return this.assignments.filter(item=>item.employee_project.project='/api/v1/project/' + this.project.id + '/');
 		return "name";
 	}
 	
@@ -39,6 +48,11 @@ export class ProjectDetailPage {
 	}
 	
 	submit(){
+//		this.http.put(
+//			'/api/v1/assignment/?format=json', {"selected": this.assignments.selected}
+//		).map(response => response.json()
+//		);
+		
 		this.nav.push(HomePage);
 	}
 }
