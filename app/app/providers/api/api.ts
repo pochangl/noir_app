@@ -30,7 +30,7 @@ class Url{
     return params.toString();
   }
   toString(){
-    return '/api/api/'+this.resource_name + this.id + "?" + this.getQueryString();
+    return '/api/v1/'+this.resource_name + this.id + "?" + this.getQueryString();
   }
 }
 

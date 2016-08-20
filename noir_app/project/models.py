@@ -19,9 +19,13 @@ class Project(TimeStampModel):
 class EmployeeProject(TimeStampModel):
     employee = models.ForeignKey(Employee, related_name='employee_projects')
     project = models.ForeignKey(Project, related_name='employee_projects')
+    assignee = models.ForeignKey('auth.User')
 
     def __str__(self):
         return "%s - %s" % (self.project.name, self.employee.contact.name)
+
+    class Meta:
+        unique_together = (("employee", "project"),)
 
 
 class Assignment(TimeStampModel):
