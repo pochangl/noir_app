@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
-import {Api} from '../../providers/api/api'
-import {ProjectDetailPage} from './detail'
-import { Http } from '@angular/http';
+import {Api} from '../../providers/api/api';
+import {ProjectDetailPage} from './detail';
 
 @Component({
     templateUrl: 'build/pages/project/list.html',
@@ -12,20 +11,20 @@ import { Http } from '@angular/http';
 export class ProjectListPage {
 	projects: any;
 	assignments: any;
-	
+
 	constructor(
-				private nav: NavController, 
-				params: NavParams, 
+				private nav: NavController,
+			  params: NavParams,
 				private http: Api
 		){
 		this.projects = [];
 		this.http.get(
-			'/api/v1/project/?format=json'
+      {resource_name: "project", "id": 1}
 		).map(response => response.json()
 		).subscribe((data)=>{
 			this.projects = data.objects;
 		});
-		
+
 		this.assignments = [];
 		this.http.get(
 			'/api/v1/assignment/?format=json'
@@ -34,11 +33,11 @@ export class ProjectListPage {
 			this.assignments = data.objects;
 		});
 	}
-	
+
 	count(){
 		return this.assignments.filter(item=>!!item.selected).length;
 	}
-	
+
 	click(project){
 		this.nav.push(ProjectDetailPage, {project: project});
 	}
