@@ -37,8 +37,7 @@ class Url{
 
 @Injectable()
 export class Api {
-  constructor(private http: Http) {
-  }
+  constructor(private http: Http) {}
 
   preprocess_url(url: any) {
     return new Url(url).toString();
@@ -58,10 +57,10 @@ export class Api {
   delete(url: any, options?: any) {
     return this.http.delete(this.preprocess_url(url), options);
   }
-  patch(url: Url, body, options?: any) {
+  patch(url: any, body, options?: any) {
     return this.http.patch(this.preprocess_url(url), body, options);
   }
-  head(url: Url, options?: any) {
+  head(url: any, options?: any) {
     return this.http.head(this.preprocess_url(url), options);
   }
 }
