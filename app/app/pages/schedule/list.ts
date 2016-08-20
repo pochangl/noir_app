@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Http} from '@angular/http';
-import {DayOffPage} from '../schedule/dayoff';
+import {DayoffPage} from '../schedule/dayoff';
 
 @Component({
 	templateUrl: 'build/pages/account/list.html'
@@ -22,6 +22,6 @@ export class DayOffListPage {
 		});
 	}
 	click(employee){
-		this.nav.push(DayOffPage, {employee: employee});
+		this.nav.push(DayoffPage, {employee: employee});
 	}
 }

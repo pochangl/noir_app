@@ -5,7 +5,7 @@ import {Http} from '@angular/http';
 import {ProjectDetailPage} from '../project/detail'
 import {HomePage} from '../general/home';
 import {PayCheckPage} from '../transaction/paycheck';
-import {DayOffPage} from '../schedule/dayoff';
+import {DayoffPage} from '../schedule/dayoff';
 
 
 @Component({
@@ -40,7 +40,7 @@ export class HomePageV2 {
 	//slide page of schedule
 	//employees = [{name: "Employee 1", id: 1}, {name: "Employee 2", id:2}, {name: "Employee 3", id: 3}];
 	click_of_schedule(employee){
-		this.nav.push(DayOffPage, {employee: employee});
+		this.nav.push(DayoffPage, {employee: employee});
 	}
 	
 	
