@@ -1,10 +1,12 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
-import {Http} from '@angular/http';
+import {Api} from '../../providers/api/api'
 import {ProjectDetailPage} from './detail'
+import { Http } from '@angular/http';
 
 @Component({
-	templateUrl: 'build/pages/project/list.html'
+    templateUrl: 'build/pages/project/list.html',
+    providers: [Api]
 })
 
 export class ProjectListPage {
@@ -14,7 +16,7 @@ export class ProjectListPage {
 	constructor(
 				private nav: NavController, 
 				params: NavParams, 
-				private http: Http
+				private http: Api
 		){
 		this.projects = [];
 		this.http.get(
