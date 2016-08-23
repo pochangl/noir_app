@@ -19,19 +19,14 @@ export class ProjectListPage {
 		){
 		this.projects = [];
 		this.http.get(
-      {resource_name: "project", "id": 1}
-		).map(response => response.json()
+      {resource_name: "project"}
+		).map(
+      response => response.json()
 		).subscribe((data)=>{
 			this.projects = data.objects;
 		});
 
 		this.assignments = [];
-		this.http.get(
-			'/api/v1/assignment/?format=json'
-		).map(response => response.json()
-		).subscribe((data)=>{
-			this.assignments = data.objects;
-		});
 	}
 
 	count(){

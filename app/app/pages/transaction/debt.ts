@@ -6,7 +6,7 @@ import {HomePage} from '../general/home';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
 
-import {Injectable} from '@angular/core';  
+import {Injectable} from '@angular/core';
 
 @Component({
 	templateUrl: 'build/pages/transaction/debt.html'
@@ -16,13 +16,13 @@ export class DebtPage {
 	title: "工資";
 	debt: any;
 	employee_name: any;
-	
-	constructor(private nav: NavController, 
-				params: NavParams, 
+
+	constructor(private nav: NavController,
+				params: NavParams,
 				private http: Http
 		){
 		this.debt = params.data.debt;
-		
+
 		this.employee_name = [];
 		this.http.get(
 			this.debt.employee

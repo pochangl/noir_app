@@ -2,7 +2,7 @@
 from tastypie.resources import ModelResource, fields
 
 from tastypie.authentication import ApiKeyAuthentication
-from tastypie.authorization import ReadOnlyAuthorization
+from tastypie.authorization import ReadOnlyAuthorization, DjangoAuthorization
 
 #from account.models import Contact, Client
 from project.models import Project, Assignment, EmployeeProject
@@ -12,7 +12,7 @@ from account.resources import ContactResource, ClientResource, EmployeeResource
 
 class ProjectResource(ModelResource):
     contact = fields.ForeignKey(ContactResource, attribute="contact", related_name="contact")
-    cleint = fields.ForeignKey(ClientResource, attribute="client", related_name="client")
+    client = fields.ForeignKey(ClientResource, attribute="client", related_name="client")
     
     class Meta:
         queryset = Project.objects.all()
@@ -22,8 +22,8 @@ class ProjectResource(ModelResource):
         
         
 class EmployeeProjectResource(ModelResource):
-    employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="employee_projects")
-    project = fields.ForeignKey(ProjectResource, attribute="project", related_name="employee_projects")
+    employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="employee_projects", full=True, readonly=True)
+    project = fields.ForeignKey(ProjectResource, attribute="project", related_name="employee_projects", full=True, readonly=True)
 
     class Meta:
         queryset = EmployeeProject.objects.all()
@@ -34,12 +34,15 @@ class EmployeeProjectResource(ModelResource):
 
 
 class AssignmentResource(ModelResource):
-    employee_project = fields.ForeignKey(EmployeeProjectResource, attribute="employee_project", related_name="employee_projects")
+    employee = fields.ForeignKey(EmployeeResource, attribute="employee", full=True, readonly=True)
+    project = fields.ForeignKey(ProjectResource, attribute="project", full=True, readonly=True)
 
     class Meta:
         queryset = Assignment.objects.all()
         resource_name = "assignment"
         fields = ("id", "employee_project", "assignment", "start_time", "end_time",
                   "check_in", "check_out", "status", "pay", "actual_pay","selected", )
+        allowed_methods = ['get','post','put']
         authentcation = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
         

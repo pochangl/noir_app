@@ -1,56 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Http } from '@angular/http';
-//import 'rxjs/Rx';
-import '../../rxjs-operators';
 
-//import { DayoffService } from "./dayoff.service";
-//import { Dayoff } from './dayoff.define';
+import { Api } from '../../providers/api/api';
+import '../../rxjs-operators';
 import { HomePage } from '../general/home';
 
 
 @Component({
-	//selector: 'dayoff-list,
 	templateUrl: 'build/pages/schedule/dayoff.html',
-//	providers: [ DayoffService ]
+	providers: [Api]
 })
 
-
-//export class DayoffPage implements OnInit{
 export class DayoffPage {
 	employee: any;
 	dayoffs: any;
-//	dayoffs: Dayoff[];
-//	errorMessage: string;
-	mode = 'Observable';
 
 	constructor(
-//		private dayoffService: DayoffService,
 		private nav: NavController,
 		params: NavParams,
-		private http: Http
+		private http: Api
 	){
 		this.employee = params.data.employee;
-		//this.dayoffs = Dayoff[];
 		this.dayoffs = [];
-		this.http.get(
-			'/api/v1/dayoff/'+ this.employee.id+'/?format=json'
-		).map(response => response.json()
+		this.http.get({
+			resource_name: "dayoff",
+			id: this.employee.id,
+			urlParams: {
+				employee: this.employee.id
+			}
+		}).map(response => response.json()
 		).subscribe((data)=>{
 			this.dayoffs = data;
 		});
 	}
 
-
-
-//	ngOnInit() { this.getDayoffs(); }
-
-//	getDayoffs() {
-//		this.dayoffService.getDayoffs()
-//						  .subscribe(
-//							dayoffs => this.dayoffs = dayoffs,
-//							error => this.errorMessage = <any>error);
-//	}
 
 	submit(){
 //		this.http.put(

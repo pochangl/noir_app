@@ -18,8 +18,8 @@ class Url{
     this.id = kwargs.id ? kwargs.id + "/": "";
     this.resource_name= kwargs.resource_name + "/";
 
-    this.username = "user";
-    this.api_key = "key";
+    this.username = "edward";
+    this.api_key = "1c62cc576c1e505f82521ff373ce0f860b21e71a";
 
   }
   getQueryString(){

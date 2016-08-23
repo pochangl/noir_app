@@ -19,7 +19,6 @@ class Project(TimeStampModel):
 class EmployeeProject(TimeStampModel):
     employee = models.ForeignKey(Employee, related_name='employee_projects')
     project = models.ForeignKey(Project, related_name='employee_projects')
-    assignee = models.ForeignKey('auth.User')
 
     def __str__(self):
         return "%s - %s" % (self.project.name, self.employee.contact.name)
@@ -39,6 +38,15 @@ class Assignment(TimeStampModel):
     pay = models.IntegerField()
     actual_pay = models.IntegerField()
     selected = models.BooleanField()
+    assignee = models.ForeignKey('auth.User')
+
+    @property
+    def employee(self):
+        return self.employee_project.employee
+
+    @property
+    def project(self):
+        return self.employee_project.project
 
     def __str__(self):
         return self.assignment
