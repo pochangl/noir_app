@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
-import {Http, Headers} from '@angular/http';
+import { Headers} from '@angular/http';
+import { Api } from '../../providers/api/api';
 import 'rxjs/add/operator/map';
 import {HomePage} from '../general/home';
 import { Observable } from 'rxjs/Observable';
@@ -9,7 +10,8 @@ import 'rxjs/Rx';
 import {Injectable} from '@angular/core';
 
 @Component({
-	templateUrl: 'build/pages/transaction/debt.html'
+	templateUrl: 'build/pages/transaction/debt.html',
+	providers: [Api]
 })
 
 export class DebtPage {
@@ -19,17 +21,9 @@ export class DebtPage {
 
 	constructor(private nav: NavController,
 				params: NavParams,
-				private http: Http
+				private http: Api
 		){
 		this.debt = params.data.debt;
-
-//		this.employee_name = [];
-//		this.http.get(
-//			this.debt.employee.contact.resource_uri
-//		).map(response => response.json()
-//		).subscribe((data)=>{
-//			this.employee_name = data.contact.name;
-//		});
 		this.employee_name = this.debt.employee.contact.name;
 	}
 	amount(){

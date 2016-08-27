@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
-import {Http, Headers} from '@angular/http';
+import { Headers} from '@angular/http';
+import { Api } from '../../providers/api/api';
 import 'rxjs/add/operator/map';
 import {DebtPage} from '../transaction/debt';
 import { Observable } from 'rxjs/Observable';
@@ -9,7 +10,8 @@ import 'rxjs/Rx';
 import {Injectable} from '@angular/core';
 
 @Component({
-	templateUrl: 'build/pages/transaction/debt_list_records.html'
+	templateUrl: 'build/pages/transaction/debt_list_records.html',
+	providers: [Api]
 })
 
 export class DebtListRecordsPage {
@@ -19,14 +21,18 @@ export class DebtListRecordsPage {
 
 	constructor(private nav: NavController,
 				params: NavParams,
-				private http: Http
+				private http: Api
 		){
 		this.debts = [];
 		this.employee = params.data.employee;
-		this.http.get(
-			//'/api/v1/debt/'+ this.employee.id +'?user='+this.employee.id+'&format=json'
-			'/api/v1/debt/?employee='+this.employee.id+'&format=json'
-		).map(response => response.json()
+		this.http.get({
+			resource_name: "debt",
+			id: this.employee.id,
+			urlParams: {
+				"employee": this.employee,
+			}
+			//'/api/v1/debt/?employee='+this.employee.id+'&format=json'
+		}).map(response => response.json()
 		).subscribe((data)=>{
 			this.debts = data.objects;
 		});

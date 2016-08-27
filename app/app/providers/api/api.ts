@@ -12,18 +12,36 @@ import 'rxjs/add/operator/map';
 class Url{
   id: string;
   resource_name: string;
+  urlParams: any;
+  //urlParams_key: string;
+  //urlParams_value: string;
   api_key: string;
   username: string;
-  constructor(kwargs: {"id"?: string, "resource_name": string}){
+  constructor(kwargs: {
+    "id"?: string,
+    "resource_name": string,
+    "urlParams"?: {"key": "value"}
+  }){
     this.id = kwargs.id ? kwargs.id + "/": "";
     this.resource_name= kwargs.resource_name + "/";
-
+    if(kwargs.urlParams == null ) {
+      this.urlParams = null;
+    }
+    else{
+      //this.urlParams_key = kwargs.urlParams.key;
+      //this.urlParams_value = kwargs.urlParams.contact.id;
+      this.urlParams = kwargs.urlParams;
+    }
+    console.log(this.urlParams);
     this.username = "edward";
     this.api_key = "1c62cc576c1e505f82521ff373ce0f860b21e71a";
 
   }
   getQueryString(){
-    var params = new URLSearchParams("")
+    var params = new URLSearchParams("");
+    if (this.urlParams !== null) {
+      params.set(this.urlParams.key, this.urlParams.value);
+    }
     params.set("username", this.username);
     params.set("api_key", this.api_key);
     params.set("format", "json");
