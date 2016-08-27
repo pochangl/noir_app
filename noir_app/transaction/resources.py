@@ -18,13 +18,14 @@ class TransactionResource(ModelResource):
         
         
 class DebtResource(TransactionResource):
-    employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="debts", readonly=True)
+    employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="debts", full=True, readonly=True)
+#     employee = fields.ForeignKey(EmployeeResource, attribute="employee", full=True, readonly=True)
     
     class Meta:
         queryset = Debt.objects.all()
         resource_name = "debt"
         include_resource_uri = False
-        fields = ("id", "amount", "note",)
+        fields = ("id", "amount", "note", "create_time", "modify_time")
         filtering = {
             "employee": ('exact',),
         }

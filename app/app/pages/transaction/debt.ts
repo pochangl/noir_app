@@ -23,13 +23,14 @@ export class DebtPage {
 		){
 		this.debt = params.data.debt;
 
-		this.employee_name = [];
-		this.http.get(
-			this.debt.employee
-		).map(response => response.json()
-		).subscribe((data)=>{
-			this.employee_name = data.contact.name;
-		});
+//		this.employee_name = [];
+//		this.http.get(
+//			this.debt.employee.contact.resource_uri
+//		).map(response => response.json()
+//		).subscribe((data)=>{
+//			this.employee_name = data.contact.name;
+//		});
+		this.employee_name = this.debt.employee.contact.name;
 	}
 	amount(){
 		if(this.debt.length <= 0){
