@@ -25,7 +25,7 @@ export class ProjectDetailPage {
 		this.http.get({
 			resource_name: "assignment",
 			urlParams: {
-				project: this.project.id
+				project: this.project
 			}
 		}).map(
 			response => response.json()

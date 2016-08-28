@@ -1,35 +1,30 @@
-import {Component} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
-import {Http, Headers} from '@angular/http';
+import { Component } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
+import { Headers } from '@angular/http';
+import { Api } from '../../providers/api/api';
 import 'rxjs/add/operator/map';
-import {HomePage} from '../general/home';
+import { HomePage } from '../general/home';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
 
-import {Injectable} from '@angular/core';  
+import {Injectable} from '@angular/core';
 
 @Component({
-	templateUrl: 'build/pages/transaction/paycheck.html'
+	templateUrl: 'build/pages/transaction/paycheck.html',
+	providers: [Api]
 })
 
 export class PayCheckPage {
 	title: "工資";
 	paycheck: any;
 	employee_name: any;
-	
-	constructor(private nav: NavController, 
-				params: NavParams, 
-				private http: Http
+
+	constructor(private nav: NavController,
+				params: NavParams,
+				private http: Api
 		){
 		this.paycheck = params.data.paycheck;
-		
-		this.employee_name = [];
-		this.http.get(
-			this.paycheck.employee
-		).map(response => response.json()
-		).subscribe((data)=>{
-			this.employee_name = data.contact.name;
-		});
+		this.employee_name = this.paycheck.employee.contact.name;
 	}
 	amount(){
 		if(this.paycheck.length <= 0){

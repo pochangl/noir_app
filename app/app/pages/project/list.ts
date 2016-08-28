@@ -18,9 +18,9 @@ export class ProjectListPage {
 				private http: Api
 		){
 		this.projects = [];
-		this.http.get(
-      {resource_name: "project"}
-		).map(
+		this.http.get({
+        resource_name: "project"
+    }).map(
       response => response.json()
 		).subscribe((data)=>{
 			this.projects = data.objects;

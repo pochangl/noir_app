@@ -16,10 +16,6 @@ class Transaction(TimeStampModel):
 class Debt(Transaction):
     employee = models.ForeignKey(Employee, related_name='debts')
   
-#     @property
-#     def employee(self):
-#         return self.employee
-    
     def __str__(self):
         return self.employee.contact.name
 

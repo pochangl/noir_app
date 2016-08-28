@@ -25,9 +25,6 @@ export class DayoffPage {
 		this.http.get({
 			resource_name: "dayoff",
 			id: this.employee.id,
-			urlParams: {
-				employee: this.employee.id
-			}
 		}).map(response => response.json()
 		).subscribe((data)=>{
 			this.dayoffs = data;
