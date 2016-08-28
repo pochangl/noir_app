@@ -12,41 +12,27 @@ import 'rxjs/add/operator/map';
 class Url{
   id: string;
   resource_name: string;
-  urlParams: any;
-  //urlParams_key: string;
-  //urlParams_value: string;
+  urlParams: Object;
   api_key: string;
   username: string;
   constructor(kwargs: {
     "id"?: string,
     "resource_name": string,
-    "urlParams"?: {"key": "value"}
+    "urlParams"?: Object
   }){
     this.id = kwargs.id ? kwargs.id + "/": "";
     this.resource_name= kwargs.resource_name + "/";
-    if(kwargs.urlParams == null ) {
-      this.urlParams = null;
-    }
-    else{
-      //this.urlParams_key = kwargs.urlParams.key;
-      //this.urlParams_value = kwargs.urlParams.contact.id;
-      this.urlParams = kwargs.urlParams;
-    }
+    this.urlParams = urlParams ? urlParams: {};
     this.username = "edward";
     this.api_key = "1c62cc576c1e505f82521ff373ce0f860b21e71a";
 
   }
   getQueryString(){
     var params = new URLSearchParams("");
-    if (this.urlParams !== null) {
-      params.set(this.urlParams, this.urlParams.employee.contact.id);
-      console.log(this.urlParams.employee);    //object
-      console.log(this.urlParams.employee.contact.id);    //2
-      console.log(this.urlParams.objects);    //undefined
-      console.log(this.urlParams.object);    //undefined
-      console.log(this.urlParams.keys);    //undefined
-      console.log(this.urlParams.key);    //undefined
-      console.log(this.urlParams.id);    //undefined
+    if (!!this.urlParams) {
+        for(var key in this.urlParams){
+            params.set(key, this.urlParams[key])
+        }
     }
     params.set("username", this.username);
     params.set("api_key", this.api_key);
