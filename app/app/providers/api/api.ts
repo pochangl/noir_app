@@ -31,7 +31,7 @@ class Url{
     var params = new URLSearchParams("");
     if (!!this.urlParams) {
         for(var key in this.urlParams){
-            params.set(key, this.urlParams[key].id);
+            params.set(key, this.urlParams[key].id ? this.urlParams[key].id: this.urlParams[key]);
         }
     }
     params.set("username", this.username);
