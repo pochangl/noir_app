@@ -24,9 +24,10 @@ export class ProjectDetailPage {
 
 		this.http.get({
 			resource_name: "assignment",
-			urlParams: {
-				project: this.project
-			}
+//property不支援filtering
+//			urlParams: {
+//				project: this.project.id,
+//			}
 		}).map(
 			response => response.json()
 		).subscribe((data)=>{
