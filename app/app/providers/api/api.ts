@@ -22,7 +22,7 @@ class Url{
   }){
     this.id = kwargs.id ? kwargs.id + "/": "";
     this.resource_name= kwargs.resource_name + "/";
-    this.urlParams = urlParams ? urlParams: {};
+    this.urlParams = kwargs.urlParams ? kwargs.urlParams: {};
     this.username = "edward";
     this.api_key = "1c62cc576c1e505f82521ff373ce0f860b21e71a";
 
@@ -31,7 +31,7 @@ class Url{
     var params = new URLSearchParams("");
     if (!!this.urlParams) {
         for(var key in this.urlParams){
-            params.set(key, this.urlParams[key])
+            params.set(key, this.urlParams[key].id);
         }
     }
     params.set("username", this.username);

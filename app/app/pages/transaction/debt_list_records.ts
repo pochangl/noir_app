@@ -27,7 +27,6 @@ export class DebtListRecordsPage {
 		this.employee = params.data.employee;
 		this.http.get({
 			resource_name: "debt",
-			id: this.employee.id,
 			urlParams: {
 				"employee": this.employee,
 			}
