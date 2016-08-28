@@ -32,7 +32,6 @@ class Url{
       //this.urlParams_value = kwargs.urlParams.contact.id;
       this.urlParams = kwargs.urlParams;
     }
-    console.log(this.urlParams);
     this.username = "edward";
     this.api_key = "1c62cc576c1e505f82521ff373ce0f860b21e71a";
 
@@ -40,7 +39,14 @@ class Url{
   getQueryString(){
     var params = new URLSearchParams("");
     if (this.urlParams !== null) {
-      params.set(this.urlParams.key, this.urlParams.value);
+      params.set(this.urlParams, this.urlParams.employee.contact.id);
+      console.log(this.urlParams.employee);    //object
+      console.log(this.urlParams.employee.contact.id);    //2
+      console.log(this.urlParams.objects);    //undefined
+      console.log(this.urlParams.object);    //undefined
+      console.log(this.urlParams.keys);    //undefined
+      console.log(this.urlParams.key);    //undefined
+      console.log(this.urlParams.id);    //undefined
     }
     params.set("username", this.username);
     params.set("api_key", this.api_key);
