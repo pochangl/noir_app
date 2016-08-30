@@ -1,13 +1,12 @@
-import { Component, Injectable } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import {Component, Injectable} from '@angular/core';
+import {NavController, NavParams} from 'ionic-angular';
 import { Api } from '../../providers/api/api';
-import { Project_Service } from '../../providers/project_service/project_service';
-import { HomePage } from '../general/home';
+import {HomePage} from '../general/home';
 import { Headers, RequestOptions } from '@angular/http';
 
 @Component({
 	templateUrl: 'build/pages/project/detail.html',
-	providers: [Api, Project_Service]
+	providers: [Api]
 })
 
 export class ProjectDetailPage {
@@ -17,8 +16,7 @@ export class ProjectDetailPage {
 	constructor(
 				private nav: NavController,
 				params: NavParams,
-				private http: Api,
-				private project_service: Project_Service
+				private http: Api
 		){
 		this.project = params.data.project;
 
@@ -43,21 +41,22 @@ export class ProjectDetailPage {
 	}
 
 	toggle(assignment){
-		//Make selection change first, and then comunicate with DB.
 		assignment.selected = !assignment.selected;
 
-		if (!!(assignment.selected)) {
-			this.project_service.assign_employee_project(assignment);
-		}else if (!!(!assignment.selected)) {
-			this.project_service.unassign_employee_project(assignment);
-		}else {
-			alert("Undefinded");
-		}
+//		let body = JSON.stringify({ assignment: assignment });
+//		let headers = new Headers({ 'Content-Type': 'application/json' });
+//		let options = new RequestOptions({ headers: headers });
 
-//		this.http.put({resource_name: "assignment", id: assignment.id}, assignment
-//		).map(res => res.json()
-//		).subscribe( data => {
-//			assignment.selected = data.selected;
-//		})
+//		return this.http.put({resource_name: "assignment", id: assignment.id}, body, options)
+//                    .map(res => res.json())
+//										.subscribe( data => {
+//													assignment.selected = data.selected;
+//										});
+
+		this.http.put({resource_name: "assignment", id: assignment.id}, assignment
+		).map(res => res.json()
+		).subscribe( data => {
+			assignment.selected = data.selected;
+		})
 	}
 }
