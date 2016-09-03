@@ -47,6 +47,10 @@ class AssignmentResource(ModelResource):
         resource_name = "assignment"
         fields = ("id", "employee_project", "assignment", "start_time", "end_time",
                   "check_in", "check_out", "status", "pay", "actual_pay","selected",)
+        filtering = {
+            "employee": ('exact',),
+            "project": ('exact',),
+        }
         allowed_methods = ['get','post','put']
         authentcation = ApiKeyAuthentication()
         authorization = DjangoAuthorization()

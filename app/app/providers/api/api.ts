@@ -13,20 +13,23 @@ class Url{
   id: string;
   resource_name: string;
   urlParams: Object;
+  urlParams2: Object;
   api_key: string;
   username: string;
   constructor(kwargs: {
     "id"?: string,
     "resource_name": string,
-    "urlParams"?: Object
+    "urlParams"?: Object,
+    "urlParams2"?: Object
   }){
     this.id = kwargs.id ? kwargs.id + "/": "";
     this.resource_name= kwargs.resource_name + "/";
     this.urlParams = kwargs.urlParams ? kwargs.urlParams: {};
+    this.urlParams2 = kwargs.urlParams2 ? kwargs.urlParams2: {};
     this.username = "edward";
     this.api_key = "1c62cc576c1e505f82521ff373ce0f860b21e71a";
-
   }
+
   getQueryString(){
     var params = new URLSearchParams("");
     if (!!this.urlParams) {
@@ -34,11 +37,18 @@ class Url{
             params.set(key, this.urlParams[key].id ? this.urlParams[key].id: this.urlParams[key]);
         }
     }
+    var params2 = new URLSearchParams("");
+    if (!!this.urlParams2) {
+        for(var key in this.urlParams2){
+            params.set(key, this.urlParams2[key].id ? this.urlParams2[key].id: this.urlParams2[key]);
+        }
+    }
     params.set("username", this.username);
     params.set("api_key", this.api_key);
     params.set("format", "json");
     return params.toString();
   }
+
   toString(){
     return '/api/v1/'+this.resource_name + this.id + "?" + this.getQueryString();
   }

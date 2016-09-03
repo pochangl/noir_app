@@ -4,6 +4,7 @@ import { Api } from '../../providers/api/api';
 import { Project_Service } from '../../providers/project_service/project_service';
 import { HomePage } from '../general/home';
 import { Headers, RequestOptions } from '@angular/http';
+import 'rxjs/add/operator/map';
 
 @Component({
 	templateUrl: 'build/pages/project/detail.html',
@@ -12,6 +13,7 @@ import { Headers, RequestOptions } from '@angular/http';
 
 export class ProjectDetailPage {
 	project: any;
+	employee: any;
 	assignments: any;
 
 	constructor(
@@ -21,7 +23,7 @@ export class ProjectDetailPage {
 				private project_service: Project_Service
 		){
 		this.project = params.data.project;
-
+		this.employee = Object;
 		this.assignments = [];
 
 		this.http.get({
@@ -45,11 +47,12 @@ export class ProjectDetailPage {
 	toggle(assignment){
 		//Make selection change first, and then comunicate with DB.
 		assignment.selected = !assignment.selected;
+		this.employee = assignment.employee;
 
 		if (!!(assignment.selected)) {
-			this.project_service.assign_employee_project(assignment);
+			this.project_service.assign_employee_project(assignment, this.employee, this.project);
 		}else if (!!(!assignment.selected)) {
-			this.project_service.unassign_employee_project(assignment);
+			this.project_service.unassign_employee_project(assignment, this.employee, this.project);
 		}else {
 			alert("Undefinded");
 		}
