@@ -14,6 +14,7 @@ import 'rxjs/add/operator/map';
 export class ProjectDetailPage {
 	project: any;
 	employee: any;
+	employee_project: any;
 	assignments: any;
 
 	constructor(
@@ -24,6 +25,7 @@ export class ProjectDetailPage {
 		){
 		this.project = params.data.project;
 		this.employee = Object;
+		this.employee_project = [];
 		this.assignments = [];
 
 		this.http.get({
@@ -50,7 +52,8 @@ export class ProjectDetailPage {
 		this.employee = assignment.employee;
 
 		if (!!(assignment.selected)) {
-			this.project_service.assign_employee_project(assignment, this.employee, this.project);
+			this.employee_project = this.project_service.find_employee_project(this.employee, this.project);
+			this.project_service.assign_employee_project(assignment, this.employee_project);
 		}else if (!!(!assignment.selected)) {
 			this.project_service.unassign_employee_project(assignment, this.employee, this.project);
 		}else {

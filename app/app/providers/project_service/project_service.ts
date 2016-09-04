@@ -21,11 +21,11 @@ export class Project_Service {
   }
 
   //case 3: input assignment, project and employee
-  assign_employee_project(assignment: Object, employee: Object, project: Object, options?: any) {
-    console.log({employee_project: this.find_employee_project(employee, project)});
+  assign_employee_project(assignment: Object, employee_project: Object, options?: any) {
+    console.log({employee_project: employee_project});
     return this.http.put({
       resource_name: "assignment",
-      urlParams: {employee_project: this.find_employee_project(employee, project)}
+      urlParams: {employee_project: employee_project}
     }, this.assignment
     ).map(res => res.json()
     ).subscribe( data => {
@@ -37,14 +37,14 @@ export class Project_Service {
 
   //input project & employee, and output employee_project
   find_employee_project(employee: Object, project: Object, options?: any) {
-    return this.http.get({
+    this.http.get({
       resource_name: "employee_project",
       urlParams: {employee: employee},
       urlParams2: {project: project}
     }).map(res => res.json()
     ).subscribe( data => {
       //console.log(data.objects);
-      this.employee_projects = data.objects;
+      return this.employee_projects = data.objects;
     });
 //不可使用http調用同步行為
 //    console.log(this.employee_projects);

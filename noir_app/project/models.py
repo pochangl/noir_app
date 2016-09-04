@@ -29,6 +29,7 @@ class EmployeeProject(TimeStampModel):
 
 class Assignment(TimeStampModel):
     employee_project = models.ForeignKey(EmployeeProject, related_name='assignments')
+    project = models.ForeignKey(Project, related_name='assignments')
     assignment = models.CharField(max_length=128)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()

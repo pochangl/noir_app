@@ -3,6 +3,7 @@ from tastypie.resources import ModelResource, fields
 
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import ReadOnlyAuthorization, DjangoAuthorization
+from tastypie.constants import ALL
 
 #from account.models import Contact, Client
 from project.models import Project, Assignment, EmployeeProject
@@ -41,16 +42,21 @@ class EmployeeProjectResource(ModelResource):
 class AssignmentResource(ModelResource):
     employee = fields.ForeignKey(EmployeeResource, attribute="employee", full=True, readonly=True)
     project = fields.ForeignKey(ProjectResource, attribute="project", full=True, readonly=True)
-
+    
+    def build_filters(self, filters=None):
+        if filters is None:
+            filters = {}
+        orm_filters = super(AssignmentResource, self).build_filters(filters)
+        if "project" in filters:
+            orm_filters['project'] = filters['project']
+        return orm_filters
+    
     class Meta:
         queryset = Assignment.objects.all()
         resource_name = "assignment"
         fields = ("id", "employee_project", "assignment", "start_time", "end_time",
                   "check_in", "check_out", "status", "pay", "actual_pay","selected",)
-        filtering = {
-            "employee": ('exact',),
-            "project": ('exact',),
-        }
+
         allowed_methods = ['get','post','put']
         authentcation = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
