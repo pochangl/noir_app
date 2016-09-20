@@ -3,6 +3,7 @@ from django.db import models
 from utils.models import TimeStampModel
 
 from account.models import Contact, Client, Employee
+from html5lib import filters
 
 
 # Create your models here.
@@ -29,7 +30,6 @@ class EmployeeProject(TimeStampModel):
 
 class Assignment(TimeStampModel):
     employee_project = models.ForeignKey(EmployeeProject, related_name='assignments')
-    project = models.ForeignKey(Project, related_name='assignments')
     assignment = models.CharField(max_length=128)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
@@ -44,7 +44,7 @@ class Assignment(TimeStampModel):
     @property
     def employee(self):
         return self.employee_project.employee
-
+    
     @property
     def project(self):
         return self.employee_project.project

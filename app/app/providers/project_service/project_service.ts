@@ -1,6 +1,7 @@
 import { Component, Injectable } from '@angular/core';
 import { Api } from '../../providers/api/api';
 import 'rxjs/add/operator/map';
+import {HTTP_PROVIDERS, Response, Headers, RequestOptions} from "@angular/http";
 
 /*
   Generated class for the Api provider.
@@ -15,41 +16,65 @@ import 'rxjs/add/operator/map';
 export class Project_Service {
   assignment: Object;
   employee_projects: any;
+  //employee: Object;
+  project: Object;
 
   constructor(private http: Api) {
-    this.employee_projects = [];
+    //this.employee_projects = [];
+  }
+
+  getEmployeeProject() {
+    return this.http.get({
+      resource_name: "employee_project"
+    }).map((res:Response) => res.json());
   }
 
   //case 3: input assignment, project and employee
-  assign_employee_project(assignment: Object, employee_project: Object, options?: any) {
-    console.log({employee_project: employee_project});
+  assign_employee_project(
+    assignment: Object,
+    employee: Object,
+    project: Object
+  ) {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    let body = JSON.stringify(assignment);
     return this.http.put({
       resource_name: "assignment",
-      urlParams: {employee_project: employee_project}
-    }, this.assignment
-    ).map(res => res.json()
-    ).subscribe( data => {
-      this.assignment = data.objects;
-    });
-  }
-
-  unassign_employee_project(employee: Object, project: Object, options?: any) {}
-
-  //input project & employee, and output employee_project
-  find_employee_project(employee: Object, project: Object, options?: any) {
-    this.http.get({
-      resource_name: "employee_project",
       urlParams: {employee: employee},
       urlParams2: {project: project}
-    }).map(res => res.json()
+      },
+      body,
+      headers
+    ).map(res => res.json()
     ).subscribe( data => {
-      //console.log(data.objects);
-      return this.employee_projects = data.objects;
+  		assignment = data;
     });
-//不可使用http調用同步行為
-//    console.log(this.employee_projects);
-//    return this.employee_projects;
   }
+
+  unassign_employee_project() {}
+
+  //input project & employee, and output employee_project
+//  find_employee_project(employee_project: Object, employee: Object, project: Object, options?: any) {
+//    function filter_employee_project(obj) {
+//      if (obj.id !== undefined && typeof(obj.id) === 'number' && !isNaN(obj.id) && obj.id === employee.id) {
+//        return true;
+//      } else {
+//        return false;
+//      }
+//    }
+//    var filterd_employee_project = employee_project.map(res.json => res()).filter(filter_employee_project);
+
+//    return this.http.get({
+//      resource_name: "employee_project",
+//      urlParams: {employee: employee},
+//      urlParams2: {project: project}
+//    }).map(res => res.json()
+//    ).subscribe( data => {
+//      this.employee_projects = data.objects;
+//    });
+//不可使用http調用同步行為
+//    return this.employee_projects;
+//  }
 
 
   //  case 1: input assignment

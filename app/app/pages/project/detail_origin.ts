@@ -53,10 +53,12 @@ export class ProjectDetailPage {
 //													assignment.selected = data.selected;
 //										});
 
-		this.http.put({resource_name: "assignment", id: assignment.id}, assignment
-		).map(res => res.json()
-		).subscribe( data => {
-			assignment.selected = data.selected;
-		})
+		if (!!(assignment.selected)) {
+			this.http.put({resource_name: "assignment", id: assignment.id}, assignment
+			).map(res => res.json()
+			).subscribe( data => {
+				assignment.selected = data.selected;
+			})
+		}
 	}
 }

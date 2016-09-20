@@ -26,6 +26,7 @@ class EmployeeProjectResource(ModelResource):
     employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="employee_projects", full=True, readonly=True)
     project = fields.ForeignKey(ProjectResource, attribute="project", related_name="employee_projects", full=True, readonly=True)
 
+
     class Meta:
         queryset = EmployeeProject.objects.all()
         resource_name = "employee_project"
@@ -42,13 +43,19 @@ class EmployeeProjectResource(ModelResource):
 class AssignmentResource(ModelResource):
     employee = fields.ForeignKey(EmployeeResource, attribute="employee", full=True, readonly=True)
     project = fields.ForeignKey(ProjectResource, attribute="project", full=True, readonly=True)
-    
-    def build_filters(self, filters=None):
+
+    def build_filters(self, filters = None):
         if filters is None:
             filters = {}
         orm_filters = super(AssignmentResource, self).build_filters(filters)
-        if "project" in filters:
-            orm_filters['project'] = filters['project']
+        try:
+            orm_filters["employee_project__project__exact"] = orm_filters.pop("project__exact")
+        except:
+            pass
+        try:
+            orm_filters["employee_project__employee__exact"] = orm_filters.pop("employee__exact")
+        except:
+            pass
         return orm_filters
     
     class Meta:
@@ -56,8 +63,9 @@ class AssignmentResource(ModelResource):
         resource_name = "assignment"
         fields = ("id", "employee_project", "assignment", "start_time", "end_time",
                   "check_in", "check_out", "status", "pay", "actual_pay","selected",)
-
         allowed_methods = ['get','post','put']
         authentcation = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
+        filtering = {"project": ("exact",),
+                     "employee": ("exact",),}
         

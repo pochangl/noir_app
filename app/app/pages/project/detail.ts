@@ -14,7 +14,7 @@ import 'rxjs/add/operator/map';
 export class ProjectDetailPage {
 	project: any;
 	employee: any;
-	employee_project: any;
+	employee_projects: any;
 	assignments: any;
 
 	constructor(
@@ -25,19 +25,25 @@ export class ProjectDetailPage {
 		){
 		this.project = params.data.project;
 		this.employee = Object;
-		this.employee_project = [];
+		this.employee_projects = [];
 		this.assignments = [];
 
 		this.http.get({
 			resource_name: "assignment",
-//property不支援filtering
-//			urlParams: {
-//				project: this.project.id,
-//			}
 		}).map(
 			response => response.json()
 		).subscribe((data)=>{
 			this.assignments = data.objects;
+		});
+		this.http.get({
+			resource_name: "employee_project",
+			urlParams: {
+				"project": this.project,
+			}
+		}).map(
+			response => response.json()
+		).subscribe((data)=>{
+			this.employee_projects = data.objects;
 		});
 	}
 
@@ -52,10 +58,21 @@ export class ProjectDetailPage {
 		this.employee = assignment.employee;
 
 		if (!!(assignment.selected)) {
-			this.employee_project = this.project_service.find_employee_project(this.employee, this.project);
-			this.project_service.assign_employee_project(assignment, this.employee_project);
+			this.http.put({
+	      resource_name: "assignment",
+				id: assignment.id
+	    }, assignment
+			).map(res => res.json()
+			).subscribe(
+				data => {
+					assignment = data.objects;
+				},
+				error => {
+					console.error("Error!");
+				}
+			)
 		}else if (!!(!assignment.selected)) {
-			this.project_service.unassign_employee_project(assignment, this.employee, this.project);
+			//this.project_service.unassign_employee_project();
 		}else {
 			alert("Undefinded");
 		}
