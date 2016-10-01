@@ -20,6 +20,7 @@ class Project(TimeStampModel):
 class EmployeeProject(TimeStampModel):
     employee = models.ForeignKey(Employee, related_name='employee_projects')
     project = models.ForeignKey(Project, related_name='employee_projects')
+    selected = models.BooleanField()
 
     def __str__(self):
         return "%s - %s" % (self.project.name, self.employee.contact.name)
@@ -29,6 +30,9 @@ class EmployeeProject(TimeStampModel):
 
 
 class Assignment(TimeStampModel):
+    """
+        Bug: please fix assignment conflict
+    """
     employee_project = models.ForeignKey(EmployeeProject, related_name='assignments')
     assignment = models.CharField(max_length=128)
     start_time = models.DateTimeField()

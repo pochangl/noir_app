@@ -31,7 +31,7 @@ class EmployeeProjectResource(ModelResource):
         queryset = EmployeeProject.objects.all()
         resource_name = "employee_project"
         include_resource_uri = False
-        fields = ("id", )
+        fields = ("id", "selected", )
         filtering = {
             "employee": ('exact',),
             "project": ('exact',),
@@ -44,10 +44,10 @@ class AssignmentResource(ModelResource):
     employee = fields.ForeignKey(EmployeeResource, attribute="employee", full=True, readonly=True)
     project = fields.ForeignKey(ProjectResource, attribute="project", full=True, readonly=True)
 
-    def build_filters(self, filters = None):
+    def build_filters(self, filters = None, **kwargs):
         if filters is None:
             filters = {}
-        orm_filters = super(AssignmentResource, self).build_filters(filters)
+        orm_filters = super(AssignmentResource, self).build_filters(filters, **kwargs)
         try:
             orm_filters["employee_project__project__exact"] = orm_filters.pop("project__exact")
         except:
