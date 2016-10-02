@@ -56,14 +56,19 @@ export class ProjectDetailPage {
 				"project": employee_project.project
 			}
 		}).map(
-			response => response.text()
+			response => response.json()
 		).subscribe(
 			//若用map格式為list,抓不到id;
 			//若不用map格式為response
 			//Q:如何以dictionary方式抓出assignment.id？
-      data => this.ind_assignment_id = data,
-      err => console.error(err),
-			() => console.log(this.ind_assignment_id)
+      data => {
+				if(data.meta.total_count == 0){
+					this.createAssignment(this.ind_assignment);
+				}else{
+					this.ind_assignment_id = data.objects[0].id;
+				}
+			},
+      err => console.error(err)
 		);
 	}
 
@@ -78,8 +83,7 @@ export class ProjectDetailPage {
 		});
 	}
 
-	putAssignment(ind_assignment) {
-		console.log(this.ind_assignment_id);
+	putAssignment(ind_assignment: Object) {
 		//ind_assignment_id為undefined,造成data lost
 		/*
 		return this.http.put({
@@ -98,7 +102,7 @@ export class ProjectDetailPage {
 		*/
 	}
 
-	postAssignment(ind_assignment) {
+	createAssignment(ind_assignment){
 
 	}
 
@@ -108,7 +112,6 @@ export class ProjectDetailPage {
 	}
 
 	toggle(employee_project) {
-		console.log(employee_project);
 		// get assginment from employee_project
 		// indicate assignment by employee_porject
 		// 取消用函數，直接利用data跟error進行判斷
@@ -116,6 +119,7 @@ export class ProjectDetailPage {
 		// this.indicateAssignment(employee_project);
 		this.http.get({
 			resource_name: "assignment",
+			//不可調用不同步行為，先建array存對應的id
 			id: this.indicateAssignmentId(employee_project)
 		}).map(
 			response => response.json()
@@ -124,21 +128,18 @@ export class ProjectDetailPage {
 			data => {
 				this.ind_assignment = data;
 				// put assignment
-				this.putAssignment(this.ind_assignment);
+						if(data.meta.total_count = 0){
+							// create new assignment
+						  employee_project.selected = !employee_project.selected;
+						  this.createAssignment(this.ind_assignment);
+						}else{
+							//success
+							// put assignment
+							this.putAssignment(this.ind_assignment);
+						}
 			},
-
 			//error subscribe data.meta.total_count = 0
-			err => {
-					if(err.meta.total_count = 0){
-						// create new assignment
-					  employee_project.selected = !employee_project.selected;
-					  this.postAssignment(this.ind_assignment);
-					}else{
-						//success
-						// put assignment
-						this.putAssignment(this.ind_assignment);
-					}
-			}
+			err => console.error(err)
 			//() => console.log(this.ind_assignment)
 		);
 	}

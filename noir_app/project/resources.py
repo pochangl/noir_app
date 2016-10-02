@@ -56,6 +56,7 @@ class AssignmentResource(ModelResource):
             orm_filters["employee_project__employee__exact"] = orm_filters.pop("employee__exact")
         except:
             pass
+        print orm_filters
         return orm_filters
     
     class Meta:
