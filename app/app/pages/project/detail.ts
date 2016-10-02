@@ -29,7 +29,7 @@ export class ProjectDetailPage {
 		this.employee = Object;
 		this.employee_projects = [];
 		this.assignments = [];
-		this.ind_assignment = [];
+		this.ind_assignment = {};
 
 		this.http.get({
 			resource_name: "employee_project",
@@ -54,12 +54,12 @@ export class ProjectDetailPage {
 				"project": employee_project.project
 			}
 		}).map(
-			response => response.json()
+			response => response.text()
 		).subscribe(
 			//若用map格式為list,抓不到id;
 			//若不用map格式為response
 			//Q:如何以dictionary方式抓出assignment.id？
-      data => this.ind_assignment_id = data.objects,
+      data => this.ind_assignment_id = data,
       err => console.error(err),
 			() => console.log(this.ind_assignment_id)
 		);

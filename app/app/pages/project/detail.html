@@ -6,7 +6,7 @@
 
 <ion-content padding class="ProjectDetailPage">
 	<ion-list>
-		<ion-item *ngFor="let employee_project of employee_projects">
+		<ion-item *ngFor="let employee_project of employee_projects | selected">
 			<ion-label>{{ employee_project.employee.contact.name }}</ion-label>
 			<ion-checkbox checked="{{employee_project.selected}}" (click)="toggle(employee_project)"></ion-checkbox>
 		</ion-item>
