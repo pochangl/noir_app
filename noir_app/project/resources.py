@@ -19,7 +19,7 @@ class ProjectResource(ModelResource):
         queryset = Project.objects.all()
         resource_name = "project"
         fields = ("id","name","number_needed")
-        authentcation = ApiKeyAuthentication()
+        authentication = ApiKeyAuthentication()
         
         
 class EmployeeProjectResource(ModelResource):
@@ -36,7 +36,7 @@ class EmployeeProjectResource(ModelResource):
             "employee": ('exact',),
             "project": ('exact',),
         }
-        authentcation = ApiKeyAuthentication()
+        authentication = ApiKeyAuthentication()
         authorization = ReadOnlyAuthorization()
 
 
@@ -64,7 +64,7 @@ class AssignmentResource(ModelResource):
         fields = ("id", "employee_project", "assignment", "start_time", "end_time",
                   "check_in", "check_out", "status", "pay", "actual_pay","selected",)
         allowed_methods = ['get','post','put']
-        authentcation = ApiKeyAuthentication()
+        authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
         filtering = {"project": ("exact",),
                      "employee": ("exact",),}

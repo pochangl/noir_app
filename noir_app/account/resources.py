@@ -66,7 +66,7 @@ class ContactResource(ModelResource):
         queryset = Contact.objects.all()
         resource_name = "contact"
         fields = ("id", "name")
-        authentcation = ApiKeyAuthentication()
+        authentication = ApiKeyAuthentication()
 
 
 class ClientResource(ModelResource):
@@ -74,7 +74,7 @@ class ClientResource(ModelResource):
         queryset = Client.objects.all()
         resource_name = "client"
         fields = ("id", "company",)
-        authentcation = ApiKeyAuthentication()
+        authentication = ApiKeyAuthentication()
 
 
 class EmployeeResource(ModelResource):
@@ -97,5 +97,5 @@ class SkillResource(ModelResource):
         queryset = Skill.objects.all()
         resource_name = "skill"
         fields = ("id","name",)
-        authentcation = ApiKeyAuthentication()
+        authentication = ApiKeyAuthentication()
              

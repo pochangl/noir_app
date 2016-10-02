@@ -14,7 +14,7 @@ class TransactionResource(ModelResource):
         queryset = Transaction.objects.all()
         resource_name = "transaction"
         fields = ("id", "amount", "note")
-        authentcation = ApiKeyAuthentication()
+        authentication = ApiKeyAuthentication()
         
         
 class DebtResource(TransactionResource):
@@ -30,7 +30,7 @@ class DebtResource(TransactionResource):
             "employee": ('exact',),
         }
         allowed_methods = ['get','post','put']
-        authentcation = ApiKeyAuthentication()
+        authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
 
 
@@ -41,7 +41,7 @@ class ReceivableResource(TransactionResource):
         queryset = Receivable.objects.all()
         resource_name = "receivable"
         fields = ("id", "amount", "note",)
-        authentcation = ApiKeyAuthentication()
+        authentication = ApiKeyAuthentication()
         
         
 class PayCheckResource(TransactionResource):
@@ -56,6 +56,6 @@ class PayCheckResource(TransactionResource):
             "employee": ('exact',),
         }
         allowed_methods = ['get','post','put']
-        authentcation = ApiKeyAuthentication()
+        authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
         

@@ -20,7 +20,7 @@ class DayOffResource(ModelResource):
             "employee": ('exact',),
         }
         allowed_methods = ['get','post','put']
-        authentcation = ApiKeyAuthentication()
+        authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
  
  
@@ -31,7 +31,7 @@ class EmployeePreferenceResource(ModelResource):
         queryset = EmployeePreference.objects.all()
         resource_name = "employee_preference"
         fields = ("id", "employee_preference",)
-        authentcation = ApiKeyAuthentication()
+        authentication = ApiKeyAuthentication()
         
    
 class ProjectPreferenceResource(ModelResource):
@@ -41,5 +41,5 @@ class ProjectPreferenceResource(ModelResource):
         queryset = ProjectPreference.objects.all()
         resource_name = "project_preference"
         fields = ("id", "employee_priority", "project_priority",)
-        authentcation = ApiKeyAuthentication()
+        authentication = ApiKeyAuthentication()
         
