@@ -5,10 +5,12 @@ import { Project_Service } from '../../providers/project_service/project_service
 import { HomePage } from '../general/home';
 import { Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { SelectedPipe } from "../pipes/selected_account";
 
 @Component({
 	templateUrl: 'build/pages/project/detail.html',
-	providers: [Api, Project_Service]
+	providers: [Api, Project_Service],
+	pipes: [SelectedPipe]
 })
 
 export class ProjectDetailPage {
