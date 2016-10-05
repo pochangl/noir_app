@@ -14,6 +14,7 @@ import { HomePage } from '../general/home';
 export class DayoffPage {
 	employee: any;
 	dayoffs: any;
+	id_count: number;
 
 	constructor(
 		private nav: NavController,
@@ -22,21 +23,40 @@ export class DayoffPage {
 	){
 		this.employee = params.data.employee;
 		this.dayoffs = [];
+		this.id_count = 0;
 		this.http.get({
 			resource_name: "dayoff",
-			id: this.employee.id,
-		}).map(response => response.json()
-		).subscribe((data)=>{
-			this.dayoffs = data;
-		});
+			urlParams: {
+				"employee": this.employee.id,
+			}
+		}).map(
+			response => response.json()
+		).subscribe(
+			data => {
+				//使用id_count以避免不止一筆資料之情形。
+				//直接把[id_count]加在objects後面，不知道有無後遺症？
+				this.id_count = data.objects.length;
+				this.dayoffs = data.objects[this.id_count-1];
+			},
+			err => console.error(err)
+		);
 	}
 
-
 	submit(){
-//		this.http.put(
-//			'/api/v1/dayoff/'+ this.employee.id+'/?format=json', {"dayoff": this.dayoffs}
-//		).map(response => response.json()
-//		);
+		this.http.put(
+			{
+				resource_name: "dayoff",
+				//若用post,如何取得現有dayoff最大的一筆id?
+				id: this.dayoffs.id,
+			},this.dayoffs
+		).subscribe(
+			data=>{
+				//this.dayoffs = data;
+			},
+			err => console.error(err)
+		);
+/*
 		this.nav.push(HomePage);
+		*/
 	}
 }

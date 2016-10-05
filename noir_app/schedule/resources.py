@@ -9,7 +9,7 @@ from account.resources import EmployeeResource
 from project.resources import EmployeeProjectResource
 
 class DayOffResource(ModelResource):
-    employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="dayoffs")
+    employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="dayoffs", full=True, readonly=True)
     
     class Meta:
         queryset = DayOff.objects.all()
