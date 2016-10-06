@@ -14,7 +14,7 @@ import { HomePage } from '../general/home';
 export class DayoffPage {
 	employee: any;
 	dayoffs: any;
-	id_count: number;
+	dayoffs_count: number;
 
 	constructor(
 		private nav: NavController,
@@ -23,7 +23,7 @@ export class DayoffPage {
 	){
 		this.employee = params.data.employee;
 		this.dayoffs = [];
-		this.id_count = 0;
+		this.dayoffs_count = 0;
 		this.http.get({
 			resource_name: "dayoff",
 			urlParams: {
@@ -35,8 +35,8 @@ export class DayoffPage {
 			data => {
 				//使用id_count以避免不止一筆資料之情形。
 				//直接把[id_count]加在objects後面，不知道有無後遺症？
-				this.id_count = data.objects.length;
-				this.dayoffs = data.objects[this.id_count-1];
+				this.dayoffs_count = data.objects.length;
+				this.dayoffs = data.objects[this.dayoffs_count-1];
 			},
 			err => console.error(err)
 		);
