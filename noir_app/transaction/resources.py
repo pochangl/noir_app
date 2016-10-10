@@ -51,7 +51,7 @@ class PayCheckResource(TransactionResource):
         queryset = PayCheck.objects.all()
         resource_name = "paycheck"
         include_resource_uri = False
-        fields = ("id", "amount", "reason_code", "reason")
+        fields = ("id", "amount", "reason_code", "reason", "create_time", "modify_time")
         filtering = {
             "employee": ('exact',),
         }
