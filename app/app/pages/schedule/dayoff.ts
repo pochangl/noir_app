@@ -55,8 +55,7 @@ export class DayoffPage {
 			},
 			err => console.error(err)
 		);
-/*
+
 		this.nav.push(HomePage);
-		*/
 	}
 }

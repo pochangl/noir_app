@@ -63,7 +63,8 @@ class AssignmentResource(ModelResource):
         queryset = Assignment.objects.all()
         resource_name = "assignment"
         fields = ("id", "employee_project", "assignment", "start_time", "end_time",
-                  "check_in", "check_out", "status", "pay", "actual_pay","selected",)
+                  "check_in", "check_out", "modify_time", 
+                  "status", "pay", "actual_pay","selected",)
         allowed_methods = ['get','post','put']
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()

@@ -44,7 +44,7 @@ class Assignment(TimeStampModel):
     actual_pay = models.IntegerField()
     selected = models.BooleanField()
     assignee = models.ForeignKey('auth.User')
-
+        
     @property
     def employee(self):
         return self.employee_project.employee

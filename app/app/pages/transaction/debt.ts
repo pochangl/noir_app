@@ -38,11 +38,18 @@ export class DebtPage {
 		if(this.debt.amount === undefined){
 			alert("not ready");
 			return;
+		}else{
+			this.http.put(
+				{
+					resource_name: "debt",
+					id: this.debt.id
+				}, this.debt
+			).subscribe(
+				data=>{},
+				err => console.error(err)
+			);
 		}
-		//this.http.put(
-		//	'/api/v1/debt/?employee='+ this.employee.id +'&format=json', {"amount": this.amount}
-		//).map(response => response.json()
-		//);
-		this.nav.push(HomePage);
+
+		//this.nav.push(HomePage);
 	}
 }
