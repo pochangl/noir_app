@@ -1,6 +1,6 @@
 #-*- coding: utf-8 -*-
 from account.models import RegistrationToken, Contact, Client, Employee, Skill
-from project.models import Project, EmployeeProject, Assignment
+from project.models import Project, EmployeeAssignment, Assignment
 from transaction.models import Transaction, Debt, Receivable, PayCheck
 from schedule.models import DayOff, EmployeePreference, ProjectPreference
 import datetime
@@ -8,10 +8,6 @@ import datetime
 from django.contrib.auth.models import User
 edward = User.objects.get(username="edward")
 
-#account設定
-#  pAccountAuth1 = RegistrationToken(user="edward", token="1c62cc576c1e505f82521ff373ce0f860b21e71a",
-#                                    expiration="2999-12-31T18:43:38")
-#  pAccountAuth1.save()
 
 pAccount1 = Contact(name="Mark", title="foreman", address="Kaohsiung", phone="072234567",
                    mobile="0987654321", pid="E123456711", birthday="1980-01-01")
@@ -35,40 +31,58 @@ pAccountE1 = Employee(contact=pAccount1, title="staff")
 pAccountE1.save()
 pAccountE2 = Employee(contact=pAccount2, title="manager")
 pAccountE2.save()
+pAccountE3 = Employee(contact=pAccount3, title="staff")
+pAccountE3.save()
+pAccountE4 = Employee(contact=pAccount4, title="staff")
+pAccountE4.save()
 
 pAccountS1 = Skill(employee=pAccountE1, name="striker")
 pAccountS1.save()
 pAccountS2 = Skill(employee=pAccountE2, name="welder")
 pAccountS2.save()
+pAccountS3 = Skill(employee=pAccountE3, name="striker")
+pAccountS3.save()
+pAccountS4 = Skill(employee=pAccountE4, name="welder")
+pAccountS4.save()
 
 #project設定
-pProject1 = Project(contact=pAccount1, client=pAccountC1, name="SkyTower", number_needed="2")
+pProject1 = Project(contact=pAccount1, client=pAccountC1, name="SkyTower")
 pProject1.save()
-pProject2 = Project(contact=pAccount2, client=pAccountC2, name="MoonLand", number_needed="3")
+pProject2 = Project(contact=pAccount2, client=pAccountC2, name="MoonLand")
 pProject2.save()
 
-pProjectEP1 = EmployeeProject(employee=pAccountE1, project=pProject1, selected=True)
-pProjectEP1.save()
-pProjectEP2 = EmployeeProject(employee=pAccountE2, project=pProject2, selected=True)
-pProjectEP2.save()
-pProjectEP3 = EmployeeProject(employee=pAccountE1, project=pProject2, selected=True)
-pProjectEP3.save()
-pProjectEP4 = EmployeeProject(employee=pAccountE2, project=pProject1, selected=True)
-pProjectEP4.save()
+
+pProjectA1 = Assignment(project=pProject1, assignment="assignment A",
+                       start_date="2016-01-01", end_date="2016-01-01",
+                       start_time="08:00", end_time="17:00",
+                       status="approved", 
+                       assignee=edward, number_needed="2", serial="2016-01-01-SkyTower")
+pProjectA1.save()
+pProjectA2 = Assignment(project=pProject2, assignment="assignment B",
+                       start_date="2016-01-01", end_date="2016-01-01",
+                       start_time="08:00", end_time="17:00",
+                       status="approved", 
+                       assignee=edward, number_needed="3", serial="2016-01-01-MoonLand")
+pProjectA2.save()
 
 
-pProjectA = Assignment(employee_project=pProjectEP1, assignment="assignment A",
-                       start_time="2016-01-01 08:00", end_time="2016-01-01 17:00",
-                       check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",
-                       status="approved", pay="1000", actual_pay="1000", selected=True,
-                       assignee=edward)
-pProjectA.save()
-pProjectA = Assignment(employee_project=pProjectEP2, assignment="assignment B",
-                       start_time="2016-01-01 08:00", end_time="2016-01-01 17:00",
-                       check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",
-                       status="approved", pay="1000", actual_pay="1000", selected=True,
-                       assignee=edward)
-pProjectA.save()
+pProjectEA1 = EmployeeAssignment(employee=pAccountE1, assignment=pProjectA1, selected=True,
+                              check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",
+                              pay="1000", actual_pay="1000",)
+pProjectEA1.save()
+pProjectEA2 = EmployeeAssignment(employee=pAccountE2, assignment=pProjectA2, selected=True,
+                              check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",
+                              pay="1000", actual_pay="1000", )
+pProjectEA2.save()
+pProjectEA3 = EmployeeAssignment(employee=pAccountE3, assignment=pProjectA2, selected=True,
+                              check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",
+                              pay="1000", actual_pay="1000",)
+pProjectEA3.save()
+pProjectEA4 = EmployeeAssignment(employee=pAccountE4, assignment=pProjectA1, selected=True,
+                              check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",
+                              pay="1000", actual_pay="1000", )
+pProjectEA4.save()
+
 
 #transaction設定
 pTransactionD1 = Debt(amount="1500", note="Note", employee=pAccountE1)
@@ -108,14 +122,14 @@ pScheduleD = DayOff(employee=pAccountE2,
                     end_date="2016-02-02", end_time="17:00")
 pScheduleD.save()
 
-pScheduleEP = EmployeePreference(employee_project=pProjectEP1, employee_preference="1")
-pScheduleEP.save()
-pScheduleEP = EmployeePreference(employee_project=pProjectEP2, employee_preference="1")
-pScheduleEP.save()
+pScheduleEA1 = EmployeePreference(employee_assignment=pProjectEA1, employee_preference="1")
+pScheduleEA1.save()
+pScheduleEA2 = EmployeePreference(employee_assignment=pProjectEA2, employee_preference="1")
+pScheduleEA2.save()
 
-pSchedulePP = ProjectPreference(employee_project=pProjectEP1,employee_priority="high",
+pSchedulePP = ProjectPreference(employee_assignment=pProjectEA1,employee_priority="high",
                                 project_priority="middle")
 pSchedulePP.save()
-pSchedulePP = ProjectPreference(employee_project=pProjectEP2,employee_priority="middle",
+pSchedulePP = ProjectPreference(employee_assignment=pProjectEA2,employee_priority="middle",
                                 project_priority="high")
 pSchedulePP.save()
