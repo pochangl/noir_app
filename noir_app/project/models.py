@@ -11,47 +11,52 @@ class Project(TimeStampModel):
     contact = models.ForeignKey(Contact, related_name='projects')
     client = models.ForeignKey(Client, related_name='projects')
     name = models.CharField(max_length=128)
-    number_needed = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.name
 
-
-class EmployeeProject(TimeStampModel):
-    employee = models.ForeignKey(Employee, related_name='employee_projects')
-    project = models.ForeignKey(Project, related_name='employee_projects')
-    selected = models.BooleanField()
-
-    def __str__(self):
-        return "%s - %s" % (self.project.name, self.employee.contact.name)
-
-    class Meta:
-        unique_together = (("employee", "project"),)
 
 
 class Assignment(TimeStampModel):
     """
         Bug: please fix assignment conflict
     """
-    employee_project = models.ForeignKey(EmployeeProject, related_name='assignments')
+    project = models.ForeignKey(Project, related_name='assignments')
+#     employee_assignment = models.ForeignKey(EmployeeAssignment, related_name='assignments')
     assignment = models.CharField(max_length=128)
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
-    check_in = models.DateTimeField()
-    check_out = models.DateTimeField()
+    start_date = models.DateField()
+    end_date = models.DateField()
+    start_time = models.TimeField()
+    end_time = models.TimeField()
     status = models.CharField(max_length=128)
-    pay = models.IntegerField()
-    actual_pay = models.IntegerField()
-    selected = models.BooleanField()
     assignee = models.ForeignKey('auth.User')
+    number_needed = models.IntegerField(null=True, blank=True)
+    serial = models.CharField(max_length=128)
         
-    @property
-    def employee(self):
-        return self.employee_project.employee
-    
-    @property
-    def project(self):
-        return self.employee_project.project
+#     @property
+#     def employee(self):
+#         return self.employee_assignment.employee
+#       
+#     @property
+#     def project(self):
+#         return self.employee_assignment.project
 
     def __str__(self):
-        return self.assignment
+        return self.serial
+    
+
+class EmployeeAssignment(TimeStampModel):
+    employee = models.ForeignKey(Employee, related_name='employee_assignments')
+    assignment = models.ForeignKey(Assignment, related_name='employee_assignments')
+    selected = models.BooleanField()
+    check_in = models.DateTimeField()
+    check_out = models.DateTimeField()
+    pay = models.IntegerField()
+    actual_pay = models.IntegerField()
+
+    def __str__(self):
+        return "%s - %s" % (self.assignment.serial, self.employee.contact.name)
+
+#     class Meta:
+#         unique_together = (("employee", "assignment"),)
+

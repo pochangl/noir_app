@@ -6,7 +6,7 @@ from tastypie.authorization import ReadOnlyAuthorization, DjangoAuthorization
 from schedule.models import DayOff, EmployeePreference, ProjectPreference
         
 from account.resources import EmployeeResource
-from project.resources import EmployeeProjectResource
+from project.resources import EmployeeAssignmentResource
 
 class DayOffResource(ModelResource):
     employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="dayoffs", full=True, readonly=True)
@@ -25,7 +25,7 @@ class DayOffResource(ModelResource):
  
  
 class EmployeePreferenceResource(ModelResource):
-    employee_project = fields.ForeignKey(EmployeeProjectResource, attribute="employee_project", related_name="employee_preferences")
+    employee_assignment = fields.ForeignKey(EmployeeAssignmentResource, attribute="employee_assignment", related_name="employee_preferences")
     
     class Meta:
         queryset = EmployeePreference.objects.all()
@@ -35,7 +35,7 @@ class EmployeePreferenceResource(ModelResource):
         
    
 class ProjectPreferenceResource(ModelResource):
-    employee_project = fields.ForeignKey(EmployeeProjectResource, attribute="employee_project", related_name="project_preferences")
+    employee_assignment = fields.ForeignKey(EmployeeAssignmentResource, attribute="employee_assignment", related_name="project_preferences")
     
     class Meta:
         queryset = ProjectPreference.objects.all()
