@@ -50,6 +50,6 @@ export class DebtPage {
 			);
 		}
 
-		//this.nav.push(HomePage);
+		this.nav.push(HomePage);
 	}
 }

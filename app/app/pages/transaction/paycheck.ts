@@ -50,6 +50,6 @@ export class PayCheckPage {
 			);
 		}
 
-		//this.nav.push(HomePage);
+		this.nav.push(HomePage);
 	}
 }

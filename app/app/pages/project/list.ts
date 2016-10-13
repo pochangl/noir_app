@@ -11,12 +11,15 @@ import {ProjectDetailPage} from './detail';
 export class ProjectListPage {
 	projects: any;
 	assignments: any;
+  assign_date:any;
 
 	constructor(
 				private nav: NavController,
 			  params: NavParams,
 				private http: Api
-		){
+	){
+    this.assign_date = params.data.assign_date;
+    // console.log(params.data);
 		this.projects = [];
 		this.http.get({
         resource_name: "project"

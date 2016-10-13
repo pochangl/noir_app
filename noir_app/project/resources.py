@@ -60,6 +60,7 @@ class AssignmentResource(ModelResource):
         return orm_filters
     
     class Meta:
+        always_return_data = True
         queryset = Assignment.objects.all()
         resource_name = "assignment"
         fields = ("id", "employee_project", "assignment", "start_time", "end_time",

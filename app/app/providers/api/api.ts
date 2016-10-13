@@ -20,11 +20,11 @@ class Url{
     "resource_name": string,
     "urlParams"?: Object,
   }){
-    this.id = kwargs.id ? kwargs.id + "/": "";
+    this.id = (!!kwargs.id || kwargs.id === "") ? kwargs.id + "/": "";
     this.resource_name= kwargs.resource_name + "/";
     this.urlParams = kwargs.urlParams ? kwargs.urlParams: {};
     this.username = "edward";
-    this.api_key = "1c62cc576c1e505f82521ff373ce0f860b21e71a";
+    this.api_key = "0128467bab0f1f79341501efececd01625e31d4d";
   }
 
   getQueryString(){
@@ -63,6 +63,9 @@ export class Api {
     return this.http.post(this.preprocess_url(url), body, options);
   }
   put(url: any, body, options?: any) {
+    if("id" in url && !url.id){
+      url.id = "";
+    }
     return this.http.put(this.preprocess_url(url), body, options);
   }
   delete(url: any, options?: any) {

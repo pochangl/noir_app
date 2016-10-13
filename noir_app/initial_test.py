@@ -1,12 +1,18 @@
 #-*- coding: utf-8 -*-
-from account.models import Contact, Client, Employee, Skill
+from account.models import RegistrationToken, Contact, Client, Employee, Skill
 from project.models import Project, EmployeeProject, Assignment
 from transaction.models import Transaction, Debt, Receivable, PayCheck
 from schedule.models import DayOff, EmployeePreference, ProjectPreference
 import datetime
 
+from django.contrib.auth.models import User
+edward = User.objects.get(username="edward")
 
 #account設定
+#  pAccountAuth1 = RegistrationToken(user="edward", token="1c62cc576c1e505f82521ff373ce0f860b21e71a",
+#                                    expiration="2999-12-31T18:43:38")
+#  pAccountAuth1.save()
+
 pAccount1 = Contact(name="Mark", title="foreman", address="Kaohsiung", phone="072234567",
                    mobile="0987654321", pid="E123456711", birthday="1980-01-01")
 pAccount1.save()
@@ -41,25 +47,27 @@ pProject1.save()
 pProject2 = Project(contact=pAccount2, client=pAccountC2, name="MoonLand", number_needed="3")
 pProject2.save()
 
-pProjectEP1 = EmployeeProject(employee=pAccountE1, project=pProject1)
+pProjectEP1 = EmployeeProject(employee=pAccountE1, project=pProject1, selected=True)
 pProjectEP1.save()
-pProjectEP2 = EmployeeProject(employee=pAccountE2, project=pProject2)
+pProjectEP2 = EmployeeProject(employee=pAccountE2, project=pProject2, selected=True)
 pProjectEP2.save()
-pProjectEP3 = EmployeeProject(employee=pAccountE1, project=pProject2)
+pProjectEP3 = EmployeeProject(employee=pAccountE1, project=pProject2, selected=True)
 pProjectEP3.save()
-pProjectEP4 = EmployeeProject(employee=pAccountE2, project=pProject1)
+pProjectEP4 = EmployeeProject(employee=pAccountE2, project=pProject1, selected=True)
 pProjectEP4.save()
 
 
 pProjectA = Assignment(employee_project=pProjectEP1, assignment="assignment A",
                        start_time="2016-01-01 08:00", end_time="2016-01-01 17:00",
                        check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",
-                       status="approved", pay="1000", actual_pay="1000", selected=True)
+                       status="approved", pay="1000", actual_pay="1000", selected=True,
+                       assignee=edward)
 pProjectA.save()
 pProjectA = Assignment(employee_project=pProjectEP2, assignment="assignment B",
                        start_time="2016-01-01 08:00", end_time="2016-01-01 17:00",
                        check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",
-                       status="approved", pay="1000", actual_pay="1000", selected=True)
+                       status="approved", pay="1000", actual_pay="1000", selected=True,
+                       assignee=edward)
 pProjectA.save()
 
 #transaction設定

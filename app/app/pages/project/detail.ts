@@ -60,8 +60,8 @@ export class ProjectDetailPage {
 			response => response.json()
 		).subscribe(
 			data => {
-				this.assignments_count = data.objects.length;
-				this.assignments = data.objects[this.assignments_count-1];
+				// this.assignments_count = data.objects.length;
+				this.assignments = data.objects;
 			},
 			err => console.error(err)
 		);
@@ -75,42 +75,66 @@ export class ProjectDetailPage {
 */
 
 	toggle(employee_project) {
-		this.assignments = this.assignments.filter(
-						id => this.assignments.employee.id === employee_project.id);
+		var ass = this.assignments.filter(
+						assignment => {
+									console.log("--------");
+									console.log(assignment.employee.id);
+									console.log(assignment.project.id);
+									console.log(employee_project.employee.id);
+									console.log(employee_project.project.id);
+									return assignment.employee.id === employee_project.employee.id
+									&& assignment.project.id === employee_project.project.id;
+							})[0];
+		console.log(ass);
+		// if(!ass){
+		// 	ass = {employee: employee_project.employee, assignment.project: employee_project.project.id};
+		// }
+
+		//this part have not checked yet
+		//change employee_project.selected and assignmnets.selected status first,
+		//then update to the db
+		employee_project.selected = !employee_project.selected;
+		this.assignments.selected = employee_project.selected;
+		// console.log(employee_project.selected, this.assignments.selected);
+
 		// get assginment from employee_project
 		// indicate assignment by employee_porject
 		// 取消用函數，直接利用data跟error進行判斷
 		// ind_assignment若放在外面，則第一次按抓不到,第二次按才會抓到,原因不明
 		// this.indicateAssignment(employee_project);
+
+		// create new assignment
+		// employee_project.selected = !employee_project.selected;
+		// this.createAssignment(this.ind_assignment);
 		this.http.put(
 			{
 				resource_name: "assignment",
 				//不可調用不同步行為，先建array存對應的id
 				//id: this.indicateAssignmentId(employee_project)
-				id: this.assignments.id
-			}, this.assignments
+				id: ass.id
+			}, ass
 		).map(
 			response => response.json()
 		).subscribe(
 			//success
 			data => {
-				this.ind_assignment = data;
-				// put assignment
-						if(data.meta.total_count = 0){
-							// create new assignment
-						  employee_project.selected = !employee_project.selected;
-						  this.createAssignment(this.ind_assignment);
-						}else{
-							//success
-							// put assignment
-							this.putAssignment(this.ind_assignment);
-						}
-			},
-			//error subscribe data.meta.total_count = 0
-			err => console.error(err)
-			//() => console.log(this.ind_assignment)
-		);
-	}
+				// this.ind_assignment = data;
+				// // put assignment
+				// 		if(data.meta.total_count = 0){
+				// 			// create new assignment
+				// 		  // employee_project.selected = !employee_project.selected;
+				// 		  this.createAssignment(this.ind_assignment);
+				// 		}else{
+				// 			//success
+				// 			// put assignment
+				// 			this.putAssignment(this.ind_assignment);
+				// 		}
+				},
+				//error subscribe data.meta.total_count = 0
+				err => console.error(err)
+				//() => console.log(this.ind_assignment)
+			);
+		}
 
 /*
 	toggle(assignment){
