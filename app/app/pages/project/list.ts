@@ -9,7 +9,7 @@ import {ProjectDetailPage} from './detail';
 })
 
 export class ProjectListPage {
-	projects: any;
+	// projects: any;
 	assignments: any;
   assign_date:any;
 
@@ -18,25 +18,22 @@ export class ProjectListPage {
 			  params: NavParams,
 				private http: Api
 	){
-    this.assign_date = params.data.assign_date;
-    // console.log(params.data);
-		this.projects = [];
+		this.assignments = [];
 		this.http.get({
-        resource_name: "project"
+        resource_name: "assignment"
     }).map(
       response => response.json()
 		).subscribe((data)=>{
-			this.projects = data.objects;
+			this.assignments = data.objects;
 		});
-
-		this.assignments = [];
 	}
 
 	count(){
-		return this.assignments.filter(item=>!!item.selected).length;
+		// return this.assignments.filter(item=>!!item.selected).length;
+    return 0;
 	}
 
-	click(project){
-		this.nav.push(ProjectDetailPage, {project: project});
+	click(assignment){
+		this.nav.push(ProjectDetailPage, {assignment: assignment});
 	}
 }
