@@ -72,6 +72,6 @@ class EmployeeAssignmentResource(ModelResource):
         }
         allowed_methods = ['get','post','put']
         authentication = ApiKeyAuthentication()
-        authorization = ReadOnlyAuthorization()
+        authorization = DjangoAuthorization()
 
         

@@ -89,9 +89,9 @@ pTransactionD1 = Debt(amount="1500", note="Note", employee=pAccountE1)
 pTransactionD1.save()
 pTransactionD2 = Debt(amount="2500", note="Note", employee=pAccountE2)
 pTransactionD2.save()
-pTransactionD3 = Debt(amount="3500", note="Note", employee=pAccountE1)
+pTransactionD3 = Debt(amount="3500", note="Note", employee=pAccountE3)
 pTransactionD3.save()
-pTransactionD4 = Debt(amount="4500", note="Note", employee=pAccountE2)
+pTransactionD4 = Debt(amount="4500", note="Note", employee=pAccountE4)
 pTransactionD4.save()
 
 pTransactionR = Receivable(amount="3000", note="Note", client=pAccountC1)
@@ -105,10 +105,10 @@ pTransactionP1.save()
 pTransactionP2 = PayCheck(amount="6000", note="Note", employee=pAccountE2,
                          reason_code="reason_code",reason="bonus")
 pTransactionP2.save()
-pTransactionP3 = PayCheck(amount="7000", note="Note", employee=pAccountE1,
+pTransactionP3 = PayCheck(amount="7000", note="Note", employee=pAccountE3,
                          reason_code="reason_code",reason="salary")
 pTransactionP3.save()
-pTransactionP4 = PayCheck(amount="8000", note="Note", employee=pAccountE2,
+pTransactionP4 = PayCheck(amount="8000", note="Note", employee=pAccountE4,
                          reason_code="reason_code",reason="bonus")
 pTransactionP4.save()
 
