@@ -4,7 +4,7 @@ import {StatusBar} from 'ionic-native';
 import {SignInPage} from './pages/general/sign_in';
 import {HomePageV2} from './pages/general/home_v2';
 import {HomePage} from './pages/general/home';
-import {ProjChooseDatePage} from './pages/project/proj_choose_date';
+import {ProjectListPage} from './pages/project/list';
 import {DayOffListPage} from './pages/schedule/list';
 import {PayCheckChooseEmployeePage} from './pages/transaction/paycheck_choose_employee';
 import {DebtChooseEmployeePage} from './pages/transaction/debt_choose_employee';
@@ -32,7 +32,7 @@ class MyApp {
       { title: '使用者登錄', component: SignInPage },
       { title: '主選單_v2', component: HomePageV2 },
       { title: '主選單', component: HomePage },
-      { title: '選擇工地', component: ProjChooseDatePage},
+      { title: '選擇工地', component: ProjectListPage},
       { title: '請假', component: DayOffListPage},
       { title: '薪資', component: PayCheckChooseEmployeePage},
       { title: '借款', component: DebtChooseEmployeePage}

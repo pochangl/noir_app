@@ -2,10 +2,12 @@ import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Api} from '../../providers/api/api';
 import {ProjectDetailPage} from './detail';
+import { OrderByPipe } from "../pipes/selected_account";
 
 @Component({
     templateUrl: 'build/pages/project/list.html',
-    providers: [Api]
+    providers: [Api],
+  	pipes: [OrderByPipe]
 })
 
 export class ProjectListPage {
@@ -19,19 +21,18 @@ export class ProjectListPage {
 				private http: Api
 	){
 		this.assignments = [];
+	}
+  ionViewWillEnter(){
 		this.http.get({
         resource_name: "assignment"
     }).map(
       response => response.json()
 		).subscribe((data)=>{
 			this.assignments = data.objects;
-		});
-	}
-
-	count(){
-		// return this.assignments.filter(item=>!!item.selected).length;
-    return 0;
-	}
+      },
+      err => console.error(err)
+    );
+  }
 
 	click(assignment){
 		this.nav.push(ProjectDetailPage, {assignment: assignment});

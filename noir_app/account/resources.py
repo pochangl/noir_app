@@ -83,7 +83,7 @@ class EmployeeResource(ModelResource):
     class Meta:
         queryset = Employee.objects.all()
         resource_name = "employee"
-        fields = ("id","title")
+        fields = ("id","title", "selected", )
         allowed_methods = ['get','post','put']
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()

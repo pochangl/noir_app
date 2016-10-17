@@ -52,19 +52,21 @@ pProject2 = Project(contact=pAccount2, client=pAccountC2, name="MoonLand")
 pProject2.save()
 
 
-pProjectA1 = Assignment(project=pProject1, assignment="assignment A",
-                       start_date="2016-01-01", end_date="2016-01-01",
-                       start_time="08:00", end_time="17:00",
-                       status="approved", 
-                       assignee=edward, number_needed="2", serial="2016-01-01-SkyTower")
+pProjectA1 = Assignment(project=pProject1, comment="",
+                       start_datetime="2016-01-01 08:00", end_datetime="2016-01-01 17:00",
+                       approved=True, 
+                       assignee=edward, number_needed="1", serial="2016-01-01-SkyTower")
 pProjectA1.save()
-pProjectA2 = Assignment(project=pProject2, assignment="assignment B",
-                       start_date="2016-01-01", end_date="2016-01-01",
-                       start_time="08:00", end_time="17:00",
-                       status="approved", 
-                       assignee=edward, number_needed="3", serial="2016-01-01-MoonLand")
+pProjectA2 = Assignment(project=pProject2, comment="",
+                       start_datetime="2016-01-01 08:00", end_datetime="2016-01-01 17:00",
+                       approved=True, 
+                       assignee=edward, number_needed="1", serial="2016-01-01-MoonLand")
 pProjectA2.save()
-
+pProjectA3 = Assignment(project=pProject2, comment="",
+                       start_datetime="2016-01-02 08:00", end_datetime="2016-01-02 17:00",
+                       approved=True, 
+                       assignee=edward, number_needed="1", serial="2016-01-02-MoonLand")
+pProjectA3.save()
 
 pProjectEA1 = EmployeeAssignment(employee=pAccountE1, assignment=pProjectA1, selected=True,
                               check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",

@@ -19,7 +19,6 @@ class TransactionResource(ModelResource):
         
 class DebtResource(TransactionResource):
     employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="debts", full=True, readonly=True)
-#     employee = fields.ForeignKey(EmployeeResource, attribute="employee", full=True, readonly=True)
     
     class Meta:
         queryset = Debt.objects.all()
@@ -51,7 +50,7 @@ class PayCheckResource(TransactionResource):
         queryset = PayCheck.objects.all()
         resource_name = "paycheck"
         include_resource_uri = False
-        fields = ("id", "amount", "reason_code", "reason", "sign_recoreds", "create_time", "modify_time")
+        fields = ("id", "amount", "reason_code", "reason", "signature", "create_time", "modify_time")
         filtering = {
             "employee": ('exact',),
         }

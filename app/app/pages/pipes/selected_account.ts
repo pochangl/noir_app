@@ -16,3 +16,21 @@ export class SelectedPipe {
     return array;
   }
 }
+@Pipe({
+  name: "orderBy"
+})
+export class OrderByPipe {
+  transform(array: Array<Object>, field: string): Array<Object> {
+    var direction;
+    if(field[0] == '-'){
+      direction = 1;
+      field = field.substring(1);
+    }else{
+      direction = -1;
+    }
+    array.sort((a: any, b: any) => {
+      return a[field] > b[field] ? direction : 0;
+    });
+    return array;
+  }
+}

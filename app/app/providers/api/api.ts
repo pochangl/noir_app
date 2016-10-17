@@ -24,7 +24,7 @@ class Url{
     this.resource_name= kwargs.resource_name + "/";
     this.urlParams = kwargs.urlParams ? kwargs.urlParams: {};
     this.username = "edward";
-    this.api_key = "1285a176397c0f83e0fff109f8cc7a11adfba3eb";
+    this.api_key = "fe3314c7b093ad8cea6bcc934145f4ec41f9fe21";
   }
 
   getQueryString(){

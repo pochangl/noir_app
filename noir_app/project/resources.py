@@ -3,12 +3,13 @@ from tastypie.resources import ModelResource, fields
 
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import ReadOnlyAuthorization, DjangoAuthorization
-from tastypie.constants import ALL
+from tastypie.constants import ALL, ALL_WITH_RELATIONS
 
 #from account.models import Contact, Client
 from project.models import Project, Assignment, EmployeeAssignment
 
 from account.resources import ContactResource, ClientResource, EmployeeResource
+from django.db.models import Count
 
 
 class ProjectResource(ModelResource):
@@ -24,42 +25,33 @@ class ProjectResource(ModelResource):
         
 class AssignmentResource(ModelResource):
     project = fields.ForeignKey(ProjectResource, attribute="project", full=True, readonly=True)
-#     employee_assignment = fields.ForeignKey(EmployeeAssignmentResource, attribute="employee_assignment", full=True, readonly=True)
-
-#     def build_filters(self, filters = None, **kwargs):
-#         if filters is None:
-#             filters = {}
-#         orm_filters = super(AssignmentResource, self).build_filters(filters, **kwargs)
-#         try:
-#             orm_filters["employee_assignment__project__exact"] = orm_filters.pop("project__exact")
-#         except:
-#             pass
-#         try:
-#             orm_filters["employee_assignment__employee__exact"] = orm_filters.pop("employee__exact")
-#         except:
-#             pass
-#         print orm_filters
-#         return orm_filters
     
     class Meta:
         always_return_data = True
         queryset = Assignment.objects.all()
         resource_name = "assignment"
-        fields = ("id", "assignment", 
-                  "start_date", "end_date", "start_time", "end_time",
-                  "status", "assignee", "number_needed", "serial", 
+        fields = ("id", "comment", 
+                  "start_datetime", "end_datetime", 
+                  "approved", "assignee", "number_needed", "serial", 
                   "create_time", "modify_time", )
         allowed_methods = ['get','post','put']
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
         filtering = {"employee_assignment": ("exact",),
-                     "project": ("exact",),}
+                     "project": ("exact",),
+                     "start_datetime": ("exact",),
+        }
         
-        
+    def dehydrate(self, bundle, *args, **kwargs):
+        bundle = super(AssignmentResource, self).dehydrate(bundle)
+        assignment = bundle.obj
+        bundle.data["count"] = assignment.employee_assignments.filter(selected=True).count()
+        return bundle
+
+
 class EmployeeAssignmentResource(ModelResource):
     employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="employee_assignments", full=True, readonly=True)
     assignment = fields.ForeignKey(AssignmentResource, attribute="assignment", related_name="employee_assignments", full=True, readonly=True)
-
 
     class Meta:
         queryset = EmployeeAssignment.objects.all()
@@ -68,7 +60,7 @@ class EmployeeAssignmentResource(ModelResource):
         fields = ("id", "selected", "check_in", "check_out", "pay", "actual_pay",)
         filtering = {
             "employee": ('exact',),
-            "assignment": ('exact',),
+            "assignment": ALL_WITH_RELATIONS,
         }
         allowed_methods = ['get','post','put']
         authentication = ApiKeyAuthentication()

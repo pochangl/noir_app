@@ -12,7 +12,7 @@ path = FileSystemStorage(location='/media/photos')
 class Transaction(TimeStampModel):
     amount = models.IntegerField(null=True, blank=True)
     note = models.CharField(max_length=1024, null=True, blank=True)
-    sign_record = models.ImageField(storage=path)
+    signature = models.ImageField(storage=path)
     
 #    class Meta:
 #        abstract = True
