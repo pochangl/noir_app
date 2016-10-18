@@ -115,14 +115,22 @@ pTransactionP4 = PayCheck(amount="8000", note="Note", employee=pAccountE4,
 pTransactionP4.save()
 
 #schedule設定
-pScheduleD = DayOff(employee=pAccountE1,
+pScheduleD1 = DayOff(employee=pAccountE1,
                     start_datetime="2016-02-03 08:00",
                     end_datetime="2016-02-02 17:00")
-pScheduleD.save()
-pScheduleD = DayOff(employee=pAccountE2,
+pScheduleD1.save()
+pScheduleD2 = DayOff(employee=pAccountE2,
                     start_datetime="2016-02-03 08:00",
                     end_datetime="2016-02-02 17:00")
-pScheduleD.save()
+pScheduleD2.save()
+pScheduleD3 = DayOff(employee=pAccountE3,
+                    start_datetime="2016-02-03 08:00",
+                    end_datetime="2016-02-02 17:00")
+pScheduleD3.save()
+pScheduleD4 = DayOff(employee=pAccountE4,
+                    start_datetime="2016-02-03 08:00",
+                    end_datetime="2016-02-02 17:00")
+pScheduleD4.save()
 
 pScheduleEA1 = EmployeePreference(employee_assignment=pProjectEA1, employee_preference="1")
 pScheduleEA1.save()
