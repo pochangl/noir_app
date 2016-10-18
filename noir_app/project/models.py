@@ -4,7 +4,7 @@ from utils.models import TimeStampModel
 
 from account.models import Contact, Client, Employee
 from html5lib import filters
-from datetime import datetime
+from datetime import datetime, time, date, timedelta
 
 # Create your models here.
 class Project(TimeStampModel):
@@ -20,13 +20,13 @@ class Project(TimeStampModel):
 class Assignment(TimeStampModel):
     project = models.ForeignKey(Project, related_name='assignments')
     comment = models.CharField(max_length=1024, blank=True, default="")
-    start_datetime = models.DateTimeField()
+    start_datetime = models.DateTimeField(null=True, blank=True)
     end_datetime = models.DateTimeField()
     approved = models.BooleanField()
     assignee = models.ForeignKey('auth.User')
     number_needed = models.PositiveIntegerField(default=1)
     serial = models.CharField(max_length=128)
-     
+    
     def __str__(self):
         return self.project.name
     
@@ -42,10 +42,6 @@ class EmployeeAssignment(TimeStampModel):
     check_out = models.DateTimeField()
     pay = models.IntegerField()
     actual_pay = models.IntegerField()
-
-#      @property
-#      def start_datetime(self):
-#          return self.assignment.start_datetime
 
     def __str__(self):
         return "%s - %s" % (self.assignment.serial, self.employee.contact.name)

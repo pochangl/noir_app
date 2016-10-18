@@ -116,12 +116,12 @@ pTransactionP4.save()
 
 #schedule設定
 pScheduleD = DayOff(employee=pAccountE1,
-                    start_date="2016-02-03", start_time="08:30",
-                    end_date="2016-02-02", end_time="17:30")
+                    start_datetime="2016-02-03 08:00",
+                    end_datetime="2016-02-02 17:00")
 pScheduleD.save()
 pScheduleD = DayOff(employee=pAccountE2,
-                    start_date="2016-02-03", start_time="08:00",
-                    end_date="2016-02-02", end_time="17:00")
+                    start_datetime="2016-02-03 08:00",
+                    end_datetime="2016-02-02 17:00")
 pScheduleD.save()
 
 pScheduleEA1 = EmployeePreference(employee_assignment=pProjectEA1, employee_preference="1")

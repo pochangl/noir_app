@@ -9,13 +9,11 @@ from project.models import EmployeeAssignment
 # Create your models here.    
 class DayOff(TimeStampModel):
     employee = models.ForeignKey(Employee, related_name='dayoffs')
-    start_date = models.DateField()
-    start_time = models.TimeField()
-    end_date = models.DateField()
-    end_time = models.TimeField()
+    start_datetime = models.DateTimeField()
+    end_datetime = models.DateTimeField()
     
     def __str__(self):
-        return "%s: %s" % (self.employee.contact.name, self.start_time)
+        return "%s: %s" % (self.employee.contact.name, self.start_datetime)
 
 
 class EmployeePreference(TimeStampModel):

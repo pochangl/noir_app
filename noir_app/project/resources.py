@@ -39,12 +39,12 @@ class AssignmentResource(ModelResource):
         authorization = DjangoAuthorization()
         filtering = {"employee_assignment": ("exact",),
                      "project": ("exact",),
-                     "start_datetime": ("exact",),
         }
         
     def dehydrate(self, bundle, *args, **kwargs):
         bundle = super(AssignmentResource, self).dehydrate(bundle)
         assignment = bundle.obj
+        bundle.data["start_date"] = assignment.start_datetime.date()
         bundle.data["count"] = assignment.employee_assignments.filter(selected=True).count()
         return bundle
 

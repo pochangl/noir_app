@@ -32,6 +32,7 @@ export class ProjectDetailPage {
 	}
 
   syncEmployeeAssignment() {
+		//將已被指派到其他工地的人，另外列在另一個table顯示 (或者直接就不顯示？)
 		this.http.get({
 			resource_name: "employee_assignment",
 			urlParams: {
