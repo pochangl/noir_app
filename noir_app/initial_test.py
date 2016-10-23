@@ -67,6 +67,11 @@ pProjectA3 = Assignment(project=pProject2, comment="",
                        approved=True, 
                        assignee=edward, number_needed="1", serial="2016-01-02-MoonLand")
 pProjectA3.save()
+pProjectA4 = Assignment(project=pProject1, comment="",
+                       start_datetime="2016-01-02 08:00", end_datetime="2016-01-02 17:00",
+                       approved=True, 
+                       assignee=edward, number_needed="1", serial="2016-01-02-SkyTower")
+pProjectA4.save()
 
 pProjectEA1 = EmployeeAssignment(employee=pAccountE1, assignment=pProjectA1, selected=True,
                               check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",
@@ -84,7 +89,22 @@ pProjectEA4 = EmployeeAssignment(employee=pAccountE4, assignment=pProjectA1, sel
                               check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",
                               pay="1000", actual_pay="1000", )
 pProjectEA4.save()
-
+pProjectEA5 = EmployeeAssignment(employee=pAccountE1, assignment=pProjectA3, selected=True,
+                              check_in="2016-01-02 07:30", check_out="2016-01-02 17:30",
+                              pay="1000", actual_pay="1000",)
+pProjectEA5.save()
+pProjectEA6 = EmployeeAssignment(employee=pAccountE2, assignment=pProjectA3, selected=True,
+                              check_in="2016-01-02 07:30", check_out="2016-01-02 17:30",
+                              pay="1000", actual_pay="1000", )
+pProjectEA6.save()
+pProjectEA7 = EmployeeAssignment(employee=pAccountE3, assignment=pProjectA4, selected=True,
+                              check_in="2016-01-02 07:30", check_out="2016-01-02 17:30",
+                              pay="1000", actual_pay="1000",)
+pProjectEA7.save()
+pProjectEA8 = EmployeeAssignment(employee=pAccountE4, assignment=pProjectA4, selected=True,
+                              check_in="2016-01-02 07:30", check_out="2016-01-02 17:30",
+                              pay="1000", actual_pay="1000", )
+pProjectEA8.save()
 
 #transaction設定
 pTransactionD1 = Debt(amount="1500", note="Note", employee=pAccountE1)

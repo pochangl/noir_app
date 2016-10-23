@@ -37,8 +37,7 @@ class AssignmentResource(ModelResource):
         allowed_methods = ['get','post','put']
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
-        filtering = {"employee_assignment": ("exact",),
-                     "project": ("exact",),
+        filtering = {"project": ("exact",),
                      "start_datetime": ("exact",),
         }
         
