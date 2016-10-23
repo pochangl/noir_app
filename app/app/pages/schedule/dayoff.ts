@@ -42,21 +42,33 @@ export class DayoffPage {
 		);
 	}
 
+	isDateTimeOk(){
+		if(this.dayoffs.start_datetime < this.dayoffs.end_datetime){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 	submit(){
 		this.dayoffs.start_datetime = this.dayoffs.start_date.concat(this.dayoffs.start_datetime.substring(10));
 		this.dayoffs.start_datetime = this.dayoffs.start_datetime.substring(0,11).concat(this.dayoffs.start_time);
 		this.dayoffs.end_datetime = this.dayoffs.end_date.concat(this.dayoffs.end_datetime.substring(10));
 		this.dayoffs.end_datetime = this.dayoffs.end_datetime.substring(0,11).concat(this.dayoffs.end_time);
-		this.http.put(
-			{
-				resource_name: "dayoff",
-				id: this.dayoffs.id,
-			},this.dayoffs
-		).subscribe(
-			data => {},
-			err => console.error(err)
-		);
+		if(this.isDateTimeOk() === false){
+			alert("起始時間不可大於結束時間！");
+		}else{
+			this.http.put(
+				{
+					resource_name: "dayoff",
+					id: this.dayoffs.id,
+				},this.dayoffs
+			).subscribe(
+				data => {},
+				err => console.error(err)
+			);
 
-		this.nav.push(HomePage);
+			this.nav.push(HomePage);
+		}
 	}
 }
