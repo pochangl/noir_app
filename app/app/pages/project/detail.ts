@@ -33,22 +33,12 @@ export class ProjectDetailPage {
 
   syncEmployeeAssignment() {
 		//將已被指派到其他工地的人，另外列在另一個table顯示 (或者直接就不顯示？)
-		this.http.get({
-			resource_name: "employee_assignment",
-			urlParams: {
-				"assignment__project": this.assignment.project.id,
-			}
-		}).map(
-			response => response.json()
-		).subscribe(
-			data => {
-				this.other_emp_asss = data.objects;
-			},
-			err => console.error(err)
-		);
 
 		return this.http.get({
-			resource_name: "employee_assignment"
+			resource_name: "employee_assignment",
+			urlParams: {
+				"assignment__start_datetime": this.assignment.start_datetime,
+			}
 		}).map(
 			response => response.json()
 		).subscribe(
@@ -65,31 +55,22 @@ export class ProjectDetailPage {
 		//再判斷employee_assignment的selected狀態，
 		//共4種情形分別執行不同動作
 		if(employee_assignment.assignment.id === this.assignment.id) {
-			if(employee_assignment.selected === true){
-				this.assignment.count = this.assignment.count - 1;
-				employee_assignment.selected = !employee_assignment.selected;
-				this.updateEmployeeAssignment(employee_assignment);
-				this.syncEmployeeAssignment();
-			}else{
-				this.checkNumberCount(employee_assignment);
-			}
+			this.checkNumberCount(employee_assignment) ?
+					this.updateEmployeeAssignment(employee_assignment) : alert("指派人數超過需求人數！");
 		}else{
 			if(employee_assignment.selected === true){
 				alert("該員工已被指派至其他工地！");
-				this.syncEmployeeAssignment();
 			}else{
-				//工地不同時，變更工地為assignment的工地
-				//雖然有吃到，但不知道為什麼put上去卻是原來的工地？
-				// console.log(employee_assignment.assignment);
-				// console.log(this.assignment);
 				employee_assignment.assignment = this.assignment;
-				this.checkNumberCount(employee_assignment);
+				this.checkNumberCount(employee_assignment) ?
+						this.updateEmployeeAssignment(employee_assignment) : alert("指派人數超過需求人數！");
 			};
 		};
+		this.syncEmployeeAssignment();
 	}
 
 	updateEmployeeAssignment(employee_assignment) {
-		// console.log(employee_assignment.assignment);
+		employee_assignment.selected = !employee_assignment.selected;
 		return this.http.put(
 			{
 				resource_name: "employee_assignment",
@@ -102,16 +83,16 @@ export class ProjectDetailPage {
 	}
 
 	checkNumberCount(employee_assignment) {
-		if (this.assignment.count >= this.assignment.number_needed){
-			alert("指派人數超過需求人數！");
-			this.syncEmployeeAssignment();
-			return false;
-		}else{
-			this.assignment.count = this.assignment.count + 1;
-			employee_assignment.selected = !employee_assignment.selected;
-			this.updateEmployeeAssignment(employee_assignment);
-			this.syncEmployeeAssignment();
+		if(employee_assignment.selected === true){
+			this.assignment.count = this.assignment.count - 1;
 			return true;
+		}else{
+			if (this.assignment.count >= this.assignment.number_needed){
+				return false;
+			}else{
+				this.assignment.count = this.assignment.count + 1;
+				return true;
+			}
 		}
 	}
 }

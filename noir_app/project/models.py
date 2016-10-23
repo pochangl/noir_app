@@ -20,9 +20,9 @@ class Project(TimeStampModel):
 class Assignment(TimeStampModel):
     project = models.ForeignKey(Project, related_name='assignments')
     comment = models.CharField(max_length=1024, blank=True, default="")
-    start_datetime = models.DateTimeField(null=True, blank=True)
+    start_datetime = models.DateTimeField()
     end_datetime = models.DateTimeField()
-    approved = models.BooleanField()
+    approved = models.BooleanField(default=False)
     assignee = models.ForeignKey('auth.User')
     number_needed = models.PositiveIntegerField(default=1)
     serial = models.CharField(max_length=128)
@@ -38,10 +38,10 @@ class EmployeeAssignment(TimeStampModel):
     employee = models.ForeignKey(Employee, related_name='employee_assignments')
     assignment = models.ForeignKey(Assignment, related_name='employee_assignments')
     selected = models.BooleanField()
-    check_in = models.DateTimeField()
-    check_out = models.DateTimeField()
+    check_in = models.DateTimeField(null=True,blank=True, default="")
+    check_out = models.DateTimeField(null=True,blank=True, default="")
     pay = models.IntegerField()
-    actual_pay = models.IntegerField()
+    actual_pay = models.IntegerField(null=True,blank=True, default=0)
 
     def __str__(self):
         return "%s - %s" % (self.assignment.serial, self.employee.contact.name)

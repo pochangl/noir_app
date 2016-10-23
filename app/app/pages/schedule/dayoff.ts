@@ -43,16 +43,17 @@ export class DayoffPage {
 	}
 
 	submit(){
+		this.dayoffs.start_datetime = this.dayoffs.start_date.concat(this.dayoffs.start_datetime.substring(10));
+		this.dayoffs.start_datetime = this.dayoffs.start_datetime.substring(0,11).concat(this.dayoffs.start_time);
+		this.dayoffs.end_datetime = this.dayoffs.end_date.concat(this.dayoffs.end_datetime.substring(10));
+		this.dayoffs.end_datetime = this.dayoffs.end_datetime.substring(0,11).concat(this.dayoffs.end_time);
 		this.http.put(
 			{
 				resource_name: "dayoff",
-				//若用post,如何取得現有dayoff最大的一筆id?
 				id: this.dayoffs.id,
 			},this.dayoffs
 		).subscribe(
-			data=>{
-				//this.dayoffs = data;
-			},
+			data => {},
 			err => console.error(err)
 		);
 

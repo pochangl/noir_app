@@ -31,7 +31,7 @@ class AssignmentResource(ModelResource):
         queryset = Assignment.objects.all()
         resource_name = "assignment"
         fields = ("id", "comment", 
-                  "start_datetime", "end_datetime", 
+                  "start_datetime", "end_datetime",
                   "approved", "assignee", "number_needed", "serial", 
                   "create_time", "modify_time", )
         allowed_methods = ['get','post','put']
@@ -39,12 +39,16 @@ class AssignmentResource(ModelResource):
         authorization = DjangoAuthorization()
         filtering = {"employee_assignment": ("exact",),
                      "project": ("exact",),
+                     "start_datetime": ("exact",),
         }
         
     def dehydrate(self, bundle, *args, **kwargs):
         bundle = super(AssignmentResource, self).dehydrate(bundle)
         assignment = bundle.obj
         bundle.data["start_date"] = assignment.start_datetime.date()
+        bundle.data["start_time"] = assignment.start_datetime.time()
+        bundle.data["end_date"] = assignment.end_datetime.date()
+        bundle.data["end_time"] = assignment.end_datetime.time()
         bundle.data["count"] = assignment.employee_assignments.filter(selected=True).count()
         return bundle
 
