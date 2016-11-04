@@ -37,6 +37,7 @@ export class DayoffPage {
 				//直接把[id_count]加在objects後面，不知道有無後遺症？
 				this.dayoffs_count = data.objects.length;
 				this.dayoffs = data.objects[this.dayoffs_count-1];
+				console.log(data.objects);
 			},
 			err => console.error(err)
 		);

@@ -38,7 +38,7 @@ class EmployeeAssignment(TimeStampModel):
     employee = models.ForeignKey(Employee, related_name='employee_assignments')
     assignment = models.ForeignKey(Assignment, related_name='employee_assignments')
     selected = models.BooleanField()
-    check_in = models.DateTimeField(null=True,blank=True, default="")
+    check_in = models.DateTimeField(null=True, blank=True, default="")
     check_out = models.DateTimeField(null=True,blank=True, default="")
     pay = models.IntegerField()
     actual_pay = models.IntegerField(null=True,blank=True, default=0)
@@ -50,3 +50,8 @@ class EmployeeAssignment(TimeStampModel):
 #     class Meta:
 #         unique_together = (("employee", "assignment"),)
 
+
+class Unassigned(Employee):
+    def __str__(self):
+        return self.contact.name
+    

@@ -16,7 +16,7 @@ export class ProjectDetailPage {
 	assignment: any;
 	employees: any;
 	employee_assignments: any;
-	other_emp_asss: any;
+	unassigned_employees: any;
 
 	constructor(
 				private nav: NavController,
@@ -26,9 +26,28 @@ export class ProjectDetailPage {
 		this.assignment = params.data.assignment;
 		this.employees = [];
 		this.employee_assignments = [];
-		this.other_emp_asss = [];
+		this.unassigned_employees = [];
 
 		this.syncEmployeeAssignment();
+		this.syncUnassigned();
+	}
+
+	syncUnassigned() {
+		//將已被指派到其他工地的人，另外列在另一個table顯示 (或者直接就不顯示？)
+
+		return this.http.get({
+			resource_name: "unassigned"
+			// urlParams: {
+			// 	"assignment__start_datetime": this.assignment.start_datetime,
+			// }
+		}).map(
+			response => response.json()
+		).subscribe(
+			data => {
+				this.unassigned_employees = data.objects;
+			},
+			err => console.error(err)
+		);
 	}
 
   syncEmployeeAssignment() {
@@ -61,7 +80,7 @@ export class ProjectDetailPage {
 			if(employee_assignment.selected === true){
 				alert("該員工已被指派至其他工地！");
 			}else{
-				employee_assignment.assignment = this.assignment;
+				employee_assignment.assignment.id = this.assignment.id;
 				this.checkNumberCount(employee_assignment) ?
 						this.updateEmployeeAssignment(employee_assignment) : alert("指派人數超過需求人數！");
 			};
