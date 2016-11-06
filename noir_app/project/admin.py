@@ -3,9 +3,9 @@ from .models import Project, Assignment, EmployeeAssignment, Unassigned
 
 
 class EmployeeAssignmenAdmin(admin.ModelAdmin):
-    list_display = ("employee", "assignment", "selected")
+    list_display = ("employee", "assignment")
     list_filter = ("employee",)
-    list_editable = ("selected",)
+    list_editable = tuple()
 
 
 # Register your models here.

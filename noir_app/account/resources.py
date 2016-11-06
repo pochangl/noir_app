@@ -60,13 +60,13 @@ class RegistrationResource(Resource):
         return HttpAccepted(json.dumps({"api_key": user.api_key.key}), content_type="application/json")
 
 
-
 class ContactResource(ModelResource):
     class Meta:
         queryset = Contact.objects.all()
         resource_name = "contact"
         fields = ("id", "name")
         authentication = ApiKeyAuthentication()
+        include_resource_uri = False
 
 
 class ClientResource(ModelResource):
@@ -78,7 +78,7 @@ class ClientResource(ModelResource):
 
 
 class EmployeeResource(ModelResource):
-    contact = fields.ForeignKey(ContactResource, attribute="contact", related_name="employees",full=True)
+    contact = fields.ForeignKey(ContactResource, attribute="contact", related_name="employees", full=True)
     
     class Meta:
         queryset = Employee.objects.all()

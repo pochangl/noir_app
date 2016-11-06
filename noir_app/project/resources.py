@@ -7,6 +7,7 @@ from tastypie.constants import ALL, ALL_WITH_RELATIONS
 
 #from account.models import Contact, Client
 from project.models import Project, Assignment, EmployeeAssignment
+from account.models import Employee
 
 from account.resources import ContactResource, ClientResource, EmployeeResource
 from django.db.models import Count, Q  # EmployeeAssignment.objects.filer(~Q(id=5))
@@ -25,9 +26,11 @@ class ProjectResource(ModelResource):
         
 class AssignmentResource(ModelResource):
     project = fields.ForeignKey(ProjectResource, attribute="project", full=True, readonly=True)
+    employees = fields.ManyToManyField(EmployeeResource, attribute="employees", related_name="assignments", full=True, readonly=True)
     
     class Meta:
         always_return_data = True
+        include_resource_uri = False
         queryset = Assignment.objects.all()
         resource_name = "assignment"
         fields = ("id", "comment", 
@@ -40,7 +43,23 @@ class AssignmentResource(ModelResource):
         filtering = {"project": ("exact",),
                      "start_datetime": ALL,
         }
-        
+
+    def employee_list(self, assignment):
+        """
+            list of all employees
+        """
+        availables = Employee.objects.exclude(
+            Q( assignments__end_datetime__lte=assignment.end_datetime,
+               assignments__end_datetime__gte=assignment.start_datetime) | 
+            Q( assignments__start_datetime__lte=assignment.end_datetime,
+               assignments__start_datetime__gte=assignment.start_datetime), # find overlap employee
+            ~Q(assignments__id=assignment.id),
+        ).distinct()
+        return [{'id': employee.id,
+                 'contact': {
+                    'name': employee.contact.name
+                }} for employee in availables]
+            
     def dehydrate(self, bundle, *args, **kwargs):
         bundle = super(AssignmentResource, self).dehydrate(bundle)
         assignment = bundle.obj
@@ -48,7 +67,7 @@ class AssignmentResource(ModelResource):
         bundle.data["start_time"] = assignment.start_datetime.time()
         bundle.data["end_date"] = assignment.end_datetime.date()
         bundle.data["end_time"] = assignment.end_datetime.time()
-        bundle.data["count"] = assignment.employee_assignments.filter(selected=True).count()
+        bundle.data["availables"] = self.employee_list(assignment)
         return bundle
 
 
@@ -60,45 +79,31 @@ class EmployeeAssignmentResource(ModelResource):
         queryset = EmployeeAssignment.objects.all()
         resource_name = "employee_assignment"
         include_resource_uri = False
-        fields = ("id", "selected", "check_in", "check_out", "pay", "actual_pay", "assignment")
+        fields = ("id", "check_in", "check_out", "pay", "actual_pay", "assignment")
         filtering = {
             "employee": ('exact',),
             "assignment": ALL_WITH_RELATIONS,
-            "selected": ("exact",),
         }
         allowed_methods = ['get','post','put']
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
 
 
-class UnassignedResource(EmployeeAssignmentResource):
+class UnassignedResource(EmployeeResource):
     
-    class Meta(EmployeeAssignmentResource.Meta):
-        resource_name = "unassigned"
+    class Meta(EmployeeResource.Meta):
+        resource_name = "unassigns"
+        allowed_mehtods = ('get',)
+        detail_allowed_methods = tuple()
 
-#     def obj_get_list(self, bundle, *args, **kwargs):
-    def obj_get(self, bundle, *args, **kwargs):
-        """
-            api return: employees who are available
-            bug: performance may be slow
-        """
-        queryset = super(UnassignedResource, self).obj_get(bundle, *args ,**kwargs)
-#         aid = int(bundle.request.GET.get("employee_assignment.assignment", int("")))
+    def obj_get_list(self, bundle, *args, **kwargs):
+        queryset = super(AvailableResource, self).obj_get_list(bundle, *args, **kwargs)
         aid = int(bundle.request.GET["assignment"])
         assignment = Assignment.objects.get(id=aid)
-        busy_employees = queryset.filter(
-            Q(employee_assignment__assignment__end_datetime__lte=assignment.end_datetime,
-              employee_assignment__assignment__end_datetime__gte=assignment.start_datetime) | 
-            Q(employee_assignment__assignment__start_datetime__lte=assignment.end_datetime,
-              employee_assignment__assignment__start_datetime__gte=assignment.start_datetime), # find overlap employee
-            ~Q(employee_assignments__assignment__id=assignment.id),
-            employee_assignments__selected=True,  # exclude selected and diff assignment employees
-        )
-#         return queryset.exclude(id__in=busy_employees)
-        return aid
-    
-#     def filter_data_items(bundle):
-#         res = DataResource()
-#         new_bundle = Bundle(request=bundle.request)
-#         objs = res.obj_get_list(new_bundle)
-#         return objs.filter(parent_id=bundle.obj.pk)
+        return 
+
+
+class UnassignResource(EmployeeAssignmentResource):
+    class Meta(EmployeeAssignmentResource):
+        resource_name = 'unassign'
+        
