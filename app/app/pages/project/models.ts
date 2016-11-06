@@ -4,7 +4,7 @@ import { Employee } from '../account/models';
 export class Project extends Model{
   protected name: string
   construct(obj: any){
-    name = obj.name
+    this.name = obj.name;
   }
   fetch(){}
 }
@@ -26,12 +26,13 @@ export class Assignment extends Model{
     this.employees = obj.employees.map(employee=>new Employee(employee))
     this.availables = obj.availables.map(employee=>new Employee(employee))
   }
-
-  add(employee: Employee){
+  update(){
 
   }
+  add(employee: Employee){
+    this.fetch()
+  }
   remove(employee: Employee){
-
   }
   is_full(){
     return this.employees.length >= this.number_needed;
@@ -39,7 +40,18 @@ export class Assignment extends Model{
 }
 
 
-export class AssignmentList extends ModelList{
-  assignments: "assignment"
-  model_class: Assignment
+export class AssignmentList extends ModelList<Assignment>{
+  resource_name = "assignment"
+  construct(objs: Array<Object>){
+    this.objects = objs.map(
+      item => new Assignment(item)
+    );
+  }
+}
+
+export class EmployeeAssignment extends Model{
+  constructor(private assignment: Assignment, private employee:Employee){
+    super({})
+  }
+  construct(){}
 }

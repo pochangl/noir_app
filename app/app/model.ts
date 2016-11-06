@@ -2,14 +2,22 @@ import { Api } from './providers/api/api';
 import { Http } from '@angular/http';
 
 
-export abstract class ModelList{
-  protected api: Api
+export abstract class ModelList<T>{
   resource_name: string
-  model_class: Model
   urlParams: Object = {}
-  objects: Array<Model>
+  objects: Array<T>
+  api: Api
 
-  fetch(){
+  constructor(obj?: Array<Object>){
+    if(obj){
+      this.construct(obj)
+    }else{
+      this.construct([]);
+    }
+  }
+
+  fetch(api){
+    this.api = api;
     this.api.get({
       resource_name: this.resource_name,
       urlParams: this.urlParams
@@ -19,21 +27,19 @@ export abstract class ModelList{
       data => this.construct(data.objects)
     );
   }
-  construct(objs: Array<Object>){
-    this.objects = this.objects.map(item => new this.model_class(item));
-  }
+  abstract construct(objs: Array<Object>)
 }
 
 export abstract class Model{
-  protected api: Api
   protected id: number
   resource_name: string
+  api: Api
   constructor(obj: any){
-    this.id = obj.id
-    this.construct(obj)
+    this.id = obj.id;
+    this.construct(obj);
   }
-  abstract construct(obj: Object)
-  fetch(){
+  fetch(api: Api){
+    this.api = api;
     this.api.get({
       resource_name: this.resource_name,
       id: this.id
@@ -43,4 +49,5 @@ export abstract class Model{
       data => this.construct(data)
     );
   }
+  abstract construct(obj: Object) // 從原始資料建立Model
 }

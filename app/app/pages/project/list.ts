@@ -12,12 +12,14 @@ import {AssignmentList} from "./models"
 })
 
 export class ProjectListPage {
-	assignments: AssignmentList = new AssignmentList()
+	assignments: AssignmentList
   assign_date: any;
 
-	constructor(private nav: NavController){}
+	constructor(private nav: NavController, private api: Api){
+    this.assignments = new AssignmentList();
+  }
   ionViewWillEnter(){
-    this.assignments.fetch();
+    this.assignments.fetch(this.api);
   }
 
 	click(assignment){

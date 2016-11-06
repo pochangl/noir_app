@@ -15,7 +15,7 @@ export class ProjectDetailPage {
 
 	constructor(
 				private nav: NavController,
-				params: NavParams,
+				params: NavParams
 		){
 		this.assignment = params.data.assignment;
 	}
@@ -26,9 +26,9 @@ export class ProjectDetailPage {
 		if(this.assignment.is_full()){
 			alert("This assignment is full");
 		}else if(employee.is_selected){
-			this.assignment.add(employee)
+			this.assignment.add(employee);
 		}else{
-			this.assignment.remove(employee)
+			this.assignment.remove(employee);
 		}
 	}
 }
