@@ -38,11 +38,18 @@ export class PayCheckPage {
 		if(this.paycheck.amount === undefined){
 			alert("not ready");
 			return;
+		}else{
+			this.http.put(
+				{
+					resource_name: "paycheck",
+					id: this.paycheck.id
+				}, this.paycheck
+			).subscribe(
+				data=>{},
+				err => console.error(err)
+			);
 		}
-		//this.http.put(
-		//	'/api/v1/paycheck/?employee='+ this.paycheck.employee.id +'&format=json', {"amount": this.amount}
-		//).map(response => response.json()
-		//);
+
 		this.nav.push(HomePage);
 	}
 }

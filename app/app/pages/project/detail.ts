@@ -1,7 +1,6 @@
 import { Component, Injectable } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Api } from '../../providers/api/api';
-import { Project_Service } from '../../providers/project_service/project_service';
 import { HomePage } from '../general/home';
 import { Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
@@ -9,159 +8,110 @@ import { SelectedPipe } from "../pipes/selected_account";
 
 @Component({
 	templateUrl: 'build/pages/project/detail.html',
-	providers: [Api, Project_Service],
+	providers: [Api],
 	pipes: [SelectedPipe]
 })
 
 export class ProjectDetailPage {
-	project: any;
-	employee: any;
-	employee_projects: any;
-	assignments: any;
-	ind_assignment: any;
-	ind_assignment_id: any;
+	assignment: any;
+	employees: any;
+	employee_assignments: any;
+	unassigned_employees: any;
 
 	constructor(
 				private nav: NavController,
 				params: NavParams,
-				private http: Api,
-				private project_service: Project_Service
+				private http: Api
 		){
-		this.project = params.data.project;
-		this.employee = Object;
-		this.employee_projects = [];
-		this.assignments = [];
-		this.ind_assignment = {};
+		this.assignment = params.data.assignment;
+		this.employees = [];
+		this.employee_assignments = [];
+		this.unassigned_employees = [];
 
-		this.http.get({
-			resource_name: "employee_project",
-			urlParams: {
-				"project": this.project,
-			}
-		}).map(
-			response => response.json()
-		).subscribe((data)=>{
-			this.employee_projects = data.objects;
-		});
-
-		this.syncAssignments();
+		this.syncEmployeeAssignment();
+		this.syncUnassigned();
 	}
 
+	syncUnassigned() {
+		//將已被指派到其他工地的人，另外列在另一個table顯示 (或者直接就不顯示？)
 
-	indicateAssignmentId(employee_project) {
-    this.http.get({
-			resource_name: "assignment",
-			urlParams: {
-				"employee": employee_project.employee,
-				"project": employee_project.project
-			}
-		}).map(
-			response => response.text()
-		).subscribe(
-			//若用map格式為list,抓不到id;
-			//若不用map格式為response
-			//Q:如何以dictionary方式抓出assignment.id？
-      data => this.ind_assignment_id = data,
-      err => console.error(err),
-			() => console.log(this.ind_assignment_id)
-		);
-	}
-
-
-  syncAssignments() {
 		return this.http.get({
-			resource_name: "assignment",
-		}).map(
-			response => response.json()
-		).subscribe((data)=>{
-			this.assignments = data.objects;
-		});
-	}
-
-	putAssignment(ind_assignment) {
-		console.log(this.ind_assignment_id);
-		//ind_assignment_id為undefined,造成data lost
-		/*
-		return this.http.put({
-	    resource_name: "assignment",
-			id: ind_assignment.id
-	  }, ind_assignment
-		).subscribe(
-			data => {
-				// assignment = data.objects;
-			},
-			error => {
-				console.error(error);
-				this.syncAssignments();
-			}
-		)
-		*/
-	}
-
-	postAssignment(ind_assignment) {
-
-	}
-
-	count() {
-		//return this.employees.filter(function(item){return !! item.selected;}).length;
-		return this.assignments.filter(item=>!!item.selected).length;
-	}
-
-	toggle(employee_project) {
-		console.log(employee_project);
-		// get assginment from employee_project
-		// indicate assignment by employee_porject
-		// 取消用函數，直接利用data跟error進行判斷
-		// ind_assignment若放在外面，則第一次按抓不到,第二次按才會抓到,原因不明
-		// this.indicateAssignment(employee_project);
-		this.http.get({
-			resource_name: "assignment",
-			id: this.indicateAssignmentId(employee_project)
+			resource_name: "unassigned"
+			// urlParams: {
+			// 	"assignment__start_datetime": this.assignment.start_datetime,
+			// }
 		}).map(
 			response => response.json()
 		).subscribe(
-			//success
 			data => {
-				this.ind_assignment = data;
-				// put assignment
-				this.putAssignment(this.ind_assignment);
+				this.unassigned_employees = data.objects;
 			},
-
-			//error subscribe data.meta.total_count = 0
-			err => {
-					if(err.meta.total_count = 0){
-						// create new assignment
-					  employee_project.selected = !employee_project.selected;
-					  this.postAssignment(this.ind_assignment);
-					}else{
-						//success
-						// put assignment
-						this.putAssignment(this.ind_assignment);
-					}
-			}
-			//() => console.log(this.ind_assignment)
+			err => console.error(err)
 		);
 	}
 
-/*
-	toggle(assignment){
-		//Make selection change first, and then comunicate with DB.
-		assignment.selected = !assignment.selected;
-		this.employee = assignment.employee;
+  syncEmployeeAssignment() {
+		//將已被指派到其他工地的人，另外列在另一個table顯示 (或者直接就不顯示？)
 
-		var val = assignment.selected;
-		this.http.put({
-      resource_name: "assignment",
-			id: assignment.id
-    }, assignment
+		return this.http.get({
+			resource_name: "employee_assignment",
+			urlParams: {
+				"assignment__start_datetime": this.assignment.start_datetime,
+			}
+		}).map(
+			response => response.json()
 		).subscribe(
 			data => {
-				// assignment = data.objects;
+				this.employee_assignments = data.objects;
 			},
-			error => {
-				this.sync_assignment();
-			}
-		)
+			err => console.error(err)
+		);
 	}
-*/
+
+	toggle(employee_assignment) {
+		//首先判斷人數是否超過，若超過則alert並重新讀取頁面.
+		//先區分employee_assignment與assignment的工地是否相同，
+		//再判斷employee_assignment的selected狀態，
+		//共4種情形分別執行不同動作
+		if(employee_assignment.assignment.id === this.assignment.id) {
+			this.checkNumberCount(employee_assignment) ?
+					this.updateEmployeeAssignment(employee_assignment) : alert("指派人數超過需求人數！");
+		}else{
+			if(employee_assignment.selected === true){
+				alert("該員工已被指派至其他工地！");
+			}else{
+				employee_assignment.assignment.id = this.assignment.id;
+				this.checkNumberCount(employee_assignment) ?
+						this.updateEmployeeAssignment(employee_assignment) : alert("指派人數超過需求人數！");
+			};
+		};
+		this.syncEmployeeAssignment();
+	}
+
+	updateEmployeeAssignment(employee_assignment) {
+		employee_assignment.selected = !employee_assignment.selected;
+		return this.http.put(
+			{
+				resource_name: "employee_assignment",
+				id: employee_assignment.id
+			}, employee_assignment
+		).subscribe(
+			data => {},
+			err => console.error(err)
+		);
+	}
+
+	checkNumberCount(employee_assignment) {
+		if(employee_assignment.selected === true){
+			this.assignment.count = this.assignment.count - 1;
+			return true;
+		}else{
+			if (this.assignment.count >= this.assignment.number_needed){
+				return false;
+			}else{
+				this.assignment.count = this.assignment.count + 1;
+				return true;
+			}
+		}
+	}
 }

@@ -95,3 +95,4 @@ class RegistrationToken(TimeStampModel):
         """
         self.used = now()
         super(RegistrationToken, self).save()
+        

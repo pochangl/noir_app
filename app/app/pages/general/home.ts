@@ -13,7 +13,7 @@ import {DebtChooseEmployeePage} from '../transaction/debt_choose_employee';
 export class HomePage {
 	constructor(private nav: NavController){
 	}
-	
+
 	project(){
 		this.nav.push(ProjectListPage);
 	}

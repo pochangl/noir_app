@@ -28,7 +28,7 @@ class MyApp {
     this.initializeApp();
 
     // set our app's pages
-    this.pages = [    
+    this.pages = [
       { title: '使用者登錄', component: SignInPage },
       { title: '主選單_v2', component: HomePageV2 },
       { title: '主選單', component: HomePage },

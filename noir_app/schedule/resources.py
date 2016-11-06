@@ -6,16 +6,16 @@ from tastypie.authorization import ReadOnlyAuthorization, DjangoAuthorization
 from schedule.models import DayOff, EmployeePreference, ProjectPreference
         
 from account.resources import EmployeeResource
-from project.resources import EmployeeProjectResource
+from project.resources import EmployeeAssignmentResource
 
 class DayOffResource(ModelResource):
-    employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="dayoffs")
+    employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="dayoffs", full=True, readonly=True)
     
     class Meta:
         queryset = DayOff.objects.all()
         resource_name = "dayoff"
         include_resource_uri = False
-        fields = ("id", "start_date", "start_time", "end_date", "end_time",)
+        fields = ("id", "start_datetime", "end_datetime",)
         filtering = {
             "employee": ('exact',),
         }
@@ -23,9 +23,18 @@ class DayOffResource(ModelResource):
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
  
- 
+    def dehydrate(self, bundle, *args, **kwargs):
+        bundle = super(DayOffResource, self).dehydrate(bundle)
+        dayoff = bundle.obj
+        bundle.data["start_date"] = dayoff.start_datetime.date()
+        bundle.data["start_time"] = dayoff.start_datetime.time()
+        bundle.data["end_date"] = dayoff.end_datetime.date()
+        bundle.data["end_time"] = dayoff.end_datetime.time()
+        return bundle
+    
+    
 class EmployeePreferenceResource(ModelResource):
-    employee_project = fields.ForeignKey(EmployeeProjectResource, attribute="employee_project", related_name="employee_preferences")
+    employee_assignment = fields.ForeignKey(EmployeeAssignmentResource, attribute="employee_assignment", related_name="employee_preferences")
     
     class Meta:
         queryset = EmployeePreference.objects.all()
@@ -35,7 +44,7 @@ class EmployeePreferenceResource(ModelResource):
         
    
 class ProjectPreferenceResource(ModelResource):
-    employee_project = fields.ForeignKey(EmployeeProjectResource, attribute="employee_project", related_name="project_preferences")
+    employee_assignment = fields.ForeignKey(EmployeeAssignmentResource, attribute="employee_assignment", related_name="project_preferences")
     
     class Meta:
         queryset = ProjectPreference.objects.all()
