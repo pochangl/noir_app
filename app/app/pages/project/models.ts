@@ -1,6 +1,5 @@
-import { Model } from '../../model';
+import { Model, ModelList } from '../../model';
 import { Employee } from '../account/models';
-
 
 export class Project extends Model{
   protected name: string
@@ -37,4 +36,10 @@ export class Assignment extends Model{
   is_full(){
     return this.employees.length >= this.number_needed;
   }
+}
+
+
+export class AssignmentList extends ModelList{
+  assignments: "assignment"
+  model_class: Assignment
 }

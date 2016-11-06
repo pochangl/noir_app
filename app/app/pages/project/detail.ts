@@ -18,6 +18,8 @@ export class ProjectDetailPage {
 				params: NavParams,
 		){
 		this.assignment = params.data.assignment;
+	}
+	ionViewWillEnter(){
 		this.assignment.fetch();
 	}
 	toggle(employee) {
