@@ -19,7 +19,11 @@ export class ProjectListPage {
     this.assignments = new AssignmentList();
   }
   ionViewWillEnter(){
-    this.assignments.fetch(this.api);
+    this.assignments.fetch(this.api).subscribe((data)=>{
+      console.log("2");
+      console.log(data);
+      console.log(this.assignments.objects);
+    });
   }
 
 	click(assignment){

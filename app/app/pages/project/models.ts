@@ -1,38 +1,36 @@
-import { Model, ModelList } from '../../model';
-import { Employee } from '../account/models';
+import { JunctionModel, Model, ModelList } from '../../model';
+import { Employee, EmployeeList } from '../account/models';
 
 export class Project extends Model{
+  fields = ["name"]
   protected name: string
-  construct(obj: any){
-    this.name = obj.name;
-  }
-  fetch(){}
 }
 
 export class Assignment extends Model{
+  fields = ["project", "start_datetime", "end_datetime", "number_needed"]
+  foreign_fields = {
+    project: Project,
+    employees: EmployeeList,
+    availables: EmployeeList,
+  }
   resource_name = "assignment"
   project: Project
   start_datetime: string
   end_datetime: string
   number_needed: number
-  employees: Array<Employee>
-  availables: Array<Employee>
+  employees: EmployeeList
+  availables: EmployeeList
 
-  construct(obj: any){
-    this.project = new Project(obj.project)
-    this.start_datetime = obj.start_datetime
-    this.end_datetime = obj.end_datetime
-    this.number_needed = obj.number_needed
-    this.employees = obj.employees.map(employee=>new Employee(employee))
-    this.availables = obj.availables.map(employee=>new Employee(employee))
-  }
   update(){
-
+    this.fetch(this.api);
   }
-  add(employee: Employee){
-    this.fetch()
+  add_employee(employee: Employee){
+    var ea = new EmployeeAssignment(employee, this, this.api);
+    ea.create();
   }
-  remove(employee: Employee){
+  discard_employee(employee: Employee){
+    var ea = new EmployeeAssignment(employee, this, this.api);
+    ea.delete();
   }
   is_full(){
     return this.employees.length >= this.number_needed;
@@ -42,16 +40,12 @@ export class Assignment extends Model{
 
 export class AssignmentList extends ModelList<Assignment>{
   resource_name = "assignment"
-  construct(objs: Array<Object>){
-    this.objects = objs.map(
-      item => new Assignment(item)
-    );
-  }
+  model = Assignment
 }
 
-export class EmployeeAssignment extends Model{
-  constructor(private assignment: Assignment, private employee:Employee){
-    super({})
+export class EmployeeAssignment extends JunctionModel{
+  junction_fields = ["employee", "assignment"]
+  constructor(private employee:Employee, private assignment: Assignment, api?){
+    super({}, api)
   }
-  construct(){}
 }

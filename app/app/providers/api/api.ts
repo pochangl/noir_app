@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http, URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Observable';
+import { Response } from '@angular/http/src/static_response';
+
 
 /*
   Generated class for the Api provider.
@@ -48,33 +51,33 @@ class Url{
 
 @Injectable()
 export class Api {
-  constructor(private http: Http) {}
+  constructor(private http: Http){}
 
   preprocess_url(url: any) {
     return new Url(url).toString();
   }
-  request(url: any, options?: any) {
+  request(url: any, options?: any): Observable<Response> {
     return this.http.request(this.preprocess_url(url), options);
   }
-  get(url: any, options?: any) {
+  get(url: any, options?: any): Observable<Response> {
     return this.http.get(this.preprocess_url(url), options);
   }
-  post(url: any, body, options?: any) {
+  post(url: any, body, options?: any): Observable<Response> {
     return this.http.post(this.preprocess_url(url), body, options);
   }
-  put(url: any, body, options?: any) {
+  put(url: any, body, options?: any): Observable<Response> {
     if("id" in url && !url.id){
       url.id = "";
     }
     return this.http.put(this.preprocess_url(url), body, options);
   }
-  delete(url: any, options?: any) {
+  delete(url: any, options?: any): Observable<Response> {
     return this.http.delete(this.preprocess_url(url), options);
   }
-  patch(url: any, body, options?: any) {
+  patch(url: any, body, options?: any): Observable<Response> {
     return this.http.patch(this.preprocess_url(url), body, options);
   }
-  head(url: any, options?: any) {
+  head(url: any, options?: any): Observable<Response> {
     return this.http.head(this.preprocess_url(url), options);
   }
 }

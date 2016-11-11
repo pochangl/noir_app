@@ -1,15 +1,21 @@
-import { Model } from '../../model';
+import { Model, ModelList } from '../../model';
+
 
 export class Contact extends Model{
+  fields = ["name"]
   name: string
-  construct(obj: any){
-    this.name = obj.name
-  }
 }
 
+
 export class Employee extends Model{
-  contact: Contact
-  construct(obj: any){
-    this.contact = new Contact(obj.contact)
+  foreign_fields = {
+    contact: Contact
   }
+  contact: Contact
+}
+
+
+export class EmployeeList extends ModelList<Employee>{
+  model = Employee
+  resource_name: "employees"
 }
