@@ -73,35 +73,35 @@ pProjectA4 = Assignment(project=pProject1, comment="",
                        assignee=edward, number_needed="1", serial="2016-01-02-SkyTower")
 pProjectA4.save()
 
-pProjectEA1 = EmployeeAssignment(employee=pAccountE1, assignment=pProjectA1, selected=True,
+pProjectEA1 = EmployeeAssignment(employee=pAccountE1, assignment=pProjectA1,
                               check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",
                               pay="1000", actual_pay="1000",)
 pProjectEA1.save()
-pProjectEA2 = EmployeeAssignment(employee=pAccountE2, assignment=pProjectA2, selected=True,
+pProjectEA2 = EmployeeAssignment(employee=pAccountE2, assignment=pProjectA2,
                               check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",
                               pay="1000", actual_pay="1000", )
 pProjectEA2.save()
-pProjectEA3 = EmployeeAssignment(employee=pAccountE3, assignment=pProjectA2, selected=True,
+pProjectEA3 = EmployeeAssignment(employee=pAccountE3, assignment=pProjectA2,
                               check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",
                               pay="1000", actual_pay="1000",)
 pProjectEA3.save()
-pProjectEA4 = EmployeeAssignment(employee=pAccountE4, assignment=pProjectA1, selected=True,
+pProjectEA4 = EmployeeAssignment(employee=pAccountE4, assignment=pProjectA1,
                               check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",
                               pay="1000", actual_pay="1000", )
 pProjectEA4.save()
-pProjectEA5 = EmployeeAssignment(employee=pAccountE1, assignment=pProjectA3, selected=True,
+pProjectEA5 = EmployeeAssignment(employee=pAccountE1, assignment=pProjectA3,
                               check_in="2016-01-02 07:30", check_out="2016-01-02 17:30",
                               pay="1000", actual_pay="1000",)
 pProjectEA5.save()
-pProjectEA6 = EmployeeAssignment(employee=pAccountE2, assignment=pProjectA3, selected=True,
+pProjectEA6 = EmployeeAssignment(employee=pAccountE2, assignment=pProjectA3,
                               check_in="2016-01-02 07:30", check_out="2016-01-02 17:30",
                               pay="1000", actual_pay="1000", )
 pProjectEA6.save()
-pProjectEA7 = EmployeeAssignment(employee=pAccountE3, assignment=pProjectA4, selected=True,
+pProjectEA7 = EmployeeAssignment(employee=pAccountE3, assignment=pProjectA4,
                               check_in="2016-01-02 07:30", check_out="2016-01-02 17:30",
                               pay="1000", actual_pay="1000",)
 pProjectEA7.save()
-pProjectEA8 = EmployeeAssignment(employee=pAccountE4, assignment=pProjectA4, selected=True,
+pProjectEA8 = EmployeeAssignment(employee=pAccountE4, assignment=pProjectA4,
                               check_in="2016-01-02 07:30", check_out="2016-01-02 17:30",
                               pay="1000", actual_pay="1000", )
 pProjectEA8.save()

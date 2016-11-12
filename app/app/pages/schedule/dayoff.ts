@@ -5,10 +5,13 @@ import { Api } from '../../providers/api/api';
 import '../../rxjs-operators';
 import { HomePage } from '../general/home';
 
+import { DayOffService } from "./models"
+import { Contact } from "../account/models"
+import { Model } from '../../model';
 
 @Component({
 	templateUrl: 'build/pages/schedule/dayoff.html',
-	providers: [Api]
+	providers: [ Api, Model ]
 })
 
 export class DayoffPage {
@@ -19,7 +22,9 @@ export class DayoffPage {
 	constructor(
 		private nav: NavController,
 		params: NavParams,
-		private http: Api
+		private http: Api,
+		// private dayoffService: DayOffService
+		private modelService: Model
 	){
 		this.employee = params.data.employee;
 		this.dayoffs = [];
@@ -37,18 +42,13 @@ export class DayoffPage {
 				//直接把[id_count]加在objects後面，不知道有無後遺症？
 				this.dayoffs_count = data.objects.length;
 				this.dayoffs = data.objects[this.dayoffs_count-1];
-				console.log(data.objects);
 			},
 			err => console.error(err)
 		);
 	}
 
 	isDateTimeOk(){
-		if(this.dayoffs.start_datetime < this.dayoffs.end_datetime){
-			return true;
-		}else{
-			return false;
-		}
+		return this.dayoffs.start_datetime < this.dayoffs.end_datetime;
 	}
 
 	submit(){
@@ -56,7 +56,7 @@ export class DayoffPage {
 		this.dayoffs.start_datetime = this.dayoffs.start_datetime.substring(0,11).concat(this.dayoffs.start_time);
 		this.dayoffs.end_datetime = this.dayoffs.end_date.concat(this.dayoffs.end_datetime.substring(10));
 		this.dayoffs.end_datetime = this.dayoffs.end_datetime.substring(0,11).concat(this.dayoffs.end_time);
-		if(this.isDateTimeOk() === false){
+		if(this.dayoffs.isDateTimeOk() === false){
 			alert("起始時間不可大於結束時間！");
 		}else{
 			this.http.put(

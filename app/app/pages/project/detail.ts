@@ -15,7 +15,7 @@ export class ProjectDetailPage {
 
 	constructor(
 				private nav: NavController,
-				params: NavParams,
+				params: NavParams
 		){
 		this.assignment = params.data.assignment;
 		this.assignment.fetch();
