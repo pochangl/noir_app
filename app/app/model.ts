@@ -26,13 +26,13 @@ export abstract class ModelList<T>{
     );
     observable.subscribe(
       data => {
-        console.log("1");
         this.construct(data.objects);
       }
     );
     return observable;
   }
   construct(objs: Array<Object>){
+    console.log(objs);
     this.objects = objs.map(obj=>new this.model(obj))
     this.length = this.objects.length
   }
@@ -46,6 +46,7 @@ export abstract class Model{
   is_removed: boolean = false
 
   constructor(obj: any, protected api?: Api){
+    console.log(obj);
     this.id = obj.id;
     this.construct(obj);
   }
@@ -56,6 +57,8 @@ export abstract class Model{
         this[field] = obj[field];
       }
     }
+    console.log(obj);
+    console.log(this.foreign_fields);
     for(var field in this.foreign_fields){
       if(field in obj){
         cls = this.foreign_fields[field];

@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Api} from '../../providers/api/api';
 import {ProjectDetailPage} from './detail';
-import { OrderByPipe } from "../pipes/selected_account";
+import {OrderByPipe } from "../pipes/selected_account";
 import {AssignmentList} from "./models"
 
 @Component({
@@ -19,11 +19,7 @@ export class ProjectListPage {
     this.assignments = new AssignmentList();
   }
   ionViewWillEnter(){
-    this.assignments.fetch(this.api).subscribe((data)=>{
-      console.log("2");
-      console.log(data);
-      console.log(this.assignments.objects);
-    });
+    this.assignments.fetch(this.api);
   }
 
 	click(assignment){

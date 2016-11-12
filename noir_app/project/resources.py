@@ -67,7 +67,7 @@ class AssignmentResource(ModelResource):
         bundle.data["start_time"] = assignment.start_datetime.time()
         bundle.data["end_date"] = assignment.end_datetime.date()
         bundle.data["end_time"] = assignment.end_datetime.time()
-        bundle.data["a"] = self.employee_list(assignment)
+        bundle.data["availables"] = self.employee_list(assignment)
         return bundle
 
 
