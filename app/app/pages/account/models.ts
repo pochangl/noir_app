@@ -8,9 +8,10 @@ export class Contact extends Model{
 
 
 export class Employee extends Model{
-  foreign_fields = {
-    contact: Contact
-  }
+  fields = [{
+    name: "contact",
+    cls: Contact
+  }]
   contact: Contact
 }
 

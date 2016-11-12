@@ -9,7 +9,7 @@
 
 <ion-content>
   <ion-list>
-    <button ion-item *ngFor="let assignment of assignments.objects | orderBy:'-start_datetime'" (click)="click(assignment)">
+    <button ion-item *ngFor="let assignment of assignments.objects" (click)="click(assignment)">
       {{ assignment.project.name }} ( {{ assignment.employees.length }} / {{ assignment.number_needed }} ) - {{ assignment.start_datetime.split("T")[0] }}
       <ion-icon name="md-arrow-forward" item-right></ion-icon>
     </button>

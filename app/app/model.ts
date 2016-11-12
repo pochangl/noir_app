@@ -8,14 +8,21 @@ export abstract class ModelList<T>{
   resource_name: string
   model: any
   urlParams: Object = {}
-  objects: Array<T>
+  objects: Array<T> = []
   length: number
   api: Api
 
-  constructor(obj: Array<Object> = []){
-    this.construct(obj)
+  constructor(objs: Array<Object> = []){
+    this.construct(objs);
   }
-
+  construct(objs){
+    console.log(objs);
+    this.objects = objs.map(obj=>{
+      var new_obj = new this.model();
+      return new_obj.construct(obj);
+    });
+    this.length = this.objects.length;
+  }
   fetch(api?: Api): Observable<Response>{
     this.api = api;
     var observable = this.api.get({
@@ -31,40 +38,34 @@ export abstract class ModelList<T>{
     );
     return observable;
   }
-  construct(objs: Array<Object>){
-    console.log(objs);
-    this.objects = objs.map(obj=>new this.model(obj))
-    this.length = this.objects.length
-  }
 }
 
 export abstract class Model{
-  fields: Array<string> = []
-  foreign_fields: Object = {}
+  fields: Array<any> = []
   protected id: number
   resource_name: string
   is_removed: boolean = false
 
-  constructor(obj: any, protected api?: Api){
-    console.log(obj);
-    this.id = obj.id;
-    this.construct(obj);
+  constructor(protected api?: Api){
   }
-  construct(obj){
+  construct(obj?: any){
     var cls;
-    for(let field of this.fields){
-      if(field in obj){
-        this[field] = obj[field];
+    this.id = obj.id
+    for(let item of this.fields){
+      if(!(item in obj || item.name in obj)){
+        continue;
+      }
+      if(typeof item == "string"){
+        name = item;
+        this[name] = obj[name];
+      }else{
+        name = item.name;
+        cls = item.cls;
+        this[name] = new cls()
+        this[name].construct(obj[name])
       }
     }
-    console.log(obj);
-    console.log(this.foreign_fields);
-    for(var field in this.foreign_fields){
-      if(field in obj){
-        cls = this.foreign_fields[field];
-        this[field] = new cls(obj[field])
-      }
-    }
+    return this;
   }
   fetch(api?: Api): Observable<Response>{
     var observable;

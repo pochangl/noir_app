@@ -3,7 +3,7 @@ import {NavController, NavParams} from 'ionic-angular';
 import {Api} from '../../providers/api/api';
 import {ProjectDetailPage} from './detail';
 import {OrderByPipe } from "../pipes/selected_account";
-import {AssignmentList} from "./models"
+import {AssignmentList, Assignment} from "./models"
 
 @Component({
     templateUrl: 'build/pages/project/list.html',
@@ -17,6 +17,7 @@ export class ProjectListPage {
 
 	constructor(private nav: NavController, private api: Api){
     this.assignments = new AssignmentList();
+    this.assignments.construct([]);
   }
   ionViewWillEnter(){
     this.assignments.fetch(this.api);

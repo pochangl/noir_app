@@ -7,12 +7,17 @@ export class Project extends Model{
 }
 
 export class Assignment extends Model{
-  fields = ["project", "start_datetime", "end_datetime", "number_needed"]
-  foreign_fields = {
-    project: Project,
-    employees: EmployeeList,
-    availables: EmployeeList,
-  }
+  fields = ["project", "start_datetime", "end_datetime", "number_needed",
+    {
+      name: "project",
+      cls: Project
+    },{
+      name: "employees",
+      cls: EmployeeList
+    },{
+      name:"availables",
+      cls: EmployeeList
+    }]
   resource_name = "assignment"
   project: Project
   start_datetime: string
@@ -21,9 +26,6 @@ export class Assignment extends Model{
   employees: EmployeeList
   availables: EmployeeList
 
-  update(){
-    this.fetch(this.api);
-  }
   add_employee(employee: Employee){
     var ea = new EmployeeAssignment(employee, this, this.api);
     ea.create();
@@ -44,8 +46,15 @@ export class AssignmentList extends ModelList<Assignment>{
 }
 
 export class EmployeeAssignment extends JunctionModel{
+  fields = [{
+    name: "employee",
+    cls: Employee
+  },{
+    name: "assignment",
+    cls: Assignment
+  }]
   junction_fields = ["employee", "assignment"]
   constructor(private employee:Employee, private assignment: Assignment, api?){
-    super({}, api)
+    super(api)
   }
 }
