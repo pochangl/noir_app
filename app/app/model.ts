@@ -11,9 +11,8 @@ export abstract class ModelList<T>{
   urlParams: Object = {}
   objects: Array<T> = []
   length: number
-  api: Api
 
-  constructor(api:Api){
+  constructor(protected api:Api){
     this.construct([]);
   }
   construct(objs){
