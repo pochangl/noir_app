@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {ProjectListPage} from '../project/list';
-import {DayOffListPage} from '../schedule/list';
+import {DayOffEmployeesPage} from '../schedule/dayoff_employees';
 import {PayCheckChooseEmployeePage} from '../transaction/paycheck_choose_employee';
 import {DebtChooseEmployeePage} from '../transaction/debt_choose_employee';
 
@@ -18,7 +18,7 @@ export class HomePage {
 		this.nav.push(ProjectListPage);
 	}
 	dayoff(){
-		this.nav.push(DayOffListPage);
+		this.nav.push(DayOffEmployeesPage);
 	}
 	paycheck(){
 		this.nav.push(PayCheckChooseEmployeePage);

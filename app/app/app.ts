@@ -5,7 +5,7 @@ import {SignInPage} from './pages/general/sign_in';
 import {HomePageV2} from './pages/general/home_v2';
 import {HomePage} from './pages/general/home';
 import {ProjectListPage} from './pages/project/list';
-import {DayOffListPage} from './pages/schedule/list';
+import {DayOffEmployeesPage} from './pages/schedule/dayoff_employees';
 import {PayCheckChooseEmployeePage} from './pages/transaction/paycheck_choose_employee';
 import {DebtChooseEmployeePage} from './pages/transaction/debt_choose_employee';
 
@@ -33,7 +33,7 @@ class MyApp {
       { title: '主選單_v2', component: HomePageV2 },
       { title: '主選單', component: HomePage },
       { title: '選擇工地', component: ProjectListPage},
-      { title: '請假', component: DayOffListPage},
+      { title: '請假', component: DayOffEmployeesPage},
       { title: '薪資', component: PayCheckChooseEmployeePage},
       { title: '借款', component: DebtChooseEmployeePage}
     ];

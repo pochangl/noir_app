@@ -3,13 +3,13 @@
     <button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{title}}選擇工人</ion-title>
+    <ion-title>{{title}}</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <button ion-item *ngFor="let employee of employees" (click)="click(employee)">
+    <button ion-item *ngFor="let employee of employees.objects" (click)="click(employee)">
       {{ employee.contact.name }}
       <ion-icon name="md-arrow-forward" item-right></ion-icon>
     </button>

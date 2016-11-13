@@ -5,14 +5,14 @@ import {Http} from '@angular/http';
 import {ProjectDetailPage} from '../project/detail'
 import {HomePage} from '../general/home';
 import {PayCheckPage} from '../transaction/paycheck';
-import {DayoffPage} from '../schedule/dayoff';
+import {DayOffEmployeesPage} from '../schedule/dayoff_employees';
 
 
 @Component({
     templateUrl: 'build/pages/general/home_v2.html'
 })
 
-export class HomePageV2 {  
+export class HomePageV2 {
 	//slide page of project
   	projects = [];
   	number_count = 0;
@@ -28,22 +28,22 @@ export class HomePageV2 {
 	click_of_project(project){
 		this.nav.push(ProjectDetailPage, { project: project });
 	}
-	
-		
+
+
 	//slide page of transaction
 	employees = [{name: "Employee 1", id: 1}, {name: "Employee 2", id:2}, {name: "Employee 3", id: 3}];
 	click_of_transaction(employee){
 		this.nav.push(PayCheckPage, {employee: employee});
 	}
-	
-	
+
+
 	//slide page of schedule
 	//employees = [{name: "Employee 1", id: 1}, {name: "Employee 2", id:2}, {name: "Employee 3", id: 3}];
 	click_of_schedule(employee){
-		this.nav.push(DayoffPage, {employee: employee});
+		this.nav.push(DayOffEmployeesPage, {employee: employee});
 	}
-	
-	
+
+
 	//slide page of sign in
 	presentLoading() {
 		let loading = Loading.create({

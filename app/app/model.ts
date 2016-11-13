@@ -13,19 +13,17 @@ export abstract class ModelList<T>{
   length: number
   api: Api
 
-  constructor(objs: Array<Object> = []){
-    this.construct(objs);
+  constructor(api:Api){
+    this.construct([]);
   }
   construct(objs){
-    console.log(objs);
     this.objects = objs.map(obj=>{
-      var new_obj = new this.model();
+      var new_obj = new this.model(this.api);
       return new_obj.construct(obj);
     });
     this.length = this.objects.length;
   }
-  fetch(api?: Api): Observable<Response>{
-    this.api = api;
+  fetch(): Observable<Response>{
     var observable = this.api.get({
       resource_name: this.resource_name,
       urlParams: this.urlParams
@@ -47,8 +45,9 @@ export abstract class Model{
   resource_name: string
   is_removed: boolean = false
 
-  constructor(protected api?: Api){
+  constructor(protected api: Api){
   }
+
   construct(obj?: any){
     var cls;
     this.id = obj.id
@@ -62,15 +61,14 @@ export abstract class Model{
       }else{
         name = item.name;
         cls = item.cls;
-        this[name] = new cls()
+        this[name] = new cls(this.api)
         this[name].construct(obj[name])
       }
     }
     return this;
   }
-  fetch(api?: Api): Observable<Response>{
+  fetch(): Observable<Response>{
     var observable;
-    this.api = api;
     observable = this.api.get({
       resource_name: this.resource_name,
       id: this.id
@@ -81,6 +79,14 @@ export abstract class Model{
       data => this.construct(data)
     );
     return observable;
+  }
+  commit(){
+
+  }
+  update(){
+  }
+  create(){
+
   }
   delete(): Observable<Response>{
     var observable = this.api.delete({
@@ -93,13 +99,12 @@ export abstract class Model{
 
 export abstract class JunctionModel extends Model{
   junction_fields: Array<string>
-  fetch(api?: Api): Observable<Response>{
+  fetch(): Observable<Response>{
     var observable;
-    this.api = api;
     if(!this.id){
       return this.get_id();
     }else{
-      return super.fetch(api);
+      return super.fetch();
     }
   }
   get_id(){

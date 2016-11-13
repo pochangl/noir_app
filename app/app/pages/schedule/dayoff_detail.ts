@@ -8,27 +8,21 @@ import { HomePage } from '../general/home';
 import { DayOff } from "./models"
 
 @Component({
-	templateUrl: 'build/pages/schedule/dayoff.html',
-	providers: [ Api ]
+	templateUrl: 'build/pages/schedule/dayoff.html'
 })
 
-export class DayoffPage {
-	employee: any;
+export class DayOffDetailPage {
 	dayoff: DayOff;
-	dayoffs_count: number;
 
 	constructor(
 		private nav: NavController,
-		params: NavParams,
-		private api: Api
+		params: NavParams
 	){
-		this.employee = params.data.employee;
-		this.dayoff = new DayOff();
-		this.dayoffs_count = 0;
+		this.dayoff = params.data.dayoff;
 	}
 
   ionViewWillEnter(){
-    this.dayoff.fetch(this.api);
+    this.dayoff.fetch();
 		// ).subscribe(
 		// 	data => {
 		// 		//使用id_count以避免不止一筆資料之情形。

@@ -16,10 +16,10 @@ export class ProjectListPage {
   assign_date: any;
 
 	constructor(private nav: NavController, private api: Api){
-    this.assignments = new AssignmentList();
+    this.assignments = new AssignmentList(this.api);
   }
   ionViewWillEnter(){
-    this.assignments.fetch(this.api);
+    this.assignments.fetch();
   }
 
 	click(assignment){
