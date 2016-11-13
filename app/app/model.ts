@@ -8,7 +8,6 @@ import { Response } from '@angular/http/src/static_response';
 export abstract class ModelList<T>{
   resource_name: string
   model: any
-  urlParams: Object = {}
   objects: Array<T> = []
   length: number
 
@@ -22,10 +21,13 @@ export abstract class ModelList<T>{
     });
     this.length = this.objects.length;
   }
+  buildUrlParams(){
+    return {};
+  }
   fetch(): Observable<Response>{
     var observable = this.api.get({
       resource_name: this.resource_name,
-      urlParams: this.urlParams
+      urlParams: this.buildUrlParams()
     }).map(
       response => response.json()
     );
