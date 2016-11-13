@@ -42,7 +42,7 @@ export abstract class ModelList<T>{
 
 export abstract class Model{
   fields: Array<any> = []
-  protected id: number
+  id: number
   resource_name: string
   is_removed: boolean = false
 
