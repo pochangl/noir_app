@@ -3,29 +3,29 @@
     <button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{ employee.contact.name}}的請假畫面</ion-title>
+    <ion-title>{{ dayoff.employee.contact.name}}的請假畫面</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
     <ion-item>
 		<ion-label>開始日期</ion-label>
-		<ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY-MM-DD" min="2016" max="2099-10-31" [(ngModel)]="dayoffs.start_date"></ion-datetime>
+		<ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY-MM-DD" min="2016" max="2099-10-31" [(ngModel)]="dayoff.start_date"></ion-datetime>
     </ion-item>
 
     <ion-item>
 		<ion-label>開始時間</ion-label>
-		<ion-datetime displayFormat="H:mm" pickerFormat="H:mm" minuteValues="0,30" [(ngModel)]="dayoffs.start_time"></ion-datetime>
+		<ion-datetime displayFormat="H:mm" pickerFormat="H:mm" minuteValues="0,30" [(ngModel)]="dayoff.start_time"></ion-datetime>
     </ion-item>
 
     <ion-item>
 		<ion-label>結束日期</ion-label>
-		<ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY-MM-DD" min="2016" max="2099-10-31" [(ngModel)]="dayoffs.end_date"></ion-datetime>
+		<ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY-MM-DD" min="2016" max="2099-10-31" [(ngModel)]="dayoff.end_date"></ion-datetime>
     </ion-item>
 
     <ion-item>
 		<ion-label>結束時間</ion-label>
-		<ion-datetime displayFormat="H:mm" pickerFormat="H:mm" minuteValues="0,30" [(ngModel)]="dayoffs.end_time"></ion-datetime>
+		<ion-datetime displayFormat="H:mm" pickerFormat="H:mm" minuteValues="0,30" [(ngModel)]="dayoff.end_time"></ion-datetime>
     </ion-item>
 
 	<div padding>

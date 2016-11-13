@@ -5,14 +5,14 @@ import {DayOffDetailPage} from '../schedule/dayoff_detail';
 import {DayOffList} from "./models";
 
 @Component({
-	templateUrl: 'build/pages/account/list.html',
+	templateUrl: 'build/pages/schedule/dayoff_days.html',
   providers: [Api]
 })
 
 export class DayOffDaysPage {
   dayoffs: DayOffList;
   title: string;
-  
+
 	constructor(
 		private nav: NavController,
 		private api: Api
@@ -23,7 +23,7 @@ export class DayOffDaysPage {
   ionViewWillEnter(){
     this.dayoffs.fetch();
   }
-	click(employee){
-		this.nav.push(DayOffDetailPage, {employee: employee});
+	click(dayoff){
+		this.nav.push(DayOffDetailPage, {dayoff: dayoff});
 	}
 }

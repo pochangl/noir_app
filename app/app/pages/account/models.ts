@@ -17,5 +17,5 @@ export class Employee extends Model{
 
 export class EmployeeList extends ModelList<Employee>{
   model = Employee
-  resource_name: "employees"
+  resource_name = "employee"
 }
