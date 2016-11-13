@@ -2,7 +2,8 @@ import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Api} from '../../providers/api/api';
 import {ProjectDetailPage} from './detail';
-import { OrderByPipe } from "../pipes/selected_account";
+import {OrderByPipe } from "../pipes/selected_account";
+import {AssignmentList, Assignment} from "./models"
 
 @Component({
     templateUrl: 'build/pages/project/list.html',
@@ -11,27 +12,14 @@ import { OrderByPipe } from "../pipes/selected_account";
 })
 
 export class ProjectListPage {
-	// projects: any;
-	assignments: any;
-  assign_date:any;
+	assignments: AssignmentList
+  assign_date: any;
 
-	constructor(
-				private nav: NavController,
-			  params: NavParams,
-				private http: Api
-	){
-		this.assignments = [];
-	}
+	constructor(private nav: NavController, private api: Api){
+    this.assignments = new AssignmentList();
+  }
   ionViewWillEnter(){
-		this.http.get({
-        resource_name: "assignment"
-    }).map(
-      response => response.json()
-		).subscribe((data)=>{
-			this.assignments = data.objects;
-      },
-      err => console.error(err)
-    );
+    this.assignments.fetch(this.api);
   }
 
 	click(assignment){

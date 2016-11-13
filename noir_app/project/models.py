@@ -16,7 +16,6 @@ class Project(TimeStampModel):
         return self.name
 
 
-
 class Assignment(TimeStampModel):
     project = models.ForeignKey(Project, related_name='assignments')
     employees = models.ManyToManyField('account.Employee', through="project.EmployeeAssignment", related_name='assignments')

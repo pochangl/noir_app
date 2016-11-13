@@ -1,48 +1,21 @@
-import { Model } from '../../model';
-import { Injectable } from '@angular/core';
+import { Model, ModelList } from '../../model';
 
-
-@Injectable()
 export class Contact extends Model{
-  protected name: string
-  title: string
-  address: string
-  phone: number
-  mobile: number
-  pid: string
-  birthday: string
-
-  constructor(obj: any){
-    super(obj)
-    this.construct(obj)
-  }
-
-  construct(obj: any){
-    name = obj.name
-    this.title = obj.title
-    this.address = obj.address
-    this.phone = obj.phone
-    this.mobile = obj.mobile
-    this.pid = obj.pid
-    this.birthday = obj.birthday
-  }
-  fetch(){}
-  update(){}
+  fields = ["name"]
+  name: string
 }
 
+
 export class Employee extends Model{
+  fields = [{
+    name: "contact",
+    cls: Contact
+  }]
   contact: Contact
-  title: string
+}
 
-  constructor(obj: any){
-    super(obj)
-    this.construct(obj)
-  }
 
-  construct(obj: any){
-    this.contact = new Contact(obj.contact)
-    this.title = obj.title
-  }
-  fetch(){}
-  update(){}
+export class EmployeeList extends ModelList<Employee>{
+  model = Employee
+  resource_name: "employees"
 }
