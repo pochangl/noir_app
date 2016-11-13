@@ -35,3 +35,15 @@ export class DayOff extends Model{
     resource_name = "dayoff"
     model = DayOff
   }
+
+  export class MyDayOffList extends DayOffList{
+    employee: Employee
+    set_employee(employee: Employee){
+      this.employee = employee;
+    }
+    buildUrlParams(){
+      var params = super.buildUrlParams();
+      params["employee"] = this.employee.id;
+      return params;
+    }
+  }

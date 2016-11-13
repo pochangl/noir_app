@@ -2,7 +2,8 @@ import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import { Api } from '../../providers/api/api';
 import {DayOffDetailPage} from '../schedule/dayoff_detail';
-import {DayOffList} from "./models";
+import {MyDayOffList} from "./models";
+import {Employee} from "../account/models";
 
 @Component({
 	templateUrl: 'build/pages/schedule/dayoff_days.html',
@@ -10,15 +11,17 @@ import {DayOffList} from "./models";
 })
 
 export class DayOffDaysPage {
-  dayoffs: DayOffList;
-  title: string;
+  dayoffs: MyDayOffList;
+  employee: Employee;
 
 	constructor(
 		private nav: NavController,
+		params: NavParams,
 		private api: Api
 	){
-		this.dayoffs = new DayOffList(this.api);
-		this.title="休假-選擇休假紀錄";
+		this.dayoffs = new MyDayOffList(this.api);
+    this.employee = params.data.employee;
+    this.dayoffs.set_employee(this.employee);
 	}
   ionViewWillEnter(){
     this.dayoffs.fetch();

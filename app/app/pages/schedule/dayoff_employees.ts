@@ -18,7 +18,7 @@ export class DayOffEmployeesPage {
 		private api: Api
 	){
 		this.employees = new EmployeeList(this.api);
-		this.title="休假-選擇工人";
+		this.title="休假-";
 	}
   ionViewWillEnter(){
     this.employees.fetch();
