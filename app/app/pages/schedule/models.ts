@@ -26,7 +26,7 @@ export class DayOff extends Model{
 		// this.dayoffs.end_datetime = this.dayoffs.end_date.concat(this.dayoffs.end_datetime.substring(10));
 		// this.dayoffs.end_datetime = this.dayoffs.end_datetime.substring(0,11).concat(this.dayoffs.end_time);
     // return this.start_datetime < this.end_datetime;
-    console.log("test");
+    console.log("isValidDateTime works");
     return false;
   }
 }

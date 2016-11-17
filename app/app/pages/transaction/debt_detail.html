@@ -3,7 +3,7 @@
     <button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{ employee_name }}的借款畫面</ion-title>
+    <ion-title>{{ debt.employee.contact.name }}的借款畫面</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -12,11 +12,11 @@
   <ion-list>
 	  <ion-item>
 		  <ion-label>名字</ion-label>
-		  <p item-right>{{ employee_name }}</p>
+		  <p item-right>{{ debt.employee.contact.name }}</p>
 	  </ion-item>
 	  <ion-item>
 		  <ion-label primary>借款</ion-label>
-		  <p item-right> {{ amount() }} </p>
+		  <p item-right> {{ debt.amount }} </p>
 	  </ion-item>
 	  <ion-item-list-divider light></ion-item-list-divider>
 	  <ion-item>

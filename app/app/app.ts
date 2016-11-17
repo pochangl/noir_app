@@ -2,12 +2,11 @@ import {Component, ViewChild} from '@angular/core';
 import {ionicBootstrap, Platform, MenuController, Nav} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {SignInPage} from './pages/general/sign_in';
-import {HomePageV2} from './pages/general/home_v2';
 import {HomePage} from './pages/general/home';
 import {ProjectListPage} from './pages/project/list';
 import {DayOffEmployeesPage} from './pages/schedule/dayoff_employees';
-import {PayCheckChooseEmployeePage} from './pages/transaction/paycheck_choose_employee';
-import {DebtChooseEmployeePage} from './pages/transaction/debt_choose_employee';
+import {PaycheckEmployeesPage} from './pages/transaction/paycheck_employees';
+import {DebtEmployeesPage} from './pages/transaction/debt_employees';
 
 
 @Component({
@@ -30,12 +29,11 @@ class MyApp {
     // set our app's pages
     this.pages = [
       { title: '使用者登錄', component: SignInPage },
-      { title: '主選單_v2', component: HomePageV2 },
       { title: '主選單', component: HomePage },
       { title: '選擇工地', component: ProjectListPage},
       { title: '請假', component: DayOffEmployeesPage},
-      { title: '薪資', component: PayCheckChooseEmployeePage},
-      { title: '借款', component: DebtChooseEmployeePage}
+      { title: '薪資', component: PaycheckEmployeesPage},
+      { title: '借款', component: DebtEmployeesPage}
     ];
   }
 

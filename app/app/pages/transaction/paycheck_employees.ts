@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {NavController} from 'ionic-angular';
 import { Api } from '../../providers/api/api';
-import {DayOffDaysPage} from '../schedule/dayoff_days';
+import {PaycheckRecordsPage} from '../transaction/paycheck_records';
 import {EmployeeList} from "../account/models";
 
 @Component({
@@ -9,7 +9,7 @@ import {EmployeeList} from "../account/models";
 	providers: [Api]
 })
 
-export class DayOffEmployeesPage {
+export class PaycheckEmployeesPage {
 	employees: EmployeeList;
 	title: string;
 
@@ -18,12 +18,12 @@ export class DayOffEmployeesPage {
 		private api: Api
 	){
 		this.employees = new EmployeeList(this.api);
-		this.title="休假";
+		this.title = "薪資";
 	}
   ionViewWillEnter(){
     this.employees.fetch();
   }
 	click(employee){
-		this.nav.push(DayOffDaysPage, {employee: employee});
+		this.nav.push(PaycheckRecordsPage, {employee: employee});
 	}
 }

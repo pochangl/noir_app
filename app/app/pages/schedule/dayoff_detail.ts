@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-
 import { Api } from '../../providers/api/api';
 import '../../rxjs-operators';
 import { HomePage } from '../general/home';
-
 import { DayOff } from "./models"
 
 @Component({
@@ -35,12 +33,11 @@ export class DayOffDetailPage {
   }
 
 	submit(){
-		console.log(this.dayoff.isValidDateTime());
 		if(this.dayoff.isValidDateTime() === false){
 			alert("起始時間不可大於結束時間！");
 		}else{
 			this.dayoff.commit();
-			// this.nav.push(HomePage);
+			this.nav.push(HomePage);
 		}
 	}
 }
