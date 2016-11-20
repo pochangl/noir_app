@@ -26,7 +26,7 @@ SECRET_KEY = 'p(%867&misxwy%!&(+)=4_*o-e_y)6o6hps&f=pi9jb&)p_#)%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+TASTYPIE_FULL_DEBUG = True
 ALLOWED_HOSTS = []
 
 

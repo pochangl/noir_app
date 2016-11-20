@@ -79,15 +79,22 @@ class EmployeeAssignmentResource(ModelResource):
         queryset = EmployeeAssignment.objects.all()
         resource_name = "employee_assignment"
         include_resource_uri = False
-        fields = ("id", "check_in", "check_out", "pay", "actual_pay", "assignment")
+        fields = ("id",)
         filtering = {
             "employee": ('exact',),
             "assignment": ALL_WITH_RELATIONS,
         }
-        allowed_methods = ['get','post','put']
+        allowed_methods = ['get','put']
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
 
+    def remove_api_resource_names(self, url_dict):
+        print url_dict
+        kwargs = super(EmployeeAssignmentResource, self).remove_api_resource_names(url_dict)
+        print kwargs
+        if(kwargs["pk"]==""):
+            kwargs.pop("pk")
+        return kwargs
 
 class UnassignedResource(EmployeeResource):
     

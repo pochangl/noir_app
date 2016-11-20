@@ -22,8 +22,9 @@ class Url{
     "id"?: string,
     "resource_name": string,
     "urlParams"?: Object,
-  }){
+  }, force_id){
     this.id = (!!kwargs.id || kwargs.id === "") ? kwargs.id + "/": "";
+    this.id = (this.id == "" && force_id) ? "/" : "";
     this.resource_name= kwargs.resource_name + "/";
     this.urlParams = kwargs.urlParams ? kwargs.urlParams: {};
     this.username = "edward";
@@ -53,8 +54,8 @@ class Url{
 export class Api {
   constructor(private http: Http){}
 
-  preprocess_url(url: any) {
-    return new Url(url).toString();
+  preprocess_url(url: any, force_id: boolean = false) {
+    return new Url(url, force_id).toString();
   }
   request(url: any, options?: any): Observable<Response> {
     return this.http.request(this.preprocess_url(url), options);
@@ -66,10 +67,7 @@ export class Api {
     return this.http.post(this.preprocess_url(url), body, options);
   }
   put(url: any, body, options?: any): Observable<Response> {
-    if("id" in url && !url.id){
-      url.id = "";
-    }
-    return this.http.put(this.preprocess_url(url), body, options);
+    return this.http.put(this.preprocess_url(url, true), body, options);
   }
   delete(url: any, options?: any): Observable<Response> {
     return this.http.delete(this.preprocess_url(url), options);

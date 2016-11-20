@@ -1,4 +1,4 @@
-import { JunctionModel, Model, ModelList } from '../../model';
+import { Model, ModelList } from '../../model';
 import { Employee, EmployeeList } from '../account/models';
 
 export class Project extends Model{
@@ -7,7 +7,7 @@ export class Project extends Model{
 }
 
 export class Assignment extends Model{
-  fields = ["project", "start_datetime", "end_datetime", "number_needed",
+  fields = ["start_datetime", "end_datetime", "number_needed",
     {
       name: "project",
       cls: Project
@@ -26,12 +26,20 @@ export class Assignment extends Model{
   employees: EmployeeList
   availables: EmployeeList
 
-  add_employee(employee: Employee){
-    var ea = new EmployeeAssignment(employee, this, this.api);
-    ea.create();
+  add(employee: Employee){
+    var ea = new EmployeeAssignment(this.api);
+    ea.construct({
+      assignment: this,
+      employee: employee
+    });
+    ea.commit();
   }
-  discard_employee(employee: Employee){
-    var ea = new EmployeeAssignment(employee, this, this.api);
+  discard(employee: Employee){
+    var ea = new EmployeeAssignment(this.api);
+    ea.construct({
+      assignment: this,
+      employee: employee
+    });
     ea.delete();
   }
   is_full(){
@@ -45,7 +53,8 @@ export class AssignmentList extends ModelList<Assignment>{
   model = Assignment
 }
 
-export class EmployeeAssignment extends JunctionModel{
+export class EmployeeAssignment extends Model{
+  resource_name = "employee_assignment"
   fields = [{
     name: "employee",
     cls: Employee
@@ -53,8 +62,4 @@ export class EmployeeAssignment extends JunctionModel{
     name: "assignment",
     cls: Assignment
   }]
-  junction_fields = ["employee", "assignment"]
-  constructor(private employee:Employee, private assignment: Assignment, api?){
-    super(api)
-  }
 }

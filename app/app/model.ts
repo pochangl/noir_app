@@ -42,7 +42,7 @@ export abstract class ModelList<T>{
 
 export abstract class Model{
   fields: Array<any> = []
-  id: number
+  id: number = 0
   resource_name: string
   is_removed: boolean = false
 
@@ -59,6 +59,8 @@ export abstract class Model{
       if(typeof item == "string"){
         name = item;
         this[name] = obj[name];
+      }else if(obj[item.name] instanceof item.cls){
+        this[item.name] = obj[item.name]
       }else{
         name = item.name;
         cls = item.cls;
@@ -81,66 +83,43 @@ export abstract class Model{
     );
     return observable;
   }
+  serialize():Object{
+    /*
+    convert model to javascript object
+    ModelList is skipped
+    */
+    var obj = {};
+    for(let field of this.fields){
+      if(typeof field == "string"){
+        obj[field] = this[field];
+      }else{
+        var name = field.name;
+        if(!(this[name] instanceof ModelList)){
+          obj[name] = this[name].id;
+        }
+      }
+    }
+
+    return obj;
+  }
   commit(){
-
-  }
-  update(){
-  }
-  create(){
-
+    /*
+      update information to server
+      if no this.id, read in id after obj creation
+    */
+    this.api.put({
+        resource_name: this.resource_name
+      },this.serialize()
+    ).map(
+      resp => resp.json()
+    ).subscribe(
+      data => this.id = data.id
+    );
   }
   delete(): Observable<Response>{
     var observable = this.api.delete({
-      resource_name: this.resource_name,
-      id: this.id
-    });
-    return observable;
-  }
-}
-
-export abstract class JunctionModel extends Model{
-  junction_fields: Array<string>
-  fetch(): Observable<Response>{
-    var observable;
-    if(!this.id){
-      return this.get_id();
-    }else{
-      return super.fetch();
-    }
-  }
-  get_id(){
-    var observable = this.api.get({
       resource_name: this.resource_name
-    }).map(
-      resp => resp.json()
-    );
-    observable.subscribe(
-      data => this.id = data.id,
-      err => this.is_removed = true
-    );
+    }, this.serialize());
     return observable;
-  }
-  delete(): Observable<Response>{
-    var observable = this.fetch();
-    observable.subscribe(
-      data => this.is_removed = true
-    );
-    return observable;
-  }
-  build_post_data(): Object{
-    var data = {};
-    for(let field of this.junction_fields){
-      data[field] = this[field].id;
-    }
-    return data;
-  }
-  create(): Observable<Response>{
-    var observable = this.api.post({
-      resource_name:this.resource_name,
-    }, this.build_post_data());
-    observable.map(resp => resp.json).subscribe(
-      item => this.id = item["id"]
-    );
-    return observable
   }
 }
