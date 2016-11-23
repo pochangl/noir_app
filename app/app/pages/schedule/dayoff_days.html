@@ -8,6 +8,12 @@
 </ion-header>
 
 <ion-content>
+  <ion-segment>
+    <button ion-item (click)="new_record()">
+      新增請假紀錄
+      <ion-icon name="md-arrow-forward" item-right></ion-icon>
+    </button>
+  </ion-segment>
   <ion-list>
     <button ion-item *ngFor="let dayoff of dayoffs.objects" (click)="click(dayoff)">
       {{ dayoff.start_datetime }}
