@@ -45,6 +45,9 @@ export class Assignment extends Model{
   is_full(){
     return this.employees.length >= this.number_needed;
   }
+  is_selected(){
+    return false;
+  }
 }
 
 

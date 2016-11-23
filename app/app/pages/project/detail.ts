@@ -23,6 +23,17 @@ export class ProjectDetailPage {
 		this.assignment.fetch();
 	}
 	toggle(employee) {
-		this.assignment.add(employee);
+		// employee.is_selected須由assignment fetch時一併處理；
+		// 尚未解決
+		if (employee.is_selected === true) {
+			this.assignment.discard(employee);
+		}else {
+			if (this.assignment.is_full() === true) {
+				alert("派工人數已達上限！")
+			}else {
+				this.assignment.add(employee);
+			}
+			employee.is_selected = !employee.is_selected;
+		}
 	}
 }
