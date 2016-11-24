@@ -33,7 +33,7 @@ export class DayOffDaysPage {
 	new_record(){
 		//不知道為什麼月份會少一個月？
 		var today = new Date();
-		var curDate = today.getFullYear() + "-" + today.getMonth() + "-" + today.getDate();
+		var curDate = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
 		var curTime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 		var initial_data = {
 			"employee": {"contact": {"id": this.employee.contact.id, "name": this.employee.contact.name}, "id": this.employee.id},
