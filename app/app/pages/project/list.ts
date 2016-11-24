@@ -15,11 +15,17 @@ export class ProjectListPage {
 	assignments: AssignmentList
   assign_date: any;
 
-	constructor(private nav: NavController, private api: Api){
+	constructor(
+    private nav: NavController,
+    params: NavParams,
+    private api: Api
+  ){
     this.assignments = new AssignmentList(this.api);
+    //尚需增加filter by picked_date
+    //無法用buildUrlParams抓start_date,tastypie要修改才能抓
+    this.assignments.buildUrlParams = params.data;
   }
   ionViewWillEnter(){
-    //尚需增加filter by picked_date
     this.assignments.fetch();
   }
 
