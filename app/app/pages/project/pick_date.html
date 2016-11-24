@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar>
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>派工-挑選日期</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-item>
+		<ion-label>挑選日期</ion-label>
+		<ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY-MM-DD" min="2016" max="2099-10-31" [(ngModel)]="choosingDate"></ion-datetime>
+    </ion-item>
+
+	<div padding>
+		<button block (click)="submit()">下一步</button>
+	</div>
+</ion-content>

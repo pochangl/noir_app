@@ -19,6 +19,7 @@ export class ProjectListPage {
     this.assignments = new AssignmentList(this.api);
   }
   ionViewWillEnter(){
+    //尚需增加filter by picked_date
     this.assignments.fetch();
   }
 

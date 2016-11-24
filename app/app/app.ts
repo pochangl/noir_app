@@ -3,7 +3,7 @@ import {ionicBootstrap, Platform, MenuController, Nav} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {SignInPage} from './pages/general/sign_in';
 import {HomePage} from './pages/general/home';
-import {ProjectListPage} from './pages/project/list';
+import {PickDatePage} from './pages/project/pick_date';
 import {DayOffEmployeesPage} from './pages/schedule/dayoff_employees';
 import {PaycheckEmployeesPage} from './pages/transaction/paycheck_employees';
 import {DebtEmployeesPage} from './pages/transaction/debt_employees';
@@ -30,7 +30,7 @@ class MyApp {
     this.pages = [
       { title: '使用者登錄', component: SignInPage },
       { title: '主選單', component: HomePage },
-      { title: '選擇工地', component: ProjectListPage},
+      { title: '選擇工地', component: PickDatePage},
       { title: '請假', component: DayOffEmployeesPage},
       { title: '薪資', component: PaycheckEmployeesPage},
       { title: '借款', component: DebtEmployeesPage}

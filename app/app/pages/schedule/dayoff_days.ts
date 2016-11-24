@@ -27,7 +27,6 @@ export class DayOffDaysPage {
     this.dayoffs.fetch();
   }
 	click(dayoff){
-		console.log(dayoff);
 		this.nav.push(DayOffDetailPage, {dayoff: dayoff});
 	}
 	new_record(){

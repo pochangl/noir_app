@@ -6,7 +6,7 @@ import { HomePage } from '../general/home';
 import { DayOff } from "./models"
 
 @Component({
-	templateUrl: 'build/pages/schedule/dayoff.html'
+	templateUrl: 'build/pages/schedule/dayoff_detail.html'
 })
 
 export class DayOffDetailPage {
