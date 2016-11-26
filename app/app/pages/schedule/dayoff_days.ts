@@ -36,13 +36,13 @@ export class DayOffDaysPage {
 		var curTime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 		var initial_data = {
 			"employee": {"contact": {"id": this.employee.contact.id, "name": this.employee.contact.name}, "id": this.employee.id},
-									"id": 1,
-									"start_datetime": curDate + "T" + "08:00:00",
-									"start_date": curDate,
-									"start_time": "08:00:00",
-									"end_datetime": curDate + "T" + "17:00:00",
-									"end_date": curDate,
-									"end_time": "17:00:00"
+			"id": 1,
+			"start_datetime": curDate + "T" + "08:00:00",
+			"start_date": curDate,
+			"start_time": "08:00:00",
+			"end_datetime": curDate + "T" + "17:00:00",
+			"end_date": curDate,
+			"end_time": "17:00:00"
 		};
 		this.nav.push(DayOffDetailPage, {dayoff: initial_data});
 	}

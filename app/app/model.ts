@@ -21,10 +21,10 @@ export abstract class ModelList<T>{
     });
     this.length = this.objects.length;
   }
-  buildUrlParams(){
+  buildUrlParams(obj?: any){
     return {};
   }
-  fetch(): Observable<Response>{
+  fetch(obj?: any): Observable<Response>{
     var observable = this.api.get({
       resource_name: this.resource_name,
       urlParams: this.buildUrlParams()

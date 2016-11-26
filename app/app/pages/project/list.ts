@@ -14,6 +14,7 @@ import {AssignmentList, Assignment} from "./models"
 export class ProjectListPage {
 	assignments: AssignmentList
   assign_date: any;
+  rangeOfDateTime: any;
 
 	constructor(
     private nav: NavController,
@@ -23,10 +24,15 @@ export class ProjectListPage {
     this.assignments = new AssignmentList(this.api);
     //尚需增加filter by picked_date
     //無法用buildUrlParams抓start_date,tastypie要修改才能抓
-    this.assignments.buildUrlParams = params.data;
+    var rangeOfDateTime = (
+      {"start_datetime__gte": params.data+"T00:00:00"},
+      {"start_datetime__lte": params.data+"T23:59:59"}
+    );
+    this.assignments.buildUrlParams(rangeOfDateTime);
   }
-  ionViewWillEnter(){
-    this.assignments.fetch();
+  ionViewDidEnter(){
+    console.log(this.rangeOfDateTime);
+    this.assignments.fetch(this.rangeOfDateTime);
   }
 
 	click(assignment){
