@@ -26,6 +26,13 @@ export class Assignment extends Model{
   employees: EmployeeList
   availables: EmployeeList
 
+  construct(obj){
+    super.construct(obj)
+    for(let assignment of this.availables){
+      assignment.selected = this.has(assignment)
+    }
+  }
+
   add(employee: Employee){
     var ea = new EmployeeAssignment(this.api);
     ea.construct({
