@@ -1,4 +1,4 @@
-import { Model, ModelList, APIDateList} from '../../model';
+import { Model, ModelList, JunctionModel, APIDateList} from '../../model';
 import { Employee, EmployeeList } from '../account/models';
 
 import { Observable } from 'rxjs/Observable';
@@ -8,6 +8,13 @@ import { Response } from '@angular/http/src/static_response';
 export class Project extends Model{
   fields = ["name"]
   name: string
+}
+
+class SelectedEmployee extends Employee {
+  selected: boolean = false
+}
+class SelectedEmployeeList extends ModelList<SelectedEmployee>{
+  model = SelectedEmployee
 }
 
 export class Assignment extends Model{
@@ -20,7 +27,7 @@ export class Assignment extends Model{
       cls: EmployeeList
     },{
       name:"availables",
-      cls: EmployeeList
+      cls: SelectedEmployeeList
     }]
   resource_name = "assignment"
   project: Project
@@ -28,14 +35,14 @@ export class Assignment extends Model{
   end_datetime: string
   number_needed: number
   employees: EmployeeList
-  availables: EmployeeList
-  selected: boolean = false
+  availables: SelectedEmployeeList
 
-  construct(obj){
+  construct(obj?: any){
     super.construct(obj)
-    for(let assignment of this.availables){
-      assignment.selected = this.has(assignment)
+    for(let employee of this.availables.objects){
+      employee.selected = this.has(employee)
     }
+    return this;
   }
 
   add(employee: Employee){
@@ -52,7 +59,9 @@ export class Assignment extends Model{
       assignment: this,
       employee: employee
     });
-    ea.delete();
+    ea.fetch(
+      ()=>ea.delete()
+    )
   }
   is_full(){
     return this.employees.length >= this.number_needed;
@@ -70,8 +79,11 @@ export class AssignmentList extends ModelList<Assignment>{
   model = Assignment
 }
 
-export class EmployeeAssignment extends Model{
+export class EmployeeAssignment extends JunctionModel{
+  assignment: Assignment
+  employee: Employee
   resource_name = "employee_assignment"
+  junction_fields = ["employee", "assignment"]
   fields = [{
     name: "employee",
     cls: Employee

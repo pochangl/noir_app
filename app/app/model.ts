@@ -106,7 +106,8 @@ export abstract class Model{
   }
   delete(): Observable<Response>{
     var observable = this.api.delete({
-     resource_name: this.resource_name
+     resource_name: this.resource_name,
+     id: this.id
    }, this.serialize());
    observable.subscribe();
    return observable;
@@ -176,4 +177,29 @@ export abstract class APIDate extends Model{
 
 export abstract class APIDateList extends ModelList<APIDate> {
   model = APIDate
+}
+
+export abstract class JunctionModel extends Model{
+  junction_fields: Array<any>
+  fetch(func?: Function): Observable<Response>{
+    var observable, filter={};
+    for(let field of this.junction_fields){
+      filter[this.fields[field].name] = this[field].id
+    }
+    observable = this.api.get({
+      resource_name: this.resource_name,
+      urlParams: filter
+    }).map(
+      response => response.json()
+    );
+    observable.subscribe(
+      data => {
+        this.construct(data.objects[0])
+        if (func){
+          func()
+        }
+      }
+    );
+    return observable;
+  }
 }
