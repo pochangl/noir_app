@@ -10,6 +10,7 @@ export abstract class ModelList<T>{
   model: any
   objects: Array<T> = []
   length: number
+  urlParams: Object = {}
 
   constructor(protected api:Api){
     this.construct([]);
@@ -22,7 +23,7 @@ export abstract class ModelList<T>{
     this.length = this.objects.length;
   }
   buildUrlParams(){
-    return {};
+    return this.urlParams;
   }
   fetch(): Observable<Response>{
     var observable = this.api.get({
@@ -37,6 +38,9 @@ export abstract class ModelList<T>{
       }
     );
     return observable;
+  }
+  filter(kwargs: Object): void{
+    this.urlParams = kwargs;
   }
 }
 
@@ -95,7 +99,7 @@ export abstract class Model{
       }else{
         var name = field.name;
         if(!(this[name] instanceof ModelList)){
-          obj[name] = this[name].id;
+          obj[name] = this[name].serialize();
         }
       }
     }
@@ -122,4 +126,13 @@ export abstract class Model{
     }, this.serialize());
     return observable;
   }
+}
+
+export abstract class APIDate extends Model{
+  fields = ["date"]
+  date: string
+}
+
+export abstract class APIDateList extends ModelList<APIDate> {
+  model = APIDate
 }

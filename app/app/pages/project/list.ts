@@ -20,10 +20,10 @@ export class ProjectListPage {
     params: NavParams,
     private api: Api
   ){
-    this.assignments = new AssignmentList(this.api);
-    //尚需增加filter by picked_date
-    //無法用buildUrlParams抓start_date,tastypie要修改才能抓
-    this.assignments.buildUrlParams = params.data;
+    this.assignments = new AssignmentList(this.api)
+    this.assignments.filter({
+      selected_datetime: params.data.date.date
+    });
   }
   ionViewWillEnter(){
     this.assignments.fetch();

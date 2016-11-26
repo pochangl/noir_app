@@ -38,13 +38,10 @@ class EmployeeAssignment(TimeStampModel):
     """
     employee = models.ForeignKey(Employee, related_name='employee_assignments')
     assignment = models.ForeignKey(Assignment, related_name='employee_assignments')
-    check_in = models.DateTimeField(null=True, blank=True, default="")
-    check_out = models.DateTimeField(null=True,blank=True, default="")
-    pay = models.IntegerField()
-    actual_pay = models.IntegerField(null=True,blank=True, default=0)
-
-    def __str__(self):
-        return "%s - %s" % (self.assignment.serial, self.employee.contact.name)
+    check_in = models.DateTimeField(null=True, blank=True, default=None)
+    check_out = models.DateTimeField(null=True, blank=True, default=None)
+    pay = models.IntegerField(default=0)
+    actual_pay = models.IntegerField(blank=True, default=0)
 
 #     unique_together需用日期區分開來？
 #     class Meta:

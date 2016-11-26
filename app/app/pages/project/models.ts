@@ -1,4 +1,4 @@
-import { Model, ModelList } from '../../model';
+import { Model, ModelList, APIDateList} from '../../model';
 import { Employee, EmployeeList } from '../account/models';
 
 export class Project extends Model{
@@ -49,7 +49,9 @@ export class Assignment extends Model{
     return false;
   }
 }
-
+export class AssignmentDateList extends APIDateList{
+  resource_name = "assignment_date"
+}
 
 export class AssignmentList extends ModelList<Assignment>{
   resource_name = "assignment"
