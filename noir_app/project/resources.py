@@ -1,5 +1,6 @@
 #-*- coding: utf-8 -*-
 from tastypie.resources import ModelResource, fields, Resource
+from django.utils import dateparse
 
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import ReadOnlyAuthorization, DjangoAuthorization
@@ -36,7 +37,7 @@ class AssignmentDateResource(Resource):
         return self._meta.queryset
 
     def dehydrate(self, bundle, *args, **kwargs):
-        bundle.data['date'] = bundle.obj.strftime("%c")
+        bundle.data['date'] = bundle.obj.date()
         return bundle
 
 
@@ -90,11 +91,9 @@ class AssignmentResource(ModelResource):
     def build_filters(self, filters=None):
         orm_filters = super(AssignmentResource, self).build_filters(filters)
         if 'selected_datetime' in filters:
-            date = datetime.datetime.strptime(filters['selected_datetime'], "%c")
-            date = date.date()
+            date = dateparse.parse_date(filters['selected_datetime'])
             orm_filters['start_datetime__gte'] = date
             orm_filters['start_datetime__lt'] = date + datetime.timedelta(days=1)
-        print orm_filters
         return orm_filters
 
 
