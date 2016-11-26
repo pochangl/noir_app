@@ -86,10 +86,8 @@ export class Api {
     return this.http.put(this.preprocess_url(url, true), body, options);
   }
   delete(url: any, options?: any): Observable<Response> {
-    console.log("deleting")
-    console.log(url)
-    console.log(options)
-    return this.http.delete(this.preprocess_url(url), options);
+    url.id = url.id ? url.id : -1 // prevent deleting the entire database
+    return this.http.delete(this.preprocess_url(url));
   }
   patch(url: any, body, options?: any): Observable<Response> {
     return this.http.patch(this.preprocess_url(url), body, options);

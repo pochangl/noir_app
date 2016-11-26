@@ -36,7 +36,7 @@ export abstract class Model{
     }
     return this;
   }
-  fetch(): Observable<Response>{
+  fetch(func?: Function): Observable<Response>{
     var observable;
     observable = this.api.get({
       resource_name: this.resource_name,
@@ -45,7 +45,12 @@ export abstract class Model{
       response => response.json()
     );
     observable.subscribe(
-      data => this.construct(data)
+      data => {
+        this.construct(data)
+        if (func){
+          func()
+        }
+      }
     );
     return observable;
   }
@@ -103,9 +108,10 @@ export abstract class Model{
   }
   delete(): Observable<Response>{
     var observable = this.api.delete({
-      resource_name: this.resource_name
-    }, this.serialize());
-    return observable;
+     resource_name: this.resource_name
+   }, this.serialize());
+   observable.subscribe();
+   return observable;
   }
 }
 

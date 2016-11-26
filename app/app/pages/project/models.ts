@@ -45,8 +45,8 @@ export class Assignment extends Model{
   is_full(){
     return this.employees.length >= this.number_needed;
   }
-  has(employee){
-    return this.employees.find(employee).length > 0;
+  has(employee): boolean{
+    return this.employees.has(employee);
   }
 }
 export class AssignmentDateList extends APIDateList{
