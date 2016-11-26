@@ -88,8 +88,8 @@ class AssignmentResource(ModelResource):
         return bundle
 
 
-    def build_filters(self, filters=None):
-        orm_filters = super(AssignmentResource, self).build_filters(filters)
+    def build_filters(self, filters=None, **kwargs):
+        orm_filters = super(AssignmentResource, self).build_filters(filters, **kwargs)
         if 'selected_datetime' in filters:
             date = dateparse.parse_date(filters['selected_datetime'])
             orm_filters['start_datetime__gte'] = date
@@ -98,10 +98,11 @@ class AssignmentResource(ModelResource):
 
 
 class EmployeeAssignmentResource(ModelResource):
-    employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="employee_assignments", full=True, readonly=True)
-    assignment = fields.ForeignKey(AssignmentResource, attribute="assignment", related_name="employee_assignments", full=True, readonly=True)
+    employee = fields.ForeignKey(EmployeeResource, attribute="employee")
+    assignment = fields.ForeignKey(AssignmentResource, attribute="assignment")
 
     class Meta:
+        always_return_data = True
         queryset = EmployeeAssignment.objects.all()
         resource_name = "employee_assignment"
         include_resource_uri = False
@@ -110,7 +111,7 @@ class EmployeeAssignmentResource(ModelResource):
             "employee": ('exact',),
             "assignment": ALL_WITH_RELATIONS,
         }
-        allowed_methods = ['get', 'put', 'post']
+        allowed_methods = ['get', 'put', 'post', 'delete']
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
 

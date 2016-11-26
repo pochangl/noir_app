@@ -7,6 +7,7 @@ export class Contact extends Model{
 
 
 export class Employee extends Model{
+  resource_name = "employee"
   fields = [{
     name: "contact",
     cls: Contact

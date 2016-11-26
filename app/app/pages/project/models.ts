@@ -32,7 +32,7 @@ export class Assignment extends Model{
       assignment: this,
       employee: employee
     });
-    ea.commit();
+    ea.commit().subscribe(obj => this.employees.add(employee));
   }
   discard(employee: Employee){
     var ea = new EmployeeAssignment(this.api);

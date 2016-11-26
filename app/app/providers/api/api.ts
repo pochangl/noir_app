@@ -12,21 +12,34 @@ import { Response } from '@angular/http/src/static_response';
   for more info on providers and Angular 2 DI.
 */
 
-class Url{
-  id: string;
-  resource_name: string;
-  urlParams: Object;
+class APIUrl{
+    id: string;
+    resource_name: string;
+    urlParams: Object;
+    constructor(kwargs: {
+      "id"?: string,
+      "resource_name": string,
+      "urlParams"?: Object,
+    }, force_id=false){
+      this.id = (!!kwargs.id || kwargs.id === "") ? kwargs.id + "/": "";
+      this.id = (this.id == "" && force_id) ? "/" : this.id;
+      this.resource_name= kwargs.resource_name + "/";
+      this.urlParams = kwargs.urlParams ? kwargs.urlParams: {};
+    }
+    toString(){
+      return '/api/v1/'+this.resource_name + this.id;
+    }
+}
+
+export class AuthenticatedUrl extends APIUrl{
   api_key: string;
   username: string;
   constructor(kwargs: {
     "id"?: string,
     "resource_name": string,
     "urlParams"?: Object,
-  }, force_id){
-    this.id = (!!kwargs.id || kwargs.id === "") ? kwargs.id + "/": "";
-    this.id = (this.id == "" && force_id) ? "/" : "";
-    this.resource_name= kwargs.resource_name + "/";
-    this.urlParams = kwargs.urlParams ? kwargs.urlParams: {};
+  }, force_id = false){
+    super(kwargs, force_id)
     this.username = "edward";
     this.api_key = "863e8736a54d998a156ecaea798d670c0c0e1961";
   }
@@ -54,8 +67,11 @@ class Url{
 export class Api {
   constructor(private http: Http){}
 
-  preprocess_url(url: any, force_id: boolean = false) {
-    return new Url(url, force_id).toString();
+  preprocess_url(url: any, force_id: boolean = false): string {
+    return new AuthenticatedUrl(url, force_id).toString();
+  }
+  build_url(url: any): string{
+    return new APIUrl(url).toString();
   }
   request(url: any, options?: any): Observable<Response> {
     return this.http.request(this.preprocess_url(url), options);
@@ -70,6 +86,9 @@ export class Api {
     return this.http.put(this.preprocess_url(url, true), body, options);
   }
   delete(url: any, options?: any): Observable<Response> {
+    console.log("deleting")
+    console.log(url)
+    console.log(options)
     return this.http.delete(this.preprocess_url(url), options);
   }
   patch(url: any, body, options?: any): Observable<Response> {

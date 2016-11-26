@@ -43,9 +43,8 @@ class EmployeeAssignment(TimeStampModel):
     pay = models.IntegerField(default=0)
     actual_pay = models.IntegerField(blank=True, default=0)
 
-#     unique_together需用日期區分開來？
-#     class Meta:
-#         unique_together = (("employee", "assignment"),)
+    class Meta:
+        unique_together = (("employee", "assignment"),)
 
 
 class Unassigned(Employee):
