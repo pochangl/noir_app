@@ -1,5 +1,6 @@
 #-*- coding: utf-8 -*-
-from tastypie.resources import ModelResource, fields
+from tastypie.resources import ModelResource, fields, Resource
+from django.utils import dateparse
 
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import ReadOnlyAuthorization, DjangoAuthorization
@@ -10,7 +11,8 @@ from project.models import Project, Assignment, EmployeeAssignment
 from account.models import Employee
 
 from account.resources import ContactResource, ClientResource, EmployeeResource
-from django.db.models import Count, Q  # EmployeeAssignment.objects.filer(~Q(id=5))
+from django.db.models import Count, Q, F  # EmployeeAssignment.objects.filer(~Q(id=5))
+import datetime
 
 
 class ProjectResource(ModelResource):
@@ -18,12 +20,27 @@ class ProjectResource(ModelResource):
     client = fields.ForeignKey(ClientResource, attribute="client", related_name="client")
     
     class Meta:
+        include_resource_uri = False
         queryset = Project.objects.all()
         resource_name = "project"
         fields = ("id","name",)
         authentication = ApiKeyAuthentication()
         
-        
+
+class AssignmentDateResource(Resource):
+    class Meta:
+        include_resource_uri = False
+        resource_name = 'assignment_date'
+        queryset = Assignment.objects.datetimes('start_datetime', 'day')
+
+    def obj_get_list(self, *args, **kwargs):
+        return self._meta.queryset
+
+    def dehydrate(self, bundle, *args, **kwargs):
+        bundle.data['date'] = bundle.obj.date()
+        return bundle
+
+
 class AssignmentResource(ModelResource):
     project = fields.ForeignKey(ProjectResource, attribute="project", full=True, readonly=True)
     employees = fields.ManyToManyField(EmployeeResource, attribute="employees", related_name="assignments", full=True, readonly=True)
@@ -71,11 +88,21 @@ class AssignmentResource(ModelResource):
         return bundle
 
 
+    def build_filters(self, filters=None, **kwargs):
+        orm_filters = super(AssignmentResource, self).build_filters(filters, **kwargs)
+        if 'selected_datetime' in filters:
+            date = dateparse.parse_date(filters['selected_datetime'])
+            orm_filters['start_datetime__gte'] = date
+            orm_filters['start_datetime__lt'] = date + datetime.timedelta(days=1)
+        return orm_filters
+
+
 class EmployeeAssignmentResource(ModelResource):
-    employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="employee_assignments", full=True, readonly=True)
-    assignment = fields.ForeignKey(AssignmentResource, attribute="assignment", related_name="employee_assignments", full=True, readonly=True)
+    employee = fields.ForeignKey(EmployeeResource, attribute="employee")
+    assignment = fields.ForeignKey(AssignmentResource, attribute="assignment")
 
     class Meta:
+        always_return_data = True
         queryset = EmployeeAssignment.objects.all()
         resource_name = "employee_assignment"
         include_resource_uri = False
@@ -84,17 +111,10 @@ class EmployeeAssignmentResource(ModelResource):
             "employee": ('exact',),
             "assignment": ALL_WITH_RELATIONS,
         }
-        allowed_methods = ['get','put']
+        allowed_methods = ['get', 'put', 'post', 'delete']
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
 
-    def remove_api_resource_names(self, url_dict):
-        print url_dict
-        kwargs = super(EmployeeAssignmentResource, self).remove_api_resource_names(url_dict)
-        print kwargs
-        if(kwargs["pk"]==""):
-            kwargs.pop("pk")
-        return kwargs
 
 class UnassignedResource(EmployeeResource):
     

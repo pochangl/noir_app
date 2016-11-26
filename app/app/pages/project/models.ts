@@ -1,4 +1,4 @@
-import { Model, ModelList } from '../../model';
+import { Model, ModelList, APIDateList} from '../../model';
 import { Employee, EmployeeList } from '../account/models';
 
 import { Observable } from 'rxjs/Observable';
@@ -29,6 +29,7 @@ export class Assignment extends Model{
   number_needed: number
   employees: EmployeeList
   availables: EmployeeList
+  selected: boolean = false
 
   add(employee: Employee){
     var ea = new EmployeeAssignment(this.api);
@@ -36,7 +37,7 @@ export class Assignment extends Model{
       assignment: this,
       employee: employee
     });
-    ea.commit();
+    ea.commit().subscribe(obj => this.employees.add(employee));
   }
   discard(employee: Employee){
     var ea = new EmployeeAssignment(this.api);
@@ -49,39 +50,17 @@ export class Assignment extends Model{
   is_full(){
     return this.employees.length >= this.number_needed;
   }
-  is_selected(){
-    return false;
+  has(employee): boolean{
+    return this.employees.has(employee);
   }
 }
-
+export class AssignmentDateList extends APIDateList{
+  resource_name = "assignment_date"
+}
 
 export class AssignmentList extends ModelList<Assignment>{
   resource_name = "assignment"
   model = Assignment
-
-  buildUrlParams(rangeOfDateTime){
-    // var rangeOfDateTime = [
-    //   {"start_datetime__gte": start_date+"T00:00:00"},
-    //   {"start_datetime__lte": start_date+"T23:59:59"}
-    // ];
-    // var buildUrlParam = start_date ? rangeOfDateTime: {};
-    return rangeOfDateTime;
-  }
-  fetch(rangeOfDateTime): Observable<Response>{
-    console.log(this.buildUrlParams(rangeOfDateTime));
-    var observable = this.api.get({
-      resource_name: this.resource_name,
-      urlParams: this.buildUrlParams(rangeOfDateTime)
-    }).map(
-      response => response.json()
-    );
-    observable.subscribe(
-      data => {
-        this.construct(data.objects);
-      }
-    );
-    return observable;
-  }
 }
 
 export class EmployeeAssignment extends Model{
