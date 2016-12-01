@@ -23,8 +23,6 @@ export class ProjectDetailPage {
 		this.assignment.fetch();
 	}
 	toggle(employee) {
-		// employee.is_selected須由assignment fetch時一併處理；
-		// 尚未解決
 		if ( this.assignment.has(employee) ) {
 			this.assignment.discard(employee);
 		}else	if (this.assignment.is_full() === true) {

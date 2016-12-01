@@ -31,8 +31,8 @@ class AssignmentDateResource(Resource):
     class Meta:
         include_resource_uri = False
         resource_name = 'assignment_date'
-        queryset = Assignment.objects.datetimes('start_datetime', 'day')
-
+        queryset = Assignment.objects.datetimes('start_datetime', 'day').reverse()
+        
     def obj_get_list(self, *args, **kwargs):
         return self._meta.queryset
 
