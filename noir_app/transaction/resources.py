@@ -13,7 +13,7 @@ class TransactionResource(ModelResource):
     class Meta:
         queryset = Transaction.objects.all()
         resource_name = "transaction"
-        fields = ("id", "amount", "note", "sign_recoreds",)
+        fields = ("id", "amount", "note", "sign_recoreds", "happened_date",)
         authentication = ApiKeyAuthentication()
         
         
@@ -50,7 +50,7 @@ class PayCheckResource(TransactionResource):
         queryset = PayCheck.objects.all()
         resource_name = "paycheck"
         include_resource_uri = False
-        fields = ("id", "amount", "reason_code", "reason", "signature", "create_time", "modify_time")
+        fields = ("id", "amount", "reason_code", "reason", "signature", "create_time", "modify_time",)
         filtering = {
             "employee": ('exact',),
         }

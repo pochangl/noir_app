@@ -4,7 +4,7 @@ import { Employee, EmployeeList } from '../account/models';
 export class Debt extends Model{
   resource_name = "debt"
   fields = [
-    "amount", "sign_records", "modify_time",
+    "amount", "sign_records", "modify_time", "happened_date",
     {
       name: "employee",
       cls: Employee
@@ -14,17 +14,6 @@ export class Debt extends Model{
   sign_records: any
   modify_time: string
   employee: Employee
-
-  // isAmountExist(){
-    // if(this.debts.length <= 0){
-    //   return 0;
-    // }else{
-    //   //return this.debt.amount;
-    //   return this.debts.map(debt=>debt.amount).reduce((prev, new_v)=>prev+new_v);
-    // }
-  //   console.log("amount works");
-  //   return false;
-  // }
 }
 
 export class DebtList extends ModelList<Debt>{
@@ -47,7 +36,7 @@ export class MyDebtList extends DebtList{
 export class Paycheck extends Model{
   resource_name = "paycheck"
   fields = [
-    "amount", "sign_records", "modify_time",
+    "amount", "sign_records", "modify_time", "happened_date",
     {
       name: "employee",
       cls: Employee
@@ -57,17 +46,6 @@ export class Paycheck extends Model{
   sign_records: any
   modify_time: string
   employee: Employee
-
-  // isAmountExist(){
-    // if(this.debts.length <= 0){
-    //   return 0;
-    // }else{
-    //   //return this.debt.amount;
-    //   return this.debts.map(debt=>debt.amount).reduce((prev, new_v)=>prev+new_v);
-    // }
-  //   console.log("amount works");
-  //   return false;
-  // }
 }
 
 export class PaycheckList extends ModelList<Debt>{

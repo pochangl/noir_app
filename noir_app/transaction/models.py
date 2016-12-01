@@ -4,6 +4,7 @@ from django.db import models
 from utils.models import TimeStampModel
 from account.models import Client, Employee
 from django.core.files.storage import FileSystemStorage
+from datetime import datetime, time, date
 
 
 # Create your models here.
@@ -13,6 +14,7 @@ class Transaction(TimeStampModel):
     amount = models.IntegerField(null=True, blank=True)
     note = models.CharField(max_length=1024, null=True, blank=True)
     signature = models.ImageField(storage=path)
+    happened_date = models.DateField(default=datetime.now)
     
 #    class Meta:
 #        abstract = True
