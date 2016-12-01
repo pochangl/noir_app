@@ -24,7 +24,7 @@ class DebtResource(TransactionResource):
         queryset = Debt.objects.all()
         resource_name = "debt"
         include_resource_uri = False
-        fields = ("id", "amount", "note", "sign_recoreds", "create_time", "modify_time")
+        fields = ("id", "amount", "note", "sign_recoreds", "create_time", "modify_time", "happened_date",)
         filtering = {
             "employee": ('exact',),
         }
@@ -50,7 +50,7 @@ class PayCheckResource(TransactionResource):
         queryset = PayCheck.objects.all()
         resource_name = "paycheck"
         include_resource_uri = False
-        fields = ("id", "amount", "reason_code", "reason", "signature", "create_time", "modify_time",)
+        fields = ("id", "amount", "reason_code", "reason", "signature", "create_time", "modify_time", "happened_date",)
         filtering = {
             "employee": ('exact',),
         }
