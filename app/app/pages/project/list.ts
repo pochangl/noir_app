@@ -13,12 +13,14 @@ import {AssignmentList, Assignment} from "./models"
 
 export class ProjectListPage {
 	assignments: AssignmentList
+  selected_date: string
 
 	constructor(
     private nav: NavController,
     params: NavParams,
     private api: Api
   ){
+    this.selected_date = params.data.date.date;
     this.assignments = new AssignmentList(this.api)
     this.assignments.filter({
       selected_datetime: params.data.date.date

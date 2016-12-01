@@ -12,12 +12,14 @@ import { Assignment } from "./models"
 
 export class ProjectDetailPage {
 	assignment: Assignment;
+	selected_date: string;
 
 	constructor(
 				private nav: NavController,
 				params: NavParams
 		){
 		this.assignment = params.data.assignment;
+		this.selected_date = params.data.assignment.start_datetime.split("T")[0];
 	}
 	ionViewWillEnter(){
 		this.assignment.fetch();
