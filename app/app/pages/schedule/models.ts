@@ -20,30 +20,28 @@ export class DayOff extends Model{
   end_time: string
   employee: Employee
 
-  isValidDateTime(){
-		// this.dayoffs.start_datetime = this.dayoffs.start_date.concat(this.dayoffs.start_datetime.substring(10));
-		// this.dayoffs.start_datetime = this.dayoffs.start_datetime.substring(0,11).concat(this.dayoffs.start_time);
-		// this.dayoffs.end_datetime = this.dayoffs.end_date.concat(this.dayoffs.end_datetime.substring(10));
-		// this.dayoffs.end_datetime = this.dayoffs.end_datetime.substring(0,11).concat(this.dayoffs.end_time);
-    // return this.start_datetime < this.end_datetime;
-    console.log("isValidDateTime works");
-    return false;
+  isValidDateTime(dayoff){
+    if(dayoff.start_datetime < dayoff.end_datetime){
+      return true;
+    }else{
+      return false;
+    }
   }
 }
 
-  export class DayOffList extends ModelList<DayOff>{
-    resource_name = "dayoff"
-    model = DayOff
-  }
+export class DayOffList extends ModelList<DayOff>{
+  resource_name = "dayoff"
+  model = DayOff
+}
 
-  export class MyDayOffList extends DayOffList{
-    employee: Employee
-    set_employee(employee: Employee){
-      this.employee = employee;
-    }
-    buildUrlParams(){
-      var params = super.buildUrlParams();
-      params["employee"] = this.employee.id;
-      return params;
-    }
+export class MyDayOffList extends DayOffList{
+  employee: Employee
+  set_employee(employee: Employee){
+    this.employee = employee;
   }
+  buildUrlParams(){
+    var params = super.buildUrlParams();
+    params["employee"] = this.employee.id;
+    return params;
+  }
+}

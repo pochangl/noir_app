@@ -1,4 +1,4 @@
-from tastypie.resources import ModelResource, fields
+from tastypie.resources import ModelResource, fields, Resource
 
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import ReadOnlyAuthorization, DjangoAuthorization
@@ -8,6 +8,19 @@ from schedule.models import DayOff, EmployeePreference, ProjectPreference
 from account.resources import EmployeeResource
 from project.resources import EmployeeAssignmentResource
 
+class DayOffDateResource(Resource):
+    class Meta:
+        include_resource_uri = False
+        resource_name = 'dayoff_date'
+        queryset = DayOff.objects.datetimes('start_datetime', 'day').reverse()
+    
+    def obj_get_list(self, *args, **kwargs):
+        return self._meta.queryset
+    
+    def dehydrate(self, bundle, *args, **kwargs):
+        bundle.data['date'] = bundle.obj.date()
+        return bundle
+        
 class DayOffResource(ModelResource):
     employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="dayoffs", full=True, readonly=True)
     

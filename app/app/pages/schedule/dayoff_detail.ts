@@ -21,23 +21,25 @@ export class DayOffDetailPage {
 
   ionViewWillEnter(){
     this.dayoff.fetch();
-		// ).subscribe(
-		// 	data => {
-		// 		//使用id_count以避免不止一筆資料之情形。
-		// 		//直接把[id_count]加在objects後面，不知道有無後遺症？
-		// 		this.dayoffs_count = data.objects.length;
-		// 		this.dayoff = data.objects[this.dayoffs_count-1];
-		// 	},
-		// 	err => console.error(err)
-		// );
   }
 
 	submit(){
-		if(this.dayoff.isValidDateTime() === false){
+		this.dayoff.start_datetime = this.dayoff.start_date.concat(this.dayoff.start_datetime.substring(10));
+		this.dayoff.start_datetime = this.dayoff.start_datetime.substring(0,11).concat(this.dayoff.start_time);
+		this.dayoff.end_datetime = this.dayoff.end_date.concat(this.dayoff.end_datetime.substring(10));
+		this.dayoff.end_datetime = this.dayoff.end_datetime.substring(0,11).concat(this.dayoff.end_time);
+		if(this.dayoff.isValidDateTime(this.dayoff) === false){
 			alert("起始時間不可大於結束時間！");
 		}else{
 			this.dayoff.commit();
 			this.nav.push(HomePage);
 		}
+	}
+	delete(){
+		this.dayoff.delete();
+		this.nav.push(HomePage);
+	}
+	cancle(){
+		this.nav.push(HomePage);
 	}
 }
