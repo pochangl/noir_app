@@ -1,6 +1,7 @@
 import { Model, ModelList } from '../../model';
 import { Employee, EmployeeList } from '../account/models';
 
+
 export class DayOff extends Model{
   resource_name = "dayoff"
   fields = [

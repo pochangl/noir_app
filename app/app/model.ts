@@ -9,13 +9,14 @@ export abstract class Model{
   id: number = 0
   resource_name: string
   is_removed: boolean = false
+  id_alias: string = "id"
 
   constructor(protected api: Api){
   }
 
   construct(obj?: any){
     var cls;
-    this.id = obj.id
+    this[this.id_alias] = obj[this.id_alias]
     for(let item of this.fields){
       if(!(item in obj || item.name in obj)){
         continue;
@@ -38,7 +39,7 @@ export abstract class Model{
     var observable;
     observable = this.api.get({
       resource_name: this.resource_name,
-      id: this.id
+      id: this[this.id_alias]
     }).map(
       response => response.json()
     );
@@ -58,8 +59,8 @@ export abstract class Model{
     ModelList is skipped
     */
     var obj = {};
-    if(this.id){
-      obj['id'] = this.id
+    if(this[this.id_alias]){
+      obj['id'] = this[this.id_alias]
     }
     for(let field of this.fields){
       if(typeof field == "string"){
@@ -77,7 +78,7 @@ export abstract class Model{
   build_url(): string{
     return this.api.build_url({
       resource_name: this.resource_name,
-      id: this.id
+      id: this[this.id_alias]
     })
   }
   create(): Observable<Response>{
@@ -89,16 +90,16 @@ export abstract class Model{
   update(): Observable<Response>{
     return this.api.put({
         resource_name: this.resource_name,
-        id: this.id
+        id: this[this.id_alias]
       }, this.serialize()
     )
   }
   commit(){
     /*
       update information to server
-      if no this.id, read in id after obj creation
+      if no this[this.id_alias], read in id after obj creation
     */
-    if(!this.id){
+    if(!this[this.id_alias]){
       return this.create();
     } else {
       return this.update();
@@ -107,7 +108,7 @@ export abstract class Model{
   delete(): Observable<Response>{
     var observable = this.api.delete({
      resource_name: this.resource_name,
-     id: this.id
+     id: this[this.id_alias]
    }, this.serialize());
    observable.subscribe();
    return observable;
