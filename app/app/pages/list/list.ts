@@ -19,7 +19,7 @@ export class ListPage {
     'american-football', 'boat', 'bluetooth', 'build'];
 
     this.items = [];
-    for(let i = 1; i < 11; i++) {
+    for (let i = 1; i < 11; i++) {
       this.items.push({
         title: 'Item ' + i,
         note: 'This is item #' + i,
@@ -32,4 +32,5 @@ export class ListPage {
     this.nav.push(ItemDetailsPage, {
       item: item
     });
+  }
 }

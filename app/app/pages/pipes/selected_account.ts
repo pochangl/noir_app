@@ -1,6 +1,6 @@
-import {Pipe} from "@angular/core";
+import {Pipe} from '@angular/core';
 @Pipe({
-  name: "selected"
+  name: 'selected'
 })
 export class SelectedPipe {
   transform(array: Array<Object>): Array<Object> {
@@ -17,23 +17,23 @@ export class SelectedPipe {
   }
 }
 @Pipe({
-  name: "orderBy"
+  name: 'orderBy'
 })
 export class OrderByPipe {
   transform(array: Array<Object>, field: string): Array<Object> {
     var direction;
-    if(field[0] == '-'){
+    if (field[0] === '-') {
       direction = -1;
       field = field.substring(1);
-    }else{
+    } else {
       direction = 1;
       field = field;
     }
     array.sort((a: any, b: any) => {
-      if(direction == -1){
-        return a[field] > b[field] ? 0 : 1; //1交換位置，0不交換位置，好像不吃-1
-      }else{
-        return a[field] > b[field] ? 1 : 0; //1交換位置，0不交換位置
+      if (direction === -1) {
+        return a[field] > b[field] ? 0 : 1; // 1交換位置，0不交換位置，好像不吃-1
+      } else {
+        return a[field] > b[field] ? 1 : 0; // 1交換位置，0不交換位置
       }
     });
     return array;

@@ -3,13 +3,13 @@ import { Employee, EmployeeList } from '../account/models';
 
 
 export class DayOff extends Model{
-  resource_name = "dayoff"
+  resource_name = 'dayoff'
   fields = [
-    "start_datetime", "end_datetime",
-    "start_date", "end_date",
-    "start_time", "end_time",
+    'start_datetime', 'end_datetime',
+    'start_date', 'end_date',
+    'start_time', 'end_time',
     {
-      name: "employee",
+      name: 'employee',
       cls: Employee
     }
   ]
@@ -31,7 +31,7 @@ export class DayOff extends Model{
 }
 
 export class DayOffList extends ModelList<DayOff>{
-  resource_name = "dayoff"
+  resource_name = 'dayoff'
   model = DayOff
 }
 
@@ -42,7 +42,7 @@ export class MyDayOffList extends DayOffList{
   }
   buildUrlParams(){
     var params = super.buildUrlParams();
-    params["employee"] = this.employee.id;
+    params['employee'] = this.employee.id;
     return params;
   }
 }

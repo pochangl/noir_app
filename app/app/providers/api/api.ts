@@ -12,81 +12,81 @@ import { Response } from '@angular/http/src/static_response';
   for more info on providers and Angular 2 DI.
 */
 
-class APIUrl{
+class APIUrl {
     id: string;
     resource_name: string;
     urlParams: Object;
     constructor(kwargs: {
-      "id"?: string,
-      "resource_name": string,
-      "urlParams"?: Object,
-    }, force_id=false){
-      this.id = (!!kwargs.id || kwargs.id === "") ? kwargs.id + "/": "";
-      this.id = (this.id == "" && force_id) ? "/" : this.id;
-      this.resource_name= kwargs.resource_name + "/";
-      this.urlParams = kwargs.urlParams ? kwargs.urlParams: {};
+      id?: string,
+      resource_name: string,
+      urlParams?: Object,
+    }, force_id = false) {
+      this.id = (!!kwargs.id || kwargs.id === '') ? kwargs.id + '/' : '';
+      this.id = (this.id === '' && force_id) ? '/' : this.id;
+      this.resource_name = kwargs.resource_name + '/';
+      this.urlParams = kwargs.urlParams ? kwargs.urlParams : {};
     }
-    toString(){
-      return '/api/v1/'+this.resource_name + this.id;
+    toString () {
+      return '/api/v1/' + this.resource_name + this.id;
     }
 }
 
-export class AuthenticatedUrl extends APIUrl{
+export class AuthenticatedUrl extends APIUrl {
   api_key: string;
   username: string;
   constructor(kwargs: {
-    "id"?: string,
-    "resource_name": string,
-    "urlParams"?: Object,
-  }, force_id = false){
-    super(kwargs, force_id)
-    this.username = "edward";
-    this.api_key = "863e8736a54d998a156ecaea798d670c0c0e1961";
+    'id'?: string,
+    'resource_name': string,
+    'urlParams'?: Object,
+  }, force_id = false) {
+    super(kwargs, force_id);
+    this.username = 'edward';
+    this.api_key = '863e8736a54d998a156ecaea798d670c0c0e1961';
   }
 
-  getQueryString(){
-    var params = new URLSearchParams("");
+  getQueryString () {
+    var params = new URLSearchParams('');
     if (!!this.urlParams) {
-        for(var key in this.urlParams){
-            params.set(key, this.urlParams[key].id ? this.urlParams[key].id: this.urlParams[key]);
+        for (var key in this.urlParams) {
+            params.set(key, this.urlParams[key].id ? this.urlParams[key].id : this.urlParams[key]);
         }
     }
-    params.set("username", this.username);
-    params.set("api_key", this.api_key);
-    params.set("format", "json");
+    params.set('username', this.username);
+    params.set('api_key', this.api_key);
+    params.set('format', 'json');
     return params.toString();
   }
 
-  toString(){
-    return '/api/v1/'+this.resource_name + this.id + "?" + this.getQueryString();
+  toString () {
+    return '/api/v1/' + this.resource_name + this.id + '?' + this.getQueryString();
   }
 }
 
 
 @Injectable()
 export class Api {
-  constructor(private http: Http){}
+  constructor(private http: Http) {}
 
-  preprocess_url(url: any, force_id: boolean = false): string {
+  preprocess_url (url: any, force_id: boolean = false): string {
     return new AuthenticatedUrl(url, force_id).toString();
   }
-  build_url(url: any): string{
+  build_url (url: any): string {
     return new APIUrl(url).toString();
   }
-  request(url: any, options?: any): Observable<Response> {
+  request (url: any, options?: any): Observable<Response> {
     return this.http.request(this.preprocess_url(url), options);
   }
   get(url: any, options?: any): Observable<Response> {
     return this.http.get(this.preprocess_url(url), options);
   }
-  post(url: any, body, options?: any): Observable<Response> {
+  post (url: any, body, options?: any): Observable<Response> {
     return this.http.post(this.preprocess_url(url), body, options);
   }
-  put(url: any, body, options?: any): Observable<Response> {
+  put (url: any, body, options?: any): Observable<Response> {
     return this.http.put(this.preprocess_url(url, true), body, options);
   }
-  delete(url: any, options?: any): Observable<Response> {
-    url.id = url.id ? url.id : -1 // prevent deleting the entire database
+  delete (url: any, options?: any): Observable<Response> {
+    url.id = url.id ? url.id : -1; // prevent deleting the entire database
     return this.http.delete(this.preprocess_url(url));
   }
   patch(url: any, body, options?: any): Observable<Response> {

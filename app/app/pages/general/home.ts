@@ -7,23 +7,23 @@ import {DebtEmployeesPage} from '../transaction/debt_employees';
 
 
 @Component({
-	templateUrl: 'build/pages/general/home.html'
+  templateUrl: 'build/pages/general/home.html'
 })
 
 export class HomePage {
-	constructor(private nav: NavController){
-	}
+  constructor(private nav: NavController) {
+  }
 
-	project(){
-		this.nav.push(PickDatePage);
-	}
-	dayoff(){
-		this.nav.push(DayOffEmployeesPage);
-	}
-	paycheck(){
-		this.nav.push(PaycheckEmployeesPage);
-	}
-	debt(){
-		this.nav.push(DebtEmployeesPage);
-	}
+  project () {
+    this.nav.push(PickDatePage);
+  }
+  dayoff () {
+    this.nav.push(DayOffEmployeesPage);
+  }
+  paycheck () {
+    this.nav.push(PaycheckEmployeesPage);
+  }
+  debt () {
+    this.nav.push(DebtEmployeesPage);
+  }
 }

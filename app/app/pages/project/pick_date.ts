@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { ProjectListPage } from "./list"
-import { AssignmentDateList } from './models'
+import { ProjectListPage } from './list';
+import { AssignmentDateList } from './models';
 import { Api } from '../../providers/api/api';
 
 
@@ -11,20 +11,20 @@ import { Api } from '../../providers/api/api';
 })
 
 export class PickDatePage {
-  dates: AssignmentDateList
+  dates: AssignmentDateList;
 
   constructor(
     private nav: NavController,
     params: NavParams,
     private api: Api
-  ){
-    this.dates = new AssignmentDateList(api)
+  ) {
+    this.dates = new AssignmentDateList(api);
   }
-  ionViewWillEnter(){
+  ionViewWillEnter () {
     this.dates.fetch();
   }
 
-  click(date){
-    this.nav.push(ProjectListPage, {"date": date});
+  click (date) {
+    this.nav.push(ProjectListPage, {'date': date});
   }
 }

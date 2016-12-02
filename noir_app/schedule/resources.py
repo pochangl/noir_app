@@ -15,7 +15,10 @@ class ScheduleResource(Resource):
         calendar = calendar.Calendar()
 
     def obj_get(self, bundle, year):
-        return this._meta.yeardayscalendar(year, 1)
+        return {
+            "year": year,
+            "monthes": this._meta.yeardayscalendar(year, 1)
+        }
 
 
 class DayOffDateResource(Resource):

@@ -5,90 +5,92 @@ import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http/src/static_response';
 
 
-export class Project extends Model{
-  fields = ["name"]
-  name: string
+export class Project extends Model {
+  fields = ['name'];
+  name: string;
 }
 
 class SelectedEmployee extends Employee {
-  selected: boolean = false
+  selected: boolean = false;
 }
-class SelectedEmployeeList extends ModelList<SelectedEmployee>{
-  model = SelectedEmployee
+class SelectedEmployeeList extends ModelList<SelectedEmployee> {
+  model = SelectedEmployee;
 }
 
-export class Assignment extends Model{
-  fields = ["start_datetime", "end_datetime", "number_needed",
+export class Assignment extends Model {
+  fields = ['start_datetime', 'end_datetime', 'number_needed',
     {
-      name: "project",
+      name: 'project',
       cls: Project
-    },{
-      name: "employees",
+    }, {
+      name: 'employees',
       cls: EmployeeList
-    },{
-      name:"availables",
+    }, {
+      name:'availables',
       cls: SelectedEmployeeList
-    }]
-  resource_name = "assignment"
-  project: Project
-  start_datetime: string
-  end_datetime: string
-  number_needed: number
-  employees: EmployeeList
-  availables: SelectedEmployeeList
+    }];
+  resource_name = 'assignment';
+  project: Project;
+  start_datetime: string;
+  end_datetime: string;
+  number_needed: number;
+  employees: EmployeeList;
+  availables: SelectedEmployeeList;
 
-  construct(obj?: any){
-    super.construct(obj)
-    for(let employee of this.availables.objects){
-      employee.selected = this.has(employee)
+  construct (obj?: any) {
+    super.construct(obj);
+    for (let employee of this.availables.objects) {
+      employee.selected = this.has(employee);
     }
     return this;
   }
 
-  add(employee: Employee){
+  add (employee: Employee) {
     var ea = new EmployeeAssignment(this.api);
     ea.construct({
       assignment: this,
       employee: employee
     });
-    ea.commit().subscribe(obj => this.employees.add(employee));
+    ea.commit().then(
+      obj => this.employees.add(employee)
+    );
   }
-  discard(employee: Employee){
+  discard (employee: Employee) {
     var ea = new EmployeeAssignment(this.api);
     ea.construct({
       assignment: this,
       employee: employee
     });
     ea.fetch(
-      ()=>ea.delete()
-    )
+      () => ea.delete()
+    );
   }
-  is_full(){
+  is_full () {
     return this.employees.length >= this.number_needed;
   }
-  has(employee): boolean{
+  has (employee): boolean {
     return this.employees.has(employee);
   }
 }
-export class AssignmentDateList extends APIDateList{
-  resource_name = "assignment_date"
+export class AssignmentDateList extends APIDateList {
+  resource_name = 'assignment_date';
 }
 
-export class AssignmentList extends ModelList<Assignment>{
-  resource_name = "assignment"
-  model = Assignment
+export class AssignmentList extends ModelList<Assignment> {
+  resource_name = 'assignment';
+  model = Assignment;
 }
 
-export class EmployeeAssignment extends JunctionModel{
-  assignment: Assignment
-  employee: Employee
-  resource_name = "employee_assignment"
-  junction_fields = ["employee", "assignment"]
+export class EmployeeAssignment extends JunctionModel {
+  assignment: Assignment;
+  employee: Employee;
+  resource_name = 'employee_assignment';
+  junction_fields = ['employee', 'assignment'];
   fields = [{
-    name: "employee",
+    name: 'employee',
     cls: Employee
-  },{
-    name: "assignment",
+  }, {
+    name: 'assignment',
     cls: Assignment
-  }]
+  }];
 }
