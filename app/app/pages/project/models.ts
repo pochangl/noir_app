@@ -26,7 +26,7 @@ export class Assignment extends Model {
       name: 'employees',
       cls: EmployeeList
     }, {
-      name:'availables',
+      name: 'availables',
       cls: SelectedEmployeeList
     }];
   resource_name = 'assignment';
@@ -61,7 +61,7 @@ export class Assignment extends Model {
       assignment: this,
       employee: employee
     });
-    ea.fetch(
+    ea.fetch().then(
       () => ea.delete()
     );
   }

@@ -18,7 +18,7 @@ export abstract class Model {
     var cls;
     this[this.id_alias] = obj[this.id_alias];
     for (let item of this.fields) {
-      if (!(item in obj || item.name in obj)) {
+      if (!(item.name in obj || item in obj)) {
         continue;
       }
       if (typeof item === 'string') {
@@ -217,8 +217,13 @@ export abstract class JunctionModel extends Model {
   junction_fields: Array<any>;
   fetch (): Promise<JunctionModel> {
     var filter = {};
-    for (let field of this.junction_fields) {
-      filter[this.fields[field].name] = this[field].id;
+    for (let name of this.junction_fields) {
+      for (let field of this.fields) {
+        if (field.name === name) {
+          filter[name] = this[name].id;
+          break;
+        }
+      }
     }
     var promise = new Promise<JunctionModel>(
       (resolve, reject) => {
@@ -229,7 +234,7 @@ export abstract class JunctionModel extends Model {
           response => response.json()
         ).subscribe(
           data => {
-            this.construct(data.objects[0]);
+            this[this.id_alias] = data[this.id_alias];
             resolve(this);
           }
         );
