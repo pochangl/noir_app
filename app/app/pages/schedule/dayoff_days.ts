@@ -52,4 +52,7 @@ export class DayOffDaysPage {
     };
     this.nav.push(DayOffDetailPage, {dayoff: initial_data});
   }
+  selectDate (day) {
+    console.log(day.stringify())
+  }
 }

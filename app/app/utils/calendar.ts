@@ -3,6 +3,16 @@ import { Iterator } from './iterator';
 import { Api } from '../providers/api/api';
 
 
+function zeroFill( number, width )
+{
+  width -= number.toString().length;
+  if ( width > 0 )
+  {
+    return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
+  }
+  return number + ""; // always return a string
+}
+
 abstract class TreeNode {
   value: any;
   name: string;
@@ -39,14 +49,23 @@ abstract class TreeNode {
 
 class Day extends TreeNode {
   parentName = 'week';
+  week: Week
   build_child_value () {}
+  stringify () {
+    if (this.value === 0){
+      throw 'empty date has no date'
+    } else {
+      return this.week.month.year.value + '-' + zeroFill(this.week.month.value, 2) + '-' + zeroFill(this.value, 2)
+    }
+
+  }
 }
 
 class Week extends TreeNode {
   parentName = 'month';
   childName = 'days';
   ChildClass = Day;
-
+  month: Month
   build_child_value (child, index) {
     return child;
   }
@@ -56,6 +75,7 @@ class Month extends TreeNode {
   parentName = 'year'
   childName = 'weeks';
   ChildClass = Week;
+  year: Year
 
   build_child_value (child, index) {
     return index + 1;
