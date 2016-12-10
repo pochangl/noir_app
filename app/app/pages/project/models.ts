@@ -52,7 +52,10 @@ export class Assignment extends Model {
       employee: employee
     });
     ea.commit().then(
-      obj => this.employees.add(employee)
+      obj => {
+        this.employees.add(employee)
+        this.fetch()
+      }
     );
   }
   discard (employee: SelectedEmployee) {
@@ -65,13 +68,15 @@ export class Assignment extends Model {
       () => {
         ea.delete();
         this.employees.remove(employee);
+        this.fetch()
       }).catch(() => {
         this.employees.remove(employee);
+        this.fetch()
       }
     );
   }
   is_full () {
-    return this.employees.length >= this.number_needed;
+    return this.employees.objects.length >= this.number_needed;
   }
   has (employee): boolean {
     return this.employees.has(employee);
