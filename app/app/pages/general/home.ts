@@ -5,9 +5,8 @@ import {DayOffEmployeesPage} from '../schedule/dayoff_employees';
 import {PaycheckEmployeesPage} from '../transaction/paycheck_employees';
 import {DebtEmployeesPage} from '../transaction/debt_employees';
 
-
 @Component({
-  templateUrl: 'build/pages/general/home.html'
+  templateUrl: 'build/pages/general/home.html',
 })
 
 export class HomePage {

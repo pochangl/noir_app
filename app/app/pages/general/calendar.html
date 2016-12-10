@@ -3,23 +3,23 @@
     <button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>選擇工地 - [ {{ selected_date }} ]</ion-title>
+    <ion-title>選擇日期 - [ {{ selected_date }} ]</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
 
-  <ion-tabs>
-    <ion-tab tabTitle="日" color="danger"></ion-tab>
-    <ion-tab tabTitle="{{ day }}" *ngFor="let day of ['一', '二', '三', '四', '五']"></ion-tab>
-    <ion-tab tabTitle="六" color="danger"></ion-tab>
-  </ion-tabs>
-  <ion-tabs *ngFor="let week of weeks">
-    <ion-tab tabTitle="{{ day.value }}" *ngFor="let day of days"></ion-tab>
-  </ion-tabs>
-  <ion-tabs>
-    <ion-tab tabTitle="<" color="danger"></ion-tab>
-    <ion-tab tabTitle="{{ month.year.value }}/{{ month.value }}"</ion-tab>
-    <ion-tab tabTitle=">" color="danger" (click)="month.next()"></ion-tab>
-  </ion-tabs>
+  <ion-segment>
+    <ion-segment-button color="danger">日</ion-segment-button>
+    <ion-segment-button *ngFor="let day of ['一', '二', '三', '四', '五']">{{ day}}</ion-segment-button>
+    <ion-segment-button color="danger">六</ion-segment-button>
+  </ion-segment>
+  <ion-segment *ngFor="let week of month.get().weeks">
+    <ion-segment-button tabTitle="{{ day.value }}" *ngFor="let day of week.days"> <span *ngIf="day.value">{{ day.value }}</span></ion-segment-button>
+  </ion-segment>
+  <ion-segment>
+    <ion-segment-button (click)="month.prev()"> &#60; </ion-segment-button>
+    <ion-segment-button> {{ month.get().year.value }}/{{ month.get().value }}</ion-segment-button>
+    <ion-segment-button (click)="month.next()">&#62;</ion-segment-button>
+  </ion-segment>
 </ion-content>

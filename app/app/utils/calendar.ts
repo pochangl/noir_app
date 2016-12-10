@@ -19,11 +19,16 @@ abstract class TreeNode {
       this[this.parentName] = parent;
     }
     if (this.ChildClass) {
+      var childs;
       this[this.childName] = [];
-      var childs = obj[this.childName];
+      if (obj instanceof Array){
+        childs = obj
+      } else {
+        childs = obj[this.childName];
+      }
       for (var index in childs) {
         var child = childs[index];
-        var value = this.build_child_value(child, index);
+        var value = this.build_child_value(child, parseInt(index));
         var node = new this.ChildClass(value);
         node.construct(child, this);
         this[this.childName].push(node);
@@ -40,7 +45,7 @@ class Day extends TreeNode {
 class Week extends TreeNode {
   parentName = 'month';
   childName = 'days';
-  ChildClass: Day;
+  ChildClass = Day;
 
   build_child_value (child, index) {
     return child;
@@ -48,8 +53,9 @@ class Week extends TreeNode {
 }
 
 class Month extends TreeNode {
+  parentName = 'year'
   childName = 'weeks';
-  ChildClass: Week;
+  ChildClass = Week;
 
   build_child_value (child, index) {
     return index + 1;
@@ -60,16 +66,24 @@ class Month extends TreeNode {
 class Year extends TreeNode {
   parentName = 'calendar';
   childName = 'monthes';
-  ChildClass: Month;
+  ChildClass = Month;
 
   build_child_value (child, index) {
     return index + 1;
   }
 }
 
+class EmptyYear extends Year {
+  value = 0
+}
+
+class EmptyMonth extends Month {
+  value = -1
+  year = new EmptyYear(0)
+}
+
 
 class Calendar extends Model {
-  model = Month;
   resource_name = 'calendar';
   years: any = {};
   id_alias = 'year';
@@ -107,20 +121,26 @@ export class MonthIterator extends Iterator<Month> {
   }
   initial (year: number, month: number) {
     this.month = month;
+    this.year = year
     this.loadYear(year).then(calendar => {
-      this.value = calendar.years[this.year].monthes[this.month];
+      this.value = calendar.years[this.year].monthes[this.month-1];
     });
     this.loadYear(year + 1);
     this.loadYear(year - 1);
   }
   get () {
-    this.value = this.calendar.years[this.year].monthes[this.month];
+    if (!this.value){
+      return new EmptyMonth(-1)
+    }
+    this.value = this.calendar.years[this.year].monthes[this.month-1];
     return this.value;
   }
   next () {
     if (this.month >= 12) {
       this.year ++;
       this.month = 1;
+    } else {
+      this.month ++;
     }
     if (!this.calendar.years[this.year + 1]) {
       this.loadYear(this.year + 1);
@@ -130,6 +150,8 @@ export class MonthIterator extends Iterator<Month> {
     if (this.month <= 1) {
       this.year --;
       this.month = 12;
+    } else {
+      this.month --;
     }
     if (!this.calendar.years[this.year - 1]) {
       this.loadYear(this.year - 1);

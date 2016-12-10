@@ -24,7 +24,7 @@ from tastypie.api import Api
 from account.resources import ContactResource, ClientResource, EmployeeResource, SkillResource, RegistrationResource
 from project.resources import ProjectResource, AssignmentResource, EmployeeAssignmentResource, AssignmentDateResource
 from transaction.resources import DebtResource, ReceivableResource, PayCheckResource, TransactionResource
-from schedule.resources import DayOffResource, EmployeePreferenceResource, ProjectPreferenceResource
+from schedule.resources import ScheduleResource, DayOffResource, EmployeePreferenceResource, ProjectPreferenceResource
 
 v1_api = Api(api_name='v1')
 
@@ -44,6 +44,7 @@ v1_api.register(ReceivableResource())
 v1_api.register(PayCheckResource())
 v1_api.register(TransactionResource())
 
+v1_api.register(ScheduleResource())
 v1_api.register(DayOffResource())
 v1_api.register(EmployeePreferenceResource())
 v1_api.register(ProjectPreferenceResource())

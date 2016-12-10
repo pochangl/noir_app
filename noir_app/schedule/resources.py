@@ -12,14 +12,19 @@ class ScheduleResource(Resource):
         resource_name = 'calendar'
         detail_allowed_methods = ['get']
         detail_uri_name = 'year'
-        calendar = calendar.Calendar()
+        calendar = calendar.Calendar(6)
+        # include_resource_uri = False
 
     def obj_get(self, bundle, year):
+        year = int(year)
         return {
             "year": year,
-            "monthes": this._meta.yeardayscalendar(year, 1)
+            "monthes": self._meta.calendar.yeardayscalendar(year, 12)[0]
         }
 
+    def full_dehydrate(self, bundle, for_list=False):
+        bundle.data = bundle.obj
+        return bundle
 
 class DayOffDateResource(Resource):
     class Meta:

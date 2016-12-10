@@ -4,21 +4,25 @@ import { Api } from '../../providers/api/api';
 import {DayOffDetailPage} from '../schedule/dayoff_detail';
 import {DayOffList} from './models';
 import {Employee} from '../account/models';
+import {MonthIterator} from '../../utils/calendar';
 
 @Component({
-  templateUrl: 'build/pages/schedule/dayoff_days.html',
+  templateUrl: 'build/pages/general/calendar.html',
   providers: [Api]
 })
 
 export class DayOffDaysPage {
   dayoffs: DayOffList;
   selected_employee: any;
+  month: MonthIterator;
 
   constructor(
     private nav: NavController,
     params: NavParams,
     private api: Api
   ) {
+    this.month = new MonthIterator(this.api);
+    this.month.initial(2016, 12);
     this.selected_employee = params.data.employee;
     this.dayoffs = new DayOffList(this.api);
     this.dayoffs.filter({

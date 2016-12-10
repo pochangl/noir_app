@@ -17,25 +17,27 @@ export abstract class Model {
   construct (obj?: any) {
     var cls;
     this[this.id_alias] = obj[this.id_alias];
-    for (let item of this.fields) {
-      if (!(item.name in obj || item in obj)) {
+    for (let field of this.fields) {
+      if (!(field.name in obj || field in obj)) {
         continue;
       }
-      if (typeof item === 'string') {
-        name = item;
+      if (typeof field === 'string') {
+        name = field;
         this[name] = obj[name];
-      } else if (obj[item.name] instanceof item.cls) {
-        this[item.name] = obj[item.name];
+      } else if (obj[field.name] instanceof field.cls) {
+        this[field.name] = obj[field.name].build_url();
+      } else if (field.is_url) {
+        this[name] = obj[name];
       } else {
-        name = item.name;
-        cls = item.cls;
+        name = field.name;
+        cls = field.cls;
         this[name] = new cls(this.api);
         this[name].construct(obj[name]);
       }
     }
     return this;
   }
-  fetch(): Promise<any> {
+  fetch (): Promise<any> {
     var promise = new Promise<any>(
       (resolve, reject) => {
         this.api.get({
@@ -65,10 +67,11 @@ export abstract class Model {
     for (let field of this.fields) {
       if (typeof field === 'string') {
         obj[field] = this[field];
-      } else {
-        var name = field.name;
-        if (!(this[name] instanceof ModelList)) {
-          obj[name] = this[name].build_url();
+      } else if (field.is_url) {
+        if (typeof field.name === 'string') {
+          obj[field.name] = this[field.name];
+        } else {
+          obj[field.name] = this[field.name].build_url();
         }
       }
     }
@@ -81,7 +84,7 @@ export abstract class Model {
       id: this[this.id_alias]
     });
   }
-  create(): Promise<any> {
+  create (): Promise<any> {
     var promise = new Promise<any>(
       (resolve, reject) => {
         this.api.post({
@@ -129,11 +132,11 @@ export abstract class Model {
   }
   delete (): Promise<any> {
     var promise = new Promise<any>((resolve, reject) => {
-      var observable = this.api.delete({
-        resource_name: this.resource_name,
-        id: this[this.id_alias]
-      }, this.serialize()).map(
-        resp => resp.json()
+      var observable = this.api.delete(
+        {
+          resource_name: this.resource_name,
+          id: this[this.id_alias]
+        }, this.serialize()
       ).subscribe(
         data => resolve()
       );
@@ -141,7 +144,6 @@ export abstract class Model {
    return promise;
   }
 }
-
 
 export abstract class ModelList<T extends Model>{
   resource_name: string;
@@ -165,7 +167,7 @@ export abstract class ModelList<T extends Model>{
   buildUrlParams () {
     return this.urlParams;
   }
-  fetch (): Promise<ModelList<T>> {
+  fetch (): Promise<any> {
     var promise = new Promise<ModelList<T>>(
       (resolve, reject) => {
         this.api.get({
@@ -220,7 +222,14 @@ export abstract class JunctionModel extends Model {
     for (let name of this.junction_fields) {
       for (let field of this.fields) {
         if (field.name === name) {
-          filter[name] = this[name].id;
+          if (typeof this[name] === 'string') {
+            var splits = this[name].split('/');
+            filter[name] = splits[splits.length - 2];
+          } else if (this[name] instanceof Model) {
+            filter[name] = this[name].id;
+          } else {
+            throw 'wrong field type';
+          }
           break;
         }
       }
@@ -234,8 +243,13 @@ export abstract class JunctionModel extends Model {
           response => response.json()
         ).subscribe(
           data => {
-            this[this.id_alias] = data[this.id_alias];
-            resolve(this);
+            var objs = data.objects;
+            if (data.objects.length) {
+              this[this.id_alias] = data.objects[0][this.id_alias];
+              resolve(this);
+            } else {
+              reject (undefined);
+            }
           }
         );
       }
