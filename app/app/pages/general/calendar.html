@@ -10,12 +10,12 @@
 <ion-content>
 
   <ion-segment>
-    <ion-segment-button color="danger">日</ion-segment-button>
+    <ion-segment-button><span danger>日</span></ion-segment-button>
     <ion-segment-button *ngFor="let day of ['一', '二', '三', '四', '五']">{{ day}}</ion-segment-button>
-    <ion-segment-button color="danger">六</ion-segment-button>
+    <ion-segment-button><span danger>六</span></ion-segment-button>
   </ion-segment>
   <ion-segment *ngFor="let week of month.get().weeks">
-    <ion-segment-button tabTitle="{{ day.value }}" *ngFor="let day of week.days" (click)="selectDate(day)"> <span *ngIf="day.value">{{ day.value }}</span></ion-segment-button>
+    <ion-segment-button tabTitle="{{ day.value }}" *ngFor="let day of week.days" (click)="selectDate(day)"> <span *ngIf="day.value" [attr.danger]="highlight(day) ? true : null">{{ day.value }}</span></ion-segment-button>
   </ion-segment>
   <ion-segment>
     <ion-segment-button (click)="month.prev()"> &#60; </ion-segment-button>

@@ -189,6 +189,18 @@ export abstract class ModelList<T extends Model>{
     this.urlParams = kwargs;
     return this;
   }
+  search (kwargs: Object): Array<T> {
+    return this.objects.filter(
+      obj => {
+        for (let key in kwargs) {
+          if (kwargs[key] !== obj[key]) {
+            return false;
+          }
+        }
+        return true
+      }
+    )
+  }
   find(item: T): Array<T> {
     return this.objects.filter( a => a.id === item.id );
   }

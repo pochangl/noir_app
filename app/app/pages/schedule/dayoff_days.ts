@@ -53,6 +53,9 @@ export class DayOffDaysPage {
     this.nav.push(DayOffDetailPage, {dayoff: initial_data});
   }
   selectDate (day) {
-    console.log(day.stringify())
+    console.log(day.stringify());
+  }
+  highlight (day): Boolean {
+    return this.dayoffs.search({start_date: day.stringify()}).length > 0;
   }
 }
