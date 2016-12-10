@@ -54,6 +54,7 @@ export class DayOffDaysPage {
   }
   selectDate (day) {
     console.log(day.stringify());
+    this.dayoffs.fetch()
   }
   highlight (day): Boolean {
     return this.dayoffs.search({start_date: day.stringify()}).length > 0;

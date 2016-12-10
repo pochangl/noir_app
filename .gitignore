@@ -80,3 +80,4 @@ venv/
 
 # pydev
 noir_app/.pydevproject
+app/node_modules
