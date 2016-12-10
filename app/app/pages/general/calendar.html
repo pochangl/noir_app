@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar>
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>選擇工地 - [ {{ selected_date }} ]</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-tabs>
+    <ion-tab tabTitle="日" color="danger"></ion-tab>
+    <ion-tab tabTitle="{{ day }}" *ngFor="let day of ['一', '二', '三', '四', '五']"></ion-tab>
+    <ion-tab tabTitle="六" color="danger"></ion-tab>
+  </ion-tabs>
+  <ion-tabs *ngFor="let week of weeks">
+    <ion-tab tabTitle="{{ day.value }}" *ngFor="let day of days"></ion-tab>
+  </ion-tabs>
+  <ion-tabs>
+    <ion-tab tabTitle="<" color="danger"></ion-tab>
+    <ion-tab tabTitle="{{ month.year.value }}/{{ month.value }}"</ion-tab>
+    <ion-tab tabTitle=">" color="danger" (click)="month.next()"></ion-tab>
+  </ion-tabs>
+</ion-content>

@@ -24,7 +24,7 @@ export class Assignment extends Model {
       cls: Project
     }, {
       name: 'employees',
-      cls: EmployeeList
+      cls: SelectedEmployeeList
     }, {
       name: 'availables',
       cls: SelectedEmployeeList
@@ -34,7 +34,7 @@ export class Assignment extends Model {
   start_datetime: string;
   end_datetime: string;
   number_needed: number;
-  employees: EmployeeList;
+  employees: SelectedEmployeeList;
   availables: SelectedEmployeeList;
 
   construct (obj?: any) {
@@ -45,7 +45,7 @@ export class Assignment extends Model {
     return this;
   }
 
-  add (employee: Employee) {
+  add (employee: SelectedEmployee) {
     var ea = new EmployeeAssignment(this.api);
     ea.construct({
       assignment: this,
@@ -55,14 +55,19 @@ export class Assignment extends Model {
       obj => this.employees.add(employee)
     );
   }
-  discard (employee: Employee) {
+  discard (employee: SelectedEmployee) {
     var ea = new EmployeeAssignment(this.api);
     ea.construct({
       assignment: this,
       employee: employee
     });
     ea.fetch().then(
-      () => ea.delete()
+      () => {
+        ea.delete();
+        this.employees.remove(employee);
+      }).catch(() => {
+        this.employees.remove(employee);
+      }
     );
   }
   is_full () {
@@ -88,9 +93,11 @@ export class EmployeeAssignment extends JunctionModel {
   junction_fields = ['employee', 'assignment'];
   fields = [{
     name: 'employee',
-    cls: Employee
+    cls: Employee,
+    is_url: true
   }, {
     name: 'assignment',
-    cls: Assignment
+    cls: Assignment,
+    is_url: true
   }];
 }

@@ -25,11 +25,11 @@ export class ProjectDetailPage {
     this.assignment.fetch();
   }
   toggle(employee) {
-    if ( this.assignment.has(employee) ) {
+    if (this.assignment.has(employee)) {
       this.assignment.discard(employee);
-    }else  if (this.assignment.is_full() === true) {
+    } else  if (this.assignment.is_full()) {
       alert('派工人數已達上限！');
-    }else {
+    } else {
       this.assignment.add(employee);
     }
   }

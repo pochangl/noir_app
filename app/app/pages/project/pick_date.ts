@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { ProjectListPage } from './list';
 import { AssignmentDateList } from './models';
 import { Api } from '../../providers/api/api';
+import { MonthIterator } from '../../utils/calendar';
 
 
 @Component({

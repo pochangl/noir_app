@@ -8,13 +8,10 @@
 </ion-header>
 
 <ion-content>
-
-  <ion-tabs *ngFor="let week of weeks">
-    <ion-tab tabTitle="日" color="danger"></ion-tab>
-    <ion-tab tabTitle="{{ day }}" *ngFor="let day of ['一', '二', '三', '四', '五']"></ion-tab>
-    <ion-tab tabTitle="六" color="danger"></ion-tab>
-  </ion-tabs>
-  <ion-tabs *ngFor="let week of weeks">
-    <ion-tab tabTitle="{{ day.value }}" *ngFor="let day of days"></ion-tab>
-  </ion-tabs>
+  <ion-list>
+    <button ion-item *ngFor="let assignment of assignments.objects" (click)="click(assignment)">
+      {{ assignment.project.name }} ( {{ assignment.employees.length }} / {{ assignment.number_needed }} )
+      <ion-icon name="md-arrow-forward" item-right></ion-icon>
+    </button>
+  </ion-list>
 </ion-content>
