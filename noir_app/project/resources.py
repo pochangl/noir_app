@@ -66,10 +66,8 @@ class AssignmentResource(ModelResource):
             list of all employees
         """
         availables = Employee.objects.exclude(
-            Q( assignments__end_datetime__lte=assignment.end_datetime,
-               assignments__end_datetime__gte=assignment.start_datetime) | 
-            Q( assignments__start_datetime__lte=assignment.end_datetime,
-               assignments__start_datetime__gte=assignment.start_datetime), # find overlap employee
+            Q(assignments__end_datetime__range = (assignment.end_datetime, assignment.start_datetime)) | 
+            Q(assignments__start_datetime__range = (assignment.end_datetime, assignment.start_datetime)),
             ~Q(assignments__id=assignment.id),
         ).distinct()
         return [{'id': employee.id,
