@@ -5,7 +5,7 @@ from schedule.models import DayOff, EmployeePreference, ProjectPreference
 from account.resources import EmployeeResource
 from project.resources import EmployeeAssignmentResource
 import calendar
-
+from tastypie.constants import ALL, ALL_WITH_RELATIONS
 
 class ScheduleResource(Resource):
     class Meta:
@@ -41,17 +41,19 @@ class DayOffDateResource(Resource):
 
 
 class DayOffResource(ModelResource):
-    employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="dayoffs", full=True, readonly=True)
+    employee = fields.ForeignKey(EmployeeResource, attribute="employee", full=True)
 
     class Meta:
+        always_return_data = True
         queryset = DayOff.objects.all()
         resource_name = "dayoff"
         include_resource_uri = False
         fields = ("id", "start_datetime", "end_datetime",)
         filtering = {
             "employee": ('exact',),
+            "start_datetime": ALL,
         }
-        allowed_methods = ['get','post','put']
+        allowed_methods = ['get','post','put', 'delete']
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
 
