@@ -21,6 +21,7 @@ export class PickDatePage {
   ) {
     this.dates = new AssignmentDateList(api);
   }
+
   ionViewWillEnter () {
     this.dates.fetch();
   }

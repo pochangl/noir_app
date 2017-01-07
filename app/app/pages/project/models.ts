@@ -97,6 +97,7 @@ export class Assignment extends Model {
         this.fetch();
       }
     );
+    this.confirms.add(employee);
   }
 
   unconfirm (employee: SelectedEmployee) {

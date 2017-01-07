@@ -22,7 +22,7 @@ export abstract class Model {
         continue;
       }
       if (typeof field === 'string') {
-        name = field;
+        let name = field;
         this[name] = obj[name];
       } else if (obj[field.name] instanceof field.cls) {
         this[field.name] = obj[field.name].build_url();

@@ -92,7 +92,7 @@ class AssignmentResource(ModelResource):
         bundle.data["end_date"] = assignment.end_datetime.date()
         bundle.data["end_time"] = assignment.end_datetime.time()
         bundle.data["availables"] = self.employee_list(assignment)
-        bundle.data["confirms"] = self.employee_list(assignment)
+        bundle.data["confirms"] = self.confirmed_list(assignment)
         return bundle
 
 
@@ -123,6 +123,15 @@ class EmployeeAssignmentResource(ModelResource):
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
 
+    def hydrate(self, bundle):
+        bundle = super(EmployeeAssignmentResource, self).hydrate(bundle)
+        if not bundle.data.get('is_confirmed', False):
+            bundle.obj.check_in = bundle.obj.check_out = None
+        else:
+            assignment = Assignment.objects.get(id=bundle.obj.assignment_id)
+            bundle.obj.check_in = assignment.start_datetime
+            bundle.obj.check_out = assignment.end_datetime
+        return bundle
 
 class UnassignedResource(EmployeeResource):
     
