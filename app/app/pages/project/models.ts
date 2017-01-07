@@ -54,17 +54,21 @@ export class Assignment extends Model {
   }
 
   add (employee: SelectedEmployee) {
-    var ea = new EmployeeAssignment(this.api);
-    ea.construct({
-      assignment: this,
-      employee: employee
+    return new Promise<any>(function (resolve, reject){
+      var ea = new EmployeeAssignment(this.api);
+      ea.construct({
+        assignment: this,
+        employee: employee
+      });
+      ea.commit().then(
+        obj => {
+          this.employees.add(employee).then(() => {
+            this.fetch();
+            resolve(this.employees);
+          });
+        }
+      );
     });
-    ea.commit().then(
-      obj => {
-        this.employees.add(employee);
-        this.fetch();
-      }
-    );
   }
 
   discard (employee: SelectedEmployee) {
@@ -75,8 +79,9 @@ export class Assignment extends Model {
     });
     ea.fetch().then(
       () => {
-        ea.delete();
-        this.fetch();
+        ea.delete().then(() => {
+          this.fetch();
+        });
       }).catch(() => {
         this.fetch();
       }
