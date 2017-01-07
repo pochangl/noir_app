@@ -26,10 +26,14 @@ class Assignment(TimeStampModel):
     assignee = models.ForeignKey('auth.User')
     number_needed = models.PositiveIntegerField(default=1)
     serial = models.CharField(max_length=128)
+
+    @property
+    def time_range(self):
+        return self.start_datetime, self.end_datetime
     
     
     def __str__(self):
-        return self.project.name
+        return "%s: %s" % (self.project.name, self.start_datetime.date())
     
 
 class EmployeeAssignment(TimeStampModel):

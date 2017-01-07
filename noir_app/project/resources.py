@@ -66,10 +66,15 @@ class AssignmentResource(ModelResource):
             list of all employees
         """
         availables = Employee.objects.exclude(
+            Q(assignments__end_datetime__range = assignment.time_range) | 
+            Q(assignments__start_datetime__range = assignment.time_range),
+            ~Q(assignments=assignment),
+        ).distinct()
+        print Employee.objects.exclude(
             Q(assignments__end_datetime__range = (assignment.end_datetime, assignment.start_datetime)) | 
             Q(assignments__start_datetime__range = (assignment.end_datetime, assignment.start_datetime)),
             ~Q(assignments__id=assignment.id),
-        ).distinct()
+        ).distinct().query
         return [{'id': employee.id,
                  'contact': {
                     'name': employee.contact.name
