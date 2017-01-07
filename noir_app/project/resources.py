@@ -70,16 +70,20 @@ class AssignmentResource(ModelResource):
             Q(assignments__start_datetime__range = assignment.time_range),
             ~Q(assignments=assignment),
         ).distinct()
-        print Employee.objects.exclude(
-            Q(assignments__end_datetime__range = (assignment.end_datetime, assignment.start_datetime)) | 
-            Q(assignments__start_datetime__range = (assignment.end_datetime, assignment.start_datetime)),
-            ~Q(assignments__id=assignment.id),
-        ).distinct().query
         return [{'id': employee.id,
                  'contact': {
                     'name': employee.contact.name
                 }} for employee in availables]
-            
+
+    def confirmed_list(self, assignment):
+        eas = assignment.employee_assignments.exclude(check_in__isnull=True)
+        return [{'id': ea.employee.id,
+                 'contact': {
+                    'name': ea.employee.contact.name
+                }} for ea in eas]
+
+        
+        
     def dehydrate(self, bundle, *args, **kwargs):
         bundle = super(AssignmentResource, self).dehydrate(bundle)
         assignment = bundle.obj
@@ -88,6 +92,7 @@ class AssignmentResource(ModelResource):
         bundle.data["end_date"] = assignment.end_datetime.date()
         bundle.data["end_time"] = assignment.end_datetime.time()
         bundle.data["availables"] = self.employee_list(assignment)
+        bundle.data["confirms"] = self.employee_list(assignment)
         return bundle
 
 

@@ -28,6 +28,9 @@ export class Assignment extends Model {
     }, {
       name: 'availables',
       cls: SelectedEmployeeList
+    }, {
+      name: 'confirms',
+      cls: SelectedEmployeeList
     }];
   resource_name = 'assignment';
   project: Project;
@@ -36,6 +39,7 @@ export class Assignment extends Model {
   number_needed: number;
   employees: SelectedEmployeeList;
   availables: SelectedEmployeeList;
+  confirms: SelectedEmployeeList;
 
   construct (obj?: any) {
     super.construct(obj);
@@ -58,6 +62,22 @@ export class Assignment extends Model {
       }
     );
   }
+
+  confirm (employee: SelectedEmployee) {
+    var ea = new EmployeeAssignment(this.api);
+    ea.construct({
+      assignment: this,
+      employee: employee,
+      is_confirmed: true
+    });
+    ea.commit().then(
+      obj => {
+        this.confirms.add(employee);
+        this.fetch();
+      }
+    );
+  }
+
   discard (employee: SelectedEmployee) {
     var ea = new EmployeeAssignment(this.api);
     ea.construct({
@@ -68,6 +88,24 @@ export class Assignment extends Model {
       () => {
         ea.delete();
         this.employees.remove(employee);
+        this.fetch();
+      }).catch(() => {
+        this.employees.remove(employee);
+        this.fetch();
+      }
+    );
+  }
+  unconfirm (employee: SelectedEmployee) {
+    var ea = new EmployeeAssignment(this.api);
+    ea.construct({
+      assignment: this,
+      employee: employee,
+      is_confirmed: false
+    });
+    ea.fetch().then(
+      () => {
+        ea.delete();
+        this.confirms.remove(employee);
         this.fetch();
       }).catch(() => {
         this.employees.remove(employee);
@@ -96,13 +134,16 @@ export class EmployeeAssignment extends JunctionModel {
   employee: Employee;
   resource_name = 'employee_assignment';
   junction_fields = ['employee', 'assignment'];
-  fields = [{
-    name: 'employee',
-    cls: Employee,
-    is_url: true
-  }, {
-    name: 'assignment',
-    cls: Assignment,
-    is_url: true
-  }];
+  fields = [
+    'is_confirmed',
+    {
+      name: 'employee',
+      cls: Employee,
+      is_url: true
+    }, {
+      name: 'assignment',
+      cls: Assignment,
+      is_url: true
+    }
+  ];
 }

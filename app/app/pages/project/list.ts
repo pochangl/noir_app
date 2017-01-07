@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Api} from '../../providers/api/api';
-import {ProjectDetailPage} from './detail';
+import {ProjectDetailPage, ProjectDetailManagementPage} from './detail';
 import {OrderByPipe } from '../pipes/selected_account';
 import {AssignmentList, Assignment} from './models';
 
@@ -16,7 +16,7 @@ export class ProjectListPage {
   selected_date: string;
 
   constructor (
-    private nav: NavController,
+    protected nav: NavController,
     params: NavParams,
     private api: Api
   ) {

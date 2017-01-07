@@ -17,18 +17,40 @@ export class ProjectDetailPage {
   constructor(
         private nav: NavController,
         params: NavParams
-    ) {
+  ) {
     this.assignment = params.data.assignment;
     this.selected_date = params.data.assignment.start_datetime.split('T')[0];
   }
   ionViewWillEnter () {
     this.assignment.fetch();
   }
-  toggle(employee) {
+  toggle (employee) {
     if (this.assignment.has(employee)) {
       this.assignment.discard(employee);
     } else {
       this.assignment.add(employee);
+    }
+  }
+  manage () {
+    this.nav.push(ProjectDetailManagementPage, {assignment: this.assignment});
+  }
+}
+
+@Component({
+  templateUrl: 'build/pages/project/detail_management.html'
+})
+export class ProjectDetailManagementPage extends ProjectDetailPage {
+  constructor(
+        nav: NavController,
+        params: NavParams
+  ) {
+    super(nav, params);
+  }
+  toggle (employee) {
+    if (this.assignment.confirms.has(employee)) {
+      this.assignment.confirm(employee);
+    } else {
+      this.assignment.unconfirm(employee);
     }
   }
 }

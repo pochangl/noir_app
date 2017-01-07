@@ -1,17 +1,20 @@
 <ion-header>
   <ion-navbar>
     <ion-title>{{ assignment.project.name }} ( {{ assignment.employees.length }} / {{ assignment.number_needed }} )- [ {{ selected_date }} ]</ion-title>
-    <ion-buttons end>
-      <button ion-button (click)="manage()"><ion-icon name="ios-build-outline"></ion-icon>管理</button>
-    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding class="ProjectDetailPage">
 	<ion-list>
-		<ion-item *ngFor="let employee of assignment.availables.objects">
+		<ion-item *ngFor="let employee of assignment.employees.objects">
 			<ion-label>{{ employee.contact.name }}</ion-label>
-			<ion-checkbox [(ngModel)]="employee.selected" (click)="toggle(employee)"></ion-checkbox>
+      <ion-buttons>
+        <ion-button ion-button>己完成</ion-button>
+        <ion-button ion-button>未完成</ion-button>
+      </ion-buttons>
 		</ion-item>
 	</ion-list>
+  <ion-buttons>
+    <button ion-button (click)="close()" danger><ion-icon name="ios-build-outline"></ion-icon>結束案子</button>
+  </ion-buttons>
 </ion-content>
