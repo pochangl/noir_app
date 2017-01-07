@@ -1,8 +1,8 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{ assignment.project.name }} ( {{ assignment.employees.length }} / {{ assignment.number_needed }} )- [ {{ selected_date }} ]</ion-title>
+    <ion-title>{{ assignment.project.name }} ( {{ assignment.employees.length }} / {{ assignment.confirms.length }} / {{ assignment.number_needed }} )- [ {{ selected_date }} ]</ion-title>
     <ion-buttons end>
-      <button ion-button (click)="manage()"><ion-icon name="ios-build-outline"></ion-icon>管理</button>
+      <button ion-button (click)="manage()" color="dark"><ion-icon name="ios-build-outline"></ion-icon>管理</button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>

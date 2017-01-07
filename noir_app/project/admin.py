@@ -3,7 +3,7 @@ from .models import Project, Assignment, EmployeeAssignment, Unassigned
 
 
 class EmployeeAssignmenAdmin(admin.ModelAdmin):
-    list_display = ("id", "employee", "assignment")
+    list_display = ("id", "employee", "assignment", "check_in")
     list_filter = ("employee",)
     list_editable = tuple()
 

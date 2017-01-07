@@ -12,6 +12,7 @@ export class Project extends Model {
 
 class SelectedEmployee extends Employee {
   selected: boolean = false;
+  is_confirmed: boolean = false;
 }
 class SelectedEmployeeList extends ModelList<SelectedEmployee> {
   model = SelectedEmployee;
@@ -46,6 +47,9 @@ export class Assignment extends Model {
     for (let employee of this.availables.objects) {
       employee.selected = this.has(employee);
     }
+    for (let employee of this.employees.objects) {
+      employee.is_confirmed = this.confirms.has(employee);
+    }
     return this;
   }
 
@@ -63,21 +67,6 @@ export class Assignment extends Model {
     );
   }
 
-  confirm (employee: SelectedEmployee) {
-    var ea = new EmployeeAssignment(this.api);
-    ea.construct({
-      assignment: this,
-      employee: employee,
-      is_confirmed: true
-    });
-    ea.commit().then(
-      obj => {
-        this.confirms.add(employee);
-        this.fetch();
-      }
-    );
-  }
-
   discard (employee: SelectedEmployee) {
     var ea = new EmployeeAssignment(this.api);
     ea.construct({
@@ -87,14 +76,29 @@ export class Assignment extends Model {
     ea.fetch().then(
       () => {
         ea.delete();
-        this.employees.remove(employee);
         this.fetch();
       }).catch(() => {
-        this.employees.remove(employee);
+        this.fetch();
+      }
+    );
+    this.employees.remove(employee);
+  }
+
+  confirm (employee: SelectedEmployee) {
+    var ea = new EmployeeAssignment(this.api);
+    ea.construct({
+      assignment: this,
+      employee: employee,
+      is_confirmed: true
+    });
+    ea.fetch().then(
+      () => {
+        ea.update();
         this.fetch();
       }
     );
   }
+
   unconfirm (employee: SelectedEmployee) {
     var ea = new EmployeeAssignment(this.api);
     ea.construct({
@@ -104,14 +108,14 @@ export class Assignment extends Model {
     });
     ea.fetch().then(
       () => {
-        ea.delete();
-        this.confirms.remove(employee);
+        ea.update();
         this.fetch();
       }).catch(() => {
-        this.employees.remove(employee);
+        ea.update();
         this.fetch();
       }
     );
+    this.confirms.remove(employee);
   }
   is_full () {
     return this.employees.objects.length >= this.number_needed;

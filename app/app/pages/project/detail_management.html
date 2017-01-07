@@ -5,15 +5,17 @@
 </ion-header>
 
 <ion-content padding class="ProjectDetailPage">
-	<ion-list>
-		<ion-item *ngFor="let employee of assignment.employees.objects">
-			<ion-label>{{ employee.contact.name }}</ion-label>
-      <ion-buttons>
-        <ion-button ion-button>己完成</ion-button>
-        <ion-button ion-button>未完成</ion-button>
-      </ion-buttons>
-		</ion-item>
-	</ion-list>
+  <ion-row *ngFor="let employee of assignment.employees.objects">
+    <ion-col width-33>
+      <button full large clear dark>{{ employee.contact.name }}</button>
+    </ion-col>
+    <ion-col width-33>
+      <button full large [class.transparent]="employee.is_confirmed" (click)="toggle(employee)" danger>未到</button>
+    </ion-col>
+    <ion-col width-33>
+      <button full large [class.transparent]="!employee.is_confirmed" (click)="toggle(employee)" secondary>己上工</button>
+    </ion-col>
+  </ion-row>
   <ion-buttons>
     <button ion-button (click)="close()" danger><ion-icon name="ios-build-outline"></ion-icon>結束案子</button>
   </ion-buttons>
