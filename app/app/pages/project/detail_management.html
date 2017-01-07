@@ -10,10 +10,10 @@
       <button full large clear dark>{{ employee.contact.name }}</button>
     </ion-col>
     <ion-col width-33>
-      <button full large [class.transparent]="employee.is_confirmed" (click)="toggle(employee)" danger>未到</button>
+      <button full large [class.transparent]="employee.is_confirmed" (click)="confirm(employee)" danger>未到</button>
     </ion-col>
     <ion-col width-33>
-      <button full large [class.transparent]="!employee.is_confirmed" (click)="toggle(employee)" secondary>己上工</button>
+      <button full large [class.transparent]="!employee.is_confirmed" (click)="unconfirm(employee)" secondary>己上工</button>
     </ion-col>
   </ion-row>
   <ion-buttons>

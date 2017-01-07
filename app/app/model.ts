@@ -21,8 +21,8 @@ export abstract class Model {
       if (!(field.name in obj || field in obj)) {
         continue;
       }
+      let name = field;
       if (typeof field === 'string') {
-        let name = field;
         this[name] = obj[name];
       } else if (obj[field.name] instanceof field.cls) {
         this[field.name] = obj[field.name].build_url();

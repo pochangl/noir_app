@@ -46,11 +46,11 @@ export class ProjectDetailManagementPage extends ProjectDetailPage {
   ) {
     super(nav, params);
   }
-  toggle (employee) {
-    if (this.assignment.confirms.has(employee)) {
-      this.assignment.unconfirm(employee);
-    } else {
-      this.assignment.confirm(employee);
-    }
+  confirm (employee) {
+    this.assignment.confirm(employee);
   }
+  unconfirm (employee) {
+    this.assignment.unconfirm(employee);
+  }
+  close () {}
 }

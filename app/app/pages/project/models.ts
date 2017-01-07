@@ -85,6 +85,7 @@ export class Assignment extends Model {
   }
 
   confirm (employee: SelectedEmployee) {
+    employee.is_confirmed = true;
     var ea = new EmployeeAssignment(this.api);
     ea.construct({
       assignment: this,
@@ -93,14 +94,16 @@ export class Assignment extends Model {
     });
     ea.fetch().then(
       () => {
-        ea.update();
-        this.fetch();
+        ea.update().then(() => {
+          this.fetch();
+        });
       }
     );
     this.confirms.add(employee);
   }
 
   unconfirm (employee: SelectedEmployee) {
+    employee.is_confirmed = false;
     var ea = new EmployeeAssignment(this.api);
     ea.construct({
       assignment: this,
@@ -109,11 +112,13 @@ export class Assignment extends Model {
     });
     ea.fetch().then(
       () => {
-        ea.update();
-        this.fetch();
+        ea.update().then(() => {
+          this.fetch();
+        });
       }).catch(() => {
-        ea.update();
-        this.fetch();
+        ea.update().then(() => {
+          this.fetch();
+        });
       }
     );
     this.confirms.remove(employee);
