@@ -53,8 +53,8 @@ export class Assignment extends Model {
     });
     ea.commit().then(
       obj => {
-        this.employees.add(employee)
-        this.fetch()
+        this.employees.add(employee);
+        this.fetch();
       }
     );
   }
@@ -68,10 +68,10 @@ export class Assignment extends Model {
       () => {
         ea.delete();
         this.employees.remove(employee);
-        this.fetch()
+        this.fetch();
       }).catch(() => {
         this.employees.remove(employee);
-        this.fetch()
+        this.fetch();
       }
     );
   }

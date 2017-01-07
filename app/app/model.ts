@@ -75,7 +75,6 @@ export abstract class Model {
         }
       }
     }
-
     return obj;
   }
   build_url (): string {
@@ -197,9 +196,9 @@ export abstract class ModelList<T extends Model>{
             return false;
           }
         }
-        return true
+        return true;
       }
-    )
+    );
   }
   find(item: T): Array<T> {
     return this.objects.filter( a => a.id === item.id );

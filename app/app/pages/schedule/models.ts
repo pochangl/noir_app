@@ -1,5 +1,8 @@
-import { Model, ModelList } from '../../model';
+import { Model, ModelList, JunctionModel, APIDateList} from '../../model';
 import { Employee, EmployeeList } from '../account/models';
+
+import { Observable } from 'rxjs/Observable';
+import { Response } from '@angular/http/src/static_response';
 
 
 export class DayOff extends Model {
@@ -7,10 +10,11 @@ export class DayOff extends Model {
   fields = [
     'start_datetime', 'end_datetime',
     'start_date', 'end_date',
-    'start_time', 'end_time',
+    'start_time', 'end_time', 'id',
     {
       name: 'employee',
-      cls: Employee
+      cls: Employee,
+      is_url: true
     }
   ];
   start_datetime: string;
@@ -20,13 +24,16 @@ export class DayOff extends Model {
   start_time: string;
   end_time: string;
   employee: Employee;
+  employees: EmployeeList;
 
-  isValidDateTime (dayoff) {
-    if (dayoff.start_datetime < dayoff.end_datetime) {
-      return true;
-    } else {
-      return false;
-    }
+  add (start_date: string, employee: Employee) {
+    var ea = new DayOff(this.api);
+    ea.construct({
+      start_datetime: start_date + 'T' + '08:00:00',
+      end_datetime: start_date + 'T' + '17:00:00',
+      employee: employee
+    });
+    ea.commit();
   }
 }
 
