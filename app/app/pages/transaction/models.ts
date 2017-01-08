@@ -36,7 +36,7 @@ export class MyDebtList extends DebtList {
 export class Paycheck extends Model {
   resource_name = 'paycheck';
   fields = [
-    'amount', 'sign_records', 'modify_time', 'happened_date',
+    'amount', 'sign_records', 'happened_date',
     {
       name: 'employee',
       cls: Employee
@@ -44,8 +44,23 @@ export class Paycheck extends Model {
   ];
   amount: number;
   sign_records: any;
-  modify_time: string;
   employee: Employee;
+
+  send_data(employee: Employee, amount: number) {
+    var paycheck_data = new Paycheck(this.api);
+    paycheck_data.construct({
+      employee: employee,
+      amount: amount,
+    });
+    console.log(paycheck_data);
+    paycheck_data.fetch().then(
+      () => {
+        paycheck_data.commit().then(() => {
+          this.fetch();
+        })
+      }
+    )
+  }
 }
 
 export class PaycheckList extends ModelList<Debt> {

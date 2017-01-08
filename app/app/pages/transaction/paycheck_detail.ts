@@ -3,7 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Headers } from '@angular/http';
 import { Api } from '../../providers/api/api';
 import 'rxjs/add/operator/map';
-import { HomePage } from '../general/home';
+import {PaycheckEmployeesPage} from '../transaction/paycheck_employees';
 import {Paycheck} from './models';
 
 @Component({
@@ -23,14 +23,5 @@ export class PaycheckDetailPage {
   }
   ionViewWillEnter () {
     this.paycheck.fetch();
-  }
-  submit () {
-    if (this.paycheck.amount === undefined) {
-      alert('not ready');
-      return;
-    } else {
-      this.paycheck.commit();
-      this.nav.push(HomePage);
-    }
   }
 }

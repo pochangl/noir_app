@@ -4,6 +4,9 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>{{ employee.contact.name }}的薪資紀錄</ion-title>
+        <ion-buttons end>
+          <button ion-button (click)="navToAddRecordPage()" color="dark"><ion-icon name="add"></ion-icon>新增</button>
+        </ion-buttons>
   </ion-navbar>
 </ion-header>
 

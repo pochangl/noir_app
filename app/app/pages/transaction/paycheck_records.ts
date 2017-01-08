@@ -4,6 +4,7 @@ import { Headers } from '@angular/http';
 import { Api } from '../../providers/api/api';
 import 'rxjs/add/operator/map';
 import {PaycheckDetailPage} from '../transaction/paycheck_detail';
+import {PaycheckAddRecordPage} from '../transaction/paycheck_add_record';
 import {MyPaycheckList} from './models';
 import {Employee} from '../account/models';
 
@@ -31,5 +32,8 @@ export class PaycheckRecordsPage {
   }
   click (paycheck) {
     this.nav.push(PaycheckDetailPage, {paycheck: paycheck});
+  }
+  navToAddRecordPage () {
+    this.nav.push(PaycheckAddRecordPage, {employee: this.employee});
   }
 }
