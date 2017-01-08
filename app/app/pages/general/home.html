@@ -10,10 +10,14 @@
 
 <ion-content>
   <ion-list>
-	  <button ion-item (click)="project()">工程</button>
+	  <button ion-item (click)="project_today()">當日派工</button>
+  	<button ion-item (click)="add_policy()">加保名單</button>
+  	<button ion-item (click)="number_needed()">明日工地需求人數</button>
+  	<button ion-item (click)="project_tomorrow()">明日派工規劃</button>
+  	<button ion-item (click)="cancle_policy()">退保名單</button>
 	  <button ion-item (click)="dayoff()">休假</button>
-	  <button ion-item (click)="paycheck()">薪資</button>
-	  <button ion-item (click)="debt()">借款</button>
+	  <button ion-item (click)="paycheck()">給薪</button>
+	  <button ion-item (click)="wages_status()">薪資統計</button>
   </ion-list>
 
 </ion-content>

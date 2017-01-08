@@ -9,20 +9,19 @@
 
 <ion-content>
 	<ion-list>
-
 	  <ion-item>
-		<ion-label fixed>Username</ion-label>
-		<ion-input type="text" value=""></ion-input>
+		    <ion-label>使用者名稱</ion-label>
+		    <ion-input type="text" value="{{username}}"></ion-input>
 	  </ion-item>
 
 	  <ion-item>
-		<ion-label fixed>Password</ion-label>
-		<ion-input type="password"></ion-input>
+		<ion-label>密碼</ion-label>
+		<ion-input type="password" value="{{password}}"></ion-input>
 	  </ion-item>
 
 	</ion-list>
-	
+
 	<div padding>
-	  <button block (click)="sign_in()">Sign In</button>
+	  <button block (click)="sign_in()">登錄</button>
 	</div>
 </ion-content>

@@ -34,23 +34,6 @@ export class DayOffDaysPage {
   ionViewWillEnter () {
     this.dayoffs.fetch();
   }
-  // new_record () {
-  //   // 不知道為什麼月份會少一個月？
-  //   var today = new Date();
-  //   var curDate = today.getFullYear() + '-' + (((today.getMonth() + 1) < 10) ? ('0' + (today.getMonth() + 1)) : (today.getMonth() + 1)) + '-' + ((today.getDate() < 10) ? ('0' + today.getDate()) : today.getDate());
-  //   var curTime = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
-  //   var initial_data = {
-  //     'employee': {'contact': {'id': this.selected_employee.contact.id, 'name': this.selected_employee.contact.name}, 'id': this.selected_employee.id},
-  //     'id': 0,
-  //     'start_datetime': curDate + 'T' + '08:00:00',
-  //     'start_date': curDate,
-  //     'start_time': '08:00:00',
-  //     'end_datetime': curDate + 'T' + '17:00:00',
-  //     'end_date': curDate,
-  //     'end_time': '17:00:00'
-  //   };
-  //   // this.nav.push(DayOffDetailPage, {dayoff: initial_data});
-  // }
   selectDate (day) {
     if (this.dayoffs.search({start_date: day.stringify()}).length > 0) {
       // 若請假資料已存在，刪除資料

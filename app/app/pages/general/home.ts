@@ -13,8 +13,20 @@ export class HomePage {
   constructor(private nav: NavController) {
   }
 
-  project () {
+  project_today () {
+    // this.nav.push();
+  }
+  add_policy () {
+    // this.nav.push();
+  }
+  number_needed () {
+    // this.nav.push();
+  }
+  project_tomorrow () {
     this.nav.push(PickDatePage);
+  }
+  cancle_policy () {
+    // this.nav.push();
   }
   dayoff () {
     this.nav.push(DayOffEmployeesPage);
@@ -22,7 +34,7 @@ export class HomePage {
   paycheck () {
     this.nav.push(PaycheckEmployeesPage);
   }
-  debt () {
-    this.nav.push(DebtEmployeesPage);
+  wages_status () {
+    // this.nav.push();
   }
 }
