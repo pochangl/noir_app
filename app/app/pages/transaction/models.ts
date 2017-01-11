@@ -1,4 +1,4 @@
-import { Model, ModelList } from '../../model';
+import { Model, ModelList, JunctionModel } from '../../model';
 import { Employee, EmployeeList } from '../account/models';
 
 export class Debt extends Model {
@@ -45,27 +45,43 @@ export class Paycheck extends Model {
   amount: number;
   sign_records: any;
   employee: Employee;
-
-  send_data(employee: Employee, amount: number) {
-    var paycheck_data = new Paycheck(this.api);
-    paycheck_data.construct({
-      employee: employee,
-      amount: amount,
-    });
-    console.log(paycheck_data);
-    paycheck_data.fetch().then(
-      () => {
-        paycheck_data.commit().then(() => {
-          this.fetch();
-        })
-      }
-    )
-  }
 }
 
 export class PaycheckList extends ModelList<Debt> {
   resource_name = 'paycheck';
   model = Paycheck;
+}
+
+export class MyPaycheck extends JunctionModel {
+  resource_name = 'paycheck';
+  junction_fields = ['employee'];
+  fields = [
+    'amount', 'sign_records', 'happened_date',
+    {
+      name: 'employee',
+      cls: Employee,
+      is_url: true
+    }
+  ];
+  amount: number;
+  sign_records: any;
+  employee: Employee;
+  send_data(employee: Employee, amount: number) {
+    return new Promise<any>(function (resolve, reject){
+      var paycheck_data = new Paycheck(this.api);
+      paycheck_data.construct({
+        amount: amount,
+        employee: employee,
+      });
+      paycheck_data.fetch().then(
+        () => {
+          paycheck_data.create().then(() => {
+            this.fetch();
+          });
+        }
+      );
+    });
+  }
 }
 
 export class MyPaycheckList extends PaycheckList {
