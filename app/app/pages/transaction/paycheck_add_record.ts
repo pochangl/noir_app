@@ -4,7 +4,7 @@ import {Headers} from '@angular/http';
 import {Api} from '../../providers/api/api';
 import 'rxjs/add/operator/map';
 import {PaycheckEmployeesPage} from '../transaction/paycheck_employees';
-import {Paycheck} from './models';
+import {MyPaycheck} from './models';
 
 @Component({
   templateUrl: 'build/pages/transaction/paycheck_add_record.html',
@@ -13,7 +13,7 @@ import {Paycheck} from './models';
 
 export class PaycheckAddRecordPage {
   title: '工資';
-  paycheck: Paycheck;
+  paycheck: MyPaycheck;
   employee: any;
   amount: number;
   happened_date: string;
@@ -23,8 +23,7 @@ export class PaycheckAddRecordPage {
     params: NavParams,
     private api: Api
   ) {
-    this.paycheck = new Paycheck(this.api);
-    console.log(this.paycheck);
+    this.paycheck = new MyPaycheck(this.api);
     this.employee = params.data.employee;
     // var today = new Date();
     // this.happened_date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
