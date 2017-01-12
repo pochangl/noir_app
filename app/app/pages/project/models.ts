@@ -54,7 +54,7 @@ export class Assignment extends Model {
   }
 
   add (employee: SelectedEmployee) {
-    return new Promise<any>(function (resolve, reject){
+    return new Promise<any>((resolve, reject) => {
       var ea = new EmployeeAssignment(this.api);
       ea.construct({
         assignment: this,
@@ -62,10 +62,8 @@ export class Assignment extends Model {
       });
       ea.commit().then(
         obj => {
-          this.employees.add(employee).then(() => {
-            this.fetch();
-            resolve(this.employees);
-          });
+          resolve(this.employees);
+          this.employees.add(employee);
         }
       );
     });
