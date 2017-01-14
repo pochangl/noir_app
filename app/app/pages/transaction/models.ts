@@ -4,26 +4,27 @@ import { Employee, EmployeeList } from '../account/models';
 import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http/src/static_response';
 
-export class Paycheck extends JunctionModel {
+// export class Paycheck extends JunctionModel {
+export class Paycheck extends Model {
   resource_name = 'paycheck';
-  junction_fields = ['employee'];
+  // junction_fields = ['employee'];
+  fields = [
+    'amount', 'sign_records', 'happened_date', 'reason_code', 'reason',
+    'signature',
+    {
+      name: 'employee',
+      cls: Employee
+    }
+  ];
   // fields = [
   //   'amount', 'sign_records', 'happened_date', 'reason_code', 'reason',
   //   'signature',
   //   {
   //     name: 'employee',
-  //     cls: Employee
+  //     cls: Employee,
+  //     is_url: true
   //   }
   // ];
-    fields = [
-      'amount', 'sign_records', 'happened_date', 'reason_code', 'reason',
-      'signature',
-      {
-        name: 'employee',
-        cls: Employee,
-        is_url: true
-      }
-    ];
   amount: number;
   sign_records: any;
   employee: Employee;
@@ -35,14 +36,6 @@ export class Paycheck extends JunctionModel {
 export class PaycheckList extends ModelList<Paycheck> {
   resource_name = 'paycheck';
   model = Paycheck;
-}
-
-class SelectedEmployee extends Employee {
-  selected: boolean = false;
-  is_confirmed: boolean = false;
-}
-class SelectedEmployeeList extends ModelList<SelectedEmployee> {
-  model = SelectedEmployee;
 }
 
 export class MyPaycheck extends Paycheck {
