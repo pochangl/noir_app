@@ -1,10 +1,9 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
-import {Headers} from '@angular/http';
 import {Api} from '../../providers/api/api';
 import 'rxjs/add/operator/map';
 import {PaycheckEmployeesPage} from '../transaction/paycheck_employees';
-import {MyPaycheck} from './models';
+import {MyPaycheck, MyPaycheckList} from './models';
 
 @Component({
   templateUrl: 'build/pages/transaction/paycheck_add_record.html',
@@ -14,6 +13,7 @@ import {MyPaycheck} from './models';
 export class PaycheckAddRecordPage {
   title: '工資';
   paycheck: MyPaycheck;
+  paychecks: MyPaycheckList;
   employee: any;
   amount: number;
   happened_date: string;
@@ -24,7 +24,9 @@ export class PaycheckAddRecordPage {
     private api: Api
   ) {
     this.paycheck = new MyPaycheck(this.api);
-    this.employee = params.data.employee;
+    // this.paycheck.id = params.data.paychecks.objects[0].id;
+    this.employee = params.data.paychecks.employee;
+    this.paycheck.set_employee(params.data.paychecks.employee);
     // var today = new Date();
     // this.happened_date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
   }
@@ -45,7 +47,7 @@ export class PaycheckAddRecordPage {
       alert('金額錯誤！');
       return;
     } else {
-      this.paycheck.send_data(this.employee, this.amount);
+      this.paycheck.send_data(this.employee);
       // this.nav.push(PaycheckEmployeesPage);
     }
   }

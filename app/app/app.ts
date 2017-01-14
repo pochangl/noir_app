@@ -6,7 +6,6 @@ import {HomePage} from './pages/general/home';
 import {PickDatePage} from './pages/project/pick_date';
 import {DayOffEmployeesPage} from './pages/schedule/dayoff_employees';
 import {PaycheckEmployeesPage} from './pages/transaction/paycheck_employees';
-import {DebtEmployeesPage} from './pages/transaction/debt_employees';
 
 
 @Component({
@@ -32,8 +31,7 @@ class MyApp {
       { title: '主選單', component: HomePage },
       { title: '選擇工地', component: PickDatePage},
       { title: '請假', component: DayOffEmployeesPage},
-      { title: '薪資', component: PaycheckEmployeesPage},
-      { title: '借款', component: DebtEmployeesPage}
+      { title: '薪資', component: PaycheckEmployeesPage}
     ];
   }
 

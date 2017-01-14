@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, Injectable} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
+import 'rxjs/add/operator/map';
 import {Api} from '../../providers/api/api';
 import {ProjectDetailPage, ProjectDetailManagementPage} from './detail';
 import {OrderByPipe } from '../pipes/selected_account';

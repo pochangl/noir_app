@@ -1,83 +1,58 @@
 import { Model, ModelList, JunctionModel } from '../../model';
 import { Employee, EmployeeList } from '../account/models';
 
-export class Debt extends Model {
-  resource_name = 'debt';
-  fields = [
-    'amount', 'sign_records', 'modify_time', 'happened_date',
-    {
-      name: 'employee',
-      cls: Employee
-    }
-  ];
-  amount: number;
-  sign_records: any;
-  modify_time: string;
-  employee: Employee;
-}
+import { Observable } from 'rxjs/Observable';
+import { Response } from '@angular/http/src/static_response';
 
-export class DebtList extends ModelList<Debt> {
-  resource_name = 'debt';
-  model = Debt;
-}
-
-export class MyDebtList extends DebtList {
-  employee: Employee;
-  set_employee (employee: Employee) {
-    this.employee = employee;
-  }
-  buildUrlParams () {
-    var params = super.buildUrlParams();
-    params['employee'] = this.employee.id;
-    return params;
-  }
-}
-
+// export class Paycheck extends JunctionModel {
 export class Paycheck extends Model {
   resource_name = 'paycheck';
+  // junction_fields = ['employee'];
   fields = [
-    'amount', 'sign_records', 'happened_date',
+    'amount', 'sign_records', 'happened_date', 'reason_code', 'reason',
+    'signature',
     {
       name: 'employee',
       cls: Employee
     }
   ];
+  // fields = [
+  //   'amount', 'sign_records', 'happened_date', 'reason_code', 'reason',
+  //   'signature',
+  //   {
+  //     name: 'employee',
+  //     cls: Employee,
+  //     is_url: true
+  //   }
+  // ];
   amount: number;
   sign_records: any;
   employee: Employee;
+  reason_code: string;
+  reason: string;
+  signature: any;
 }
 
-export class PaycheckList extends ModelList<Debt> {
+export class PaycheckList extends ModelList<Paycheck> {
   resource_name = 'paycheck';
   model = Paycheck;
 }
 
-export class MyPaycheck extends JunctionModel {
-  resource_name = 'paycheck';
-  junction_fields = ['employee'];
-  fields = [
-    'amount', 'sign_records', 'happened_date',
-    {
-      name: 'employee',
-      cls: Employee,
-      is_url: true
-    }
-  ];
-  amount: number;
-  sign_records: any;
-  employee: Employee;
-  send_data(employee: Employee, amount: number) {
-    return new Promise<any>(function (resolve, reject){
+export class MyPaycheck extends Paycheck {
+
+  set_employee(employee: Employee) {
+    this.employee = employee;
+  }
+  send_data(employee: Employee) {
+    return new Promise<any>((resolve, reject) => {
       var paycheck_data = new Paycheck(this.api);
       paycheck_data.construct({
-        amount: amount,
-        employee: employee,
+        employee: this.employee,
       });
-      paycheck_data.fetch().then(
-        () => {
-          paycheck_data.create().then(() => {
-            this.fetch();
-          });
+      paycheck_data.commit().then(
+        obj => {
+          resolve(this.employee);
+          this.set_employee(this.employee);
         }
       );
     });

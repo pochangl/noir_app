@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Headers } from '@angular/http';
 import { Api } from '../../providers/api/api';
 import 'rxjs/add/operator/map';
 import {PaycheckDetailPage} from '../transaction/paycheck_detail';
@@ -17,6 +16,7 @@ export class PaycheckRecordsPage {
   title: '工資';
   paychecks: MyPaycheckList;
   employee: Employee;
+  amount: number;
 
   constructor(
     private nav: NavController,
@@ -31,9 +31,10 @@ export class PaycheckRecordsPage {
     this.paychecks.fetch();
   }
   click (paycheck) {
+    console.log(paycheck);
     this.nav.push(PaycheckDetailPage, {paycheck: paycheck});
   }
   navToAddRecordPage () {
-    this.nav.push(PaycheckAddRecordPage, {employee: this.employee});
+    this.nav.push(PaycheckAddRecordPage, {paychecks: this.paychecks});
   }
 }
