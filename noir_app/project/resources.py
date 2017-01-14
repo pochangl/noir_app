@@ -59,6 +59,7 @@ class AssignmentResource(ModelResource):
         authorization = DjangoAuthorization()
         filtering = {"project": ("exact",),
                      "start_datetime": ALL,
+                     "is_insuranced": ALL,
         }
 
     def employee_list(self, assignment):
