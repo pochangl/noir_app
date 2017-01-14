@@ -4,16 +4,26 @@ import { Employee, EmployeeList } from '../account/models';
 import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http/src/static_response';
 
-export class Paycheck extends Model {
+export class Paycheck extends JunctionModel {
   resource_name = 'paycheck';
-  fields = [
-    'amount', 'sign_records', 'happened_date', 'reason_code', 'reason',
-    'signature',
-    {
-      name: 'employee',
-      cls: Employee
-    }
-  ];
+  junction_fields = ['employee'];
+  // fields = [
+  //   'amount', 'sign_records', 'happened_date', 'reason_code', 'reason',
+  //   'signature',
+  //   {
+  //     name: 'employee',
+  //     cls: Employee
+  //   }
+  // ];
+    fields = [
+      'amount', 'sign_records', 'happened_date', 'reason_code', 'reason',
+      'signature',
+      {
+        name: 'employee',
+        cls: Employee,
+        is_url: true
+      }
+    ];
   amount: number;
   sign_records: any;
   employee: Employee;
@@ -36,22 +46,13 @@ class SelectedEmployeeList extends ModelList<SelectedEmployee> {
 }
 
 export class MyPaycheck extends Paycheck {
-  employee: Employee;
-  fields = [
-    'amount', 'happened_date',
-    {
-      name: 'employee',
-      cls: Employee,
-      is_url: true
-    }
-  ];
 
   set_employee(employee: Employee) {
     this.employee = employee;
   }
-  send_data() {
+  send_data(employee: Employee) {
     return new Promise<any>((resolve, reject) => {
-      var paycheck_data = new MyPaycheck(this.api);
+      var paycheck_data = new Paycheck(this.api);
       paycheck_data.construct({
         employee: this.employee,
       });

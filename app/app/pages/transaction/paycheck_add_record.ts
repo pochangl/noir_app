@@ -24,7 +24,7 @@ export class PaycheckAddRecordPage {
     private api: Api
   ) {
     this.paycheck = new MyPaycheck(this.api);
-    this.paycheck.id = params.data.paychecks.objects[0].id;
+    // this.paycheck.id = params.data.paychecks.objects[0].id;
     this.employee = params.data.paychecks.employee;
     this.paycheck.set_employee(params.data.paychecks.employee);
     // var today = new Date();
@@ -47,7 +47,7 @@ export class PaycheckAddRecordPage {
       alert('金額錯誤！');
       return;
     } else {
-      this.paycheck.send_data();
+      this.paycheck.send_data(this.employee);
       // this.nav.push(PaycheckEmployeesPage);
     }
   }

@@ -135,6 +135,9 @@ export class Assignment extends Model {
 }
 export class AssignmentDateList extends APIDateList {
   resource_name = 'assignment_date';
+  add_date (today_date) {
+    //新增assignment的方式待討論
+  }
 }
 
 export class AssignmentList extends ModelList<Assignment> {

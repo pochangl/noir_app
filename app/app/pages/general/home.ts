@@ -12,17 +12,14 @@ export class HomePage {
   constructor(private nav: NavController) {
   }
 
-  project_today () {
-    // this.nav.push();
+  project () {
+    this.nav.push(PickDatePage);
   }
   add_policy () {
     // this.nav.push();
   }
   number_needed () {
     // this.nav.push();
-  }
-  project_tomorrow () {
-    this.nav.push(PickDatePage);
   }
   cancle_policy () {
     // this.nav.push();
