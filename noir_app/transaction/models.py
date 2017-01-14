@@ -39,8 +39,8 @@ class PayCheck(Transaction):
     employee = models.ForeignKey(Employee, related_name='paychecks')
     reason_code = models.CharField(max_length=128)
     reason = models.CharField(max_length=128)
-    normal_work_hour = models.IntegerField(null=True, blank=True)
-    overtime_work_hour = models.IntegerField(null=True, blank=True)
+    normal_work_hour = models.IntegerField(default=0, null=True, blank=True)
+    overtime_work_hour = models.IntegerField(default=0, null=True, blank=True)
     is_payed = models.BooleanField(default=False)
 
     def __str__(self):

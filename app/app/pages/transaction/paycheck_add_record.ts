@@ -25,6 +25,9 @@ export class PaycheckAddRecordPage {
     params: NavParams,
     private api: Api
   ) {
+    this.normal_work_hour = 0;  // 設定初始值為0.
+    this.overtime_work_hour = 0;  // 設定初始值為0.
+    this.amount = 0;  // 設定初始值為0.
     this.paycheck = new MyPaycheck(this.api);
     // this.paycheck.id = params.data.paychecks.objects[0].id;
     this.employee = params.data.paychecks.employee;

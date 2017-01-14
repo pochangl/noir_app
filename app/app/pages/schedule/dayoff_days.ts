@@ -22,8 +22,12 @@ export class DayOffDaysPage {
     params: NavParams,
     private api: Api
   ) {
+    var today = new Date();
+    var today_year = today.getFullYear();
+    var today_month = today.getMonth() + 1;
+
     this.month = new MonthIterator(this.api);
-    this.month.initial(2016, 12);
+    this.month.initial(today_year, today_month);
     this.selected_employee = params.data.employee;
     this.dayoff = new DayOff(this.api);
     this.dayoffs = new DayOffList(this.api);
