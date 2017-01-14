@@ -4,7 +4,7 @@ import {PickDatePage} from '../project/pick_date';
 import {DayOffEmployeesPage} from '../schedule/dayoff_employees';
 import {PaycheckEmployeesPage} from '../transaction/paycheck_employees';
 import {ChooseServicePage} from '../transaction/transaction_choose_service';
-import {WagesStatusPage} from '../transaction/transaction_wage_status';
+import {WagesStatusPage} from '../transaction/transaction_wages_status';
 
 @Component({
   templateUrl: 'build/pages/general/home.html',

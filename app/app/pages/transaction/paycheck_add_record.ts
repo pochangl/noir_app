@@ -17,6 +17,8 @@ export class PaycheckAddRecordPage {
   employee: any;
   amount: number;
   happened_date: string;
+  normal_work_hour: number;
+  overtime_work_hour: number;
 
   constructor(
     private nav: NavController,

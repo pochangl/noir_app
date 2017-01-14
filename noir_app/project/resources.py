@@ -53,7 +53,7 @@ class AssignmentResource(ModelResource):
         fields = ("id", "comment", 
                   "start_datetime", "end_datetime",
                   "approved", "assignee", "number_needed", "serial", 
-                  "create_time", "modify_time", )
+                  "create_time", "modify_time", "is_insuranced",)
         allowed_methods = ['get','post','put']
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()

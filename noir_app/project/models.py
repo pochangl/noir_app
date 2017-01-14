@@ -26,6 +26,7 @@ class Assignment(TimeStampModel):
     assignee = models.ForeignKey('auth.User')
     number_needed = models.PositiveIntegerField(default=1)
     serial = models.CharField(max_length=128)
+    is_insuranced = models.BooleanField(default=False)
 
     @property
     def time_range(self):

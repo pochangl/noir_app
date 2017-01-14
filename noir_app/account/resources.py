@@ -75,11 +75,11 @@ class ClientResource(ModelResource):
         resource_name = "client"
         fields = ("id", "company",)
         authentication = ApiKeyAuthentication()
-
-
+        
+        
 class EmployeeResource(ModelResource):
     contact = fields.ForeignKey(ContactResource, attribute="contact", related_name="employees", full=True)
-    
+
     class Meta:
         queryset = Employee.objects.all()
         resource_name = "employee"

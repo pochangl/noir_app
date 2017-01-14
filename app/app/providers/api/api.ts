@@ -41,7 +41,7 @@ export class AuthenticatedUrl extends APIUrl {
   }, force_id = false) {
     super(kwargs, force_id);
     this.username = 'edward';
-    this.api_key = '863e8736a54d998a156ecaea798d670c0c0e1961';
+    this.api_key = 'fa205bb2b2b4ede53951618949c252cba4bfb8b6';
   }
 
   getQueryString () {

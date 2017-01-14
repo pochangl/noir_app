@@ -15,6 +15,14 @@
 		  <p item-right>{{ paycheck.employee.contact.name }}</p>
 	  </ion-item>
 	  <ion-item>
+		  <ion-label primary>正常工時(hr)</ion-label>
+		  <p item-right> {{ paycheck.normal_work_hour }} </p>
+	  </ion-item>
+	  <ion-item>
+		  <ion-label primary>加班工時(hr)</ion-label>
+		  <p item-right> {{ paycheck.overtime_work_hour }} </p>
+	  </ion-item>
+	  <ion-item>
 		  <ion-label primary>給薪金額(NT)</ion-label>
 		  <p item-right> {{ paycheck.amount }} </p>
 	  </ion-item>

@@ -122,16 +122,20 @@ pTransactionR = Receivable(amount="4000", note="Note", client=pAccountC2)
 pTransactionR.save()
 
 pTransactionP1 = PayCheck(amount="5000", note="Note", employee=pAccountE1,
-                         reason_code="reason_code",reason="salary")
+                         reason_code="reason_code",reason="salary",
+                         normal_work_hour="8",overtime_work_hour="4")
 pTransactionP1.save()
 pTransactionP2 = PayCheck(amount="6000", note="Note", employee=pAccountE2,
-                         reason_code="reason_code",reason="bonus")
+                         reason_code="reason_code",reason="bonus",
+                         normal_work_hour="8",overtime_work_hour="2")
 pTransactionP2.save()
 pTransactionP3 = PayCheck(amount="7000", note="Note", employee=pAccountE3,
-                         reason_code="reason_code",reason="salary")
+                         reason_code="reason_code",reason="salary",
+                         normal_work_hour="6",overtime_work_hour="0")
 pTransactionP3.save()
 pTransactionP4 = PayCheck(amount="8000", note="Note", employee=pAccountE4,
-                         reason_code="reason_code",reason="bonus")
+                         reason_code="reason_code",reason="bonus",
+                         normal_work_hour="4",overtime_work_hour="0")
 pTransactionP4.save()
 
 #schedule設定
