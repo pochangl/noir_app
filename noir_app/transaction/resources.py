@@ -54,7 +54,7 @@ class PayCheckResource(TransactionResource):
         fields = ("id", "amount", "reason_code", "reason", "signature", "create_time", "modify_time", "happened_date", "normal_work_hour", "overtime_work_hour", "is_payed",)
         filtering = {
             "employee": ('exact',),
-            "is_payed": ALL,
+            "is_payed": 'exact',
         }
         allowed_methods = ['get','post','put']
         authentication = ApiKeyAuthentication()

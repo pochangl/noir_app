@@ -13,7 +13,7 @@ path = FileSystemStorage(location='/media/photos')
 class Transaction(TimeStampModel):
     amount = models.IntegerField(null=True, blank=True)
     note = models.CharField(max_length=1024, null=True, blank=True)
-    signature = models.ImageField(storage=path)
+    signature = models.ImageField(storage=path, null=True, blank=True)
     happened_date = models.DateField(default=datetime.now)
     
 #    class Meta:

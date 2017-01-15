@@ -8,7 +8,7 @@ import { MonthIterator } from '../../utils/calendar';
 
 
 @Component({
-  templateUrl: 'build/pages/transaction/pick_date.html',
+  templateUrl: 'build/pages/transaction/insurance_pick_date.html',
   providers: [Api]
 })
 

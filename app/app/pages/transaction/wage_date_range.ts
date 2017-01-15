@@ -7,11 +7,11 @@ import { MonthIterator } from '../../utils/calendar';
 
 
 @Component({
-  templateUrl: 'build/pages/transaction/transaction_wages_status.html',
+  templateUrl: 'build/pages/transaction/wage_date_range.html',
   providers: [Api]
 })
 
-export class WagesStatusPage {
+export class WagesDateRangePage {
   dates: AssignmentDateList;
   start_date: string;
   end_date: string;

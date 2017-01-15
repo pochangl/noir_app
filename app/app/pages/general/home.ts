@@ -1,10 +1,9 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
-import {PickDatePage} from '../project/pick_date';
+import {ProjectChooseServicePage} from '../project/project_choose_service';
 import {DayOffEmployeesPage} from '../schedule/dayoff_employees';
-import {PaycheckEmployeesPage} from '../transaction/paycheck_employees';
-import {ChooseServicePage} from '../transaction/transaction_choose_service';
-import {WagesStatusPage} from '../transaction/transaction_wages_status';
+import {PaycheckChooseServicePage} from '../transaction/paycheck_choose_service';
+import {InsuranceChooseServicePage} from '../transaction/insurance_choose_service';
 
 @Component({
   templateUrl: 'build/pages/general/home.html',
@@ -15,18 +14,15 @@ export class HomePage {
   }
 
   project () {
-    this.nav.push(PickDatePage);
+    this.nav.push(ProjectChooseServicePage);
   }
   insurance () {
-    this.nav.push(ChooseServicePage);
+    this.nav.push(InsuranceChooseServicePage);
+  }
+  paycheck () {
+    this.nav.push(PaycheckChooseServicePage);
   }
   dayoff () {
     this.nav.push(DayOffEmployeesPage);
-  }
-  paycheck () {
-    this.nav.push(PaycheckEmployeesPage);
-  }
-  wages_status () {
-    this.nav.push(WagesStatusPage);
   }
 }
