@@ -5,17 +5,23 @@
 </ion-header>
 
 <ion-content padding class="ProjectDetailPage">
-  <ion-row *ngFor="let employee of assignment.employees.objects">
-    <ion-col width-33>
-      <button full large clear dark>{{ employee.contact.name }}</button>
-    </ion-col>
-    <ion-col width-33>
-      <button full large [class.transparent]="employee.is_confirmed" (click)="confirm(employee)" danger>未到</button>
-    </ion-col>
-    <ion-col width-33>
-      <button full large [class.transparent]="!employee.is_confirmed" (click)="unconfirm(employee)" secondary>己上工</button>
-    </ion-col>
-  </ion-row>
+  <ion-grid *ngFor="let employee of assignment.employee_details.objects">
+    <ion-row>
+      <ion-col width-100>
+        <button full large clear dark>{{ employee.contact.name }}</button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col width-10 *ngFor="let hours of selectable_hours">
+        <button full [class.button-secondary]="hours == employee.hours" (click)="confirm(employee)" secondary>{{ hours }}</button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col width-10 *ngFor="let hours of selectable_hours">
+        <button full [class.button-secondary]="true" (click)="confirm(employee)">{{ hours }}</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <ion-buttons>
     <button ion-button (click)="close()" danger><ion-icon name="ios-build-outline"></ion-icon>結束案子</button>
   </ion-buttons>

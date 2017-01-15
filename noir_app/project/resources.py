@@ -13,6 +13,7 @@ from account.models import Employee
 from account.resources import ContactResource, ClientResource, EmployeeResource
 from django.db.models import Count, Q, F  # EmployeeAssignment.objects.filer(~Q(id=5))
 import datetime
+from utils.authorization import CustomDjangoAuthorization
 
 
 class ProjectResource(ModelResource):
@@ -41,19 +42,53 @@ class AssignmentDateResource(Resource):
         return bundle
 
 
-class AssignmentResource(ModelResource):
-    project = fields.ForeignKey(ProjectResource, attribute="project", full=True, readonly=True)
-    employees = fields.ManyToManyField(EmployeeResource, attribute="employees", related_name="assignments", full=True, readonly=True)
-    
+class BasicAssignmentResource(ModelResource):
     class Meta:
         always_return_data = True
         include_resource_uri = False
         queryset = Assignment.objects.all()
+        fields = ("id", "comment", "start_datetime", "end_datetime", "number_needed")
+
+
+class EmployeeAssignmentResource(ModelResource):
+    employee = fields.ForeignKey(EmployeeResource, attribute="employee", full=True)
+    assignment = fields.ForeignKey(BasicAssignmentResource, attribute="assignment", full=True)
+
+    class Meta:
+        always_return_data = True
+        queryset = EmployeeAssignment.objects.all()
+        resource_name = "employee_assignment"
+        include_resource_uri = False
+        fields = ("id", "hours", "overtime")
+        filtering = {
+            "employee": ('exact',),
+            "assignment": ALL_WITH_RELATIONS,
+        }
+        allowed_methods = ['get', 'put', 'post', 'delete']
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+
+    def hydrate(self, bundle):
+        bundle = super(EmployeeAssignmentResource, self).hydrate(bundle)
+        if not bundle.data.get('is_confirmed', False):
+            bundle.obj.check_in = bundle.obj.check_out = None
+        else:
+            assignment = Assignment.objects.get(id=bundle.obj.assignment_id)
+            bundle.obj.check_in = assignment.start_datetime
+            bundle.obj.check_out = assignment.end_datetime
+        return bundle
+
+
+class AssignmentResource(BasicAssignmentResource):
+    project = fields.ForeignKey(ProjectResource, attribute="project", full=True, readonly=True)
+    employee_details = fields.ManyToManyField(EmployeeAssignmentResource, attribute="employees_detail", full=True, readonly=True)
+    
+    class Meta(BasicAssignmentResource.Meta):
+        always_return_data = True
+        include_resource_uri = False
+        queryset = Assignment.objects.all()
         resource_name = "assignment"
-        fields = ("id", "comment", 
-                  "start_datetime", "end_datetime",
-                  "approved", "assignee", "number_needed", "serial", 
-                  "create_time", "modify_time", )
+        fields = ("id", "comment", "start_datetime", "end_datetime", "number_needed")
         allowed_methods = ['get','post','put']
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
@@ -75,15 +110,6 @@ class AssignmentResource(ModelResource):
                     'name': employee.contact.name
                 }} for employee in availables]
 
-    def confirmed_list(self, assignment):
-        eas = assignment.employee_assignments.exclude(check_in__isnull=True)
-        return [{'id': ea.employee.id,
-                 'contact': {
-                    'name': ea.employee.contact.name
-                }} for ea in eas]
-
-        
-        
     def dehydrate(self, bundle, *args, **kwargs):
         bundle = super(AssignmentResource, self).dehydrate(bundle)
         assignment = bundle.obj
@@ -92,7 +118,6 @@ class AssignmentResource(ModelResource):
         bundle.data["end_date"] = assignment.end_datetime.date()
         bundle.data["end_time"] = assignment.end_datetime.time()
         bundle.data["availables"] = self.employee_list(assignment)
-        bundle.data["confirms"] = self.confirmed_list(assignment)
         return bundle
 
 
@@ -105,49 +130,22 @@ class AssignmentResource(ModelResource):
         return orm_filters
 
 
-class EmployeeAssignmentResource(ModelResource):
-    employee = fields.ForeignKey(EmployeeResource, attribute="employee")
-    assignment = fields.ForeignKey(AssignmentResource, attribute="assignment")
 
+class ProposeAssignmentResource(ModelResource):
     class Meta:
-        always_return_data = True
-        queryset = EmployeeAssignment.objects.all()
-        resource_name = "employee_assignment"
-        include_resource_uri = False
+        queryset = Assignment.objects.all()
         fields = ("id",)
-        filtering = {
-            "employee": ('exact',),
-            "assignment": ALL_WITH_RELATIONS,
-        }
-        allowed_methods = ['get', 'put', 'post', 'delete']
-        authentication = ApiKeyAuthentication()
-        authorization = DjangoAuthorization()
-
-    def hydrate(self, bundle):
-        bundle = super(EmployeeAssignmentResource, self).hydrate(bundle)
-        if not bundle.data.get('is_confirmed', False):
-            bundle.obj.check_in = bundle.obj.check_out = None
-        else:
-            assignment = Assignment.objects.get(id=bundle.obj.assignment_id)
-            bundle.obj.check_in = assignment.start_datetime
-            bundle.obj.check_out = assignment.end_datetime
-        return bundle
-
-class UnassignedResource(EmployeeResource):
-    
-    class Meta(EmployeeResource.Meta):
-        resource_name = "unassigns"
-        allowed_mehtods = ('get',)
-        detail_allowed_methods = tuple()
-
-    def obj_get_list(self, bundle, *args, **kwargs):
-        queryset = super(AvailableResource, self).obj_get_list(bundle, *args, **kwargs)
-        aid = int(bundle.request.GET["assignment"])
-        assignment = Assignment.objects.get(id=aid)
-        return 
+        authorization = CustomDjangoAuthorization("propose")
+        resource_name = "propose_assignment"
 
 
-class UnassignResource(EmployeeAssignmentResource):
-    class Meta(EmployeeAssignmentResource):
-        resource_name = 'unassign'
-        
+class EndorseAssignmentResource(ProposeAssignmentResource):
+    class Meta(ProposeAssignmentResource.Meta):
+        resource_name = "endorse_assignment"
+        authorization = CustomDjangoAuthorization("endorse")
+
+
+class ConfirmAssignmentResource(ProposeAssignmentResource):
+    class Meta(ProposeAssignmentResource.Meta):
+        resource_name = "confirm_assignment"
+        authorization = CustomDjangoAuthorization("confirm")

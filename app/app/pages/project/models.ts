@@ -18,14 +18,44 @@ class SelectedEmployeeList extends ModelList<SelectedEmployee> {
   model = SelectedEmployee;
 }
 
-export class Assignment extends Model {
+export class BasicAssignment extends Model {
+  resource_name = 'assignment';
+}
+
+export class EmployeeAssignment extends JunctionModel {
+  assignment: Assignment;
+  employee: Employee;
+  resource_name = 'employee_assignment';
+  junction_fields = ['employee', 'assignment'];
+  fields = [
+    'hours',
+    'overtime',
+    {
+      name: 'employee',
+      cls: Employee,
+      is_url: true
+    }, {
+      name: 'assignment',
+      cls: BasicAssignment,
+      is_url: true
+    }
+  ];
+}
+
+
+class EmployeeAssignmentList extends ModelList<EmployeeAssignment> {
+  model = EmployeeAssignment;
+}
+
+
+export class Assignment extends BasicAssignment {
   fields = ['start_datetime', 'end_datetime', 'number_needed',
     {
       name: 'project',
       cls: Project
     }, {
-      name: 'employees',
-      cls: SelectedEmployeeList
+      name: 'employee_details',
+      cls: EmployeeAssignmentList
     }, {
       name: 'availables',
       cls: SelectedEmployeeList
@@ -33,12 +63,11 @@ export class Assignment extends Model {
       name: 'confirms',
       cls: SelectedEmployeeList
     }];
-  resource_name = 'assignment';
   project: Project;
   start_datetime: string;
   end_datetime: string;
   number_needed: number;
-  employees: SelectedEmployeeList;
+  employee_details: EmployeeAssignmentList;
   availables: SelectedEmployeeList;
   confirms: SelectedEmployeeList;
 
@@ -46,9 +75,6 @@ export class Assignment extends Model {
     super.construct(obj);
     for (let employee of this.availables.objects) {
       employee.selected = this.has(employee);
-    }
-    for (let employee of this.employees.objects) {
-      employee.is_confirmed = this.confirms.has(employee);
     }
     return this;
   }
@@ -62,8 +88,8 @@ export class Assignment extends Model {
       });
       ea.commit().then(
         obj => {
-          resolve(this.employees);
-          this.employees.add(employee);
+          resolve(this.employee_details);
+          this.employee_details.add(ea);
         }
       );
     });
@@ -84,7 +110,7 @@ export class Assignment extends Model {
         this.fetch();
       }
     );
-    this.employees.remove(employee);
+    this.employee_details.remove({employee: employee});
   }
 
   confirm (employee: SelectedEmployee) {
@@ -127,10 +153,10 @@ export class Assignment extends Model {
     this.confirms.remove(employee);
   }
   is_full () {
-    return this.employees.objects.length >= this.number_needed;
+    return this.employee_details.objects.length >= this.number_needed;
   }
   has (employee): boolean {
-    return this.employees.has(employee);
+    return this.employee_details.has({employee: employee});
   }
 }
 export class AssignmentDateList extends APIDateList {
@@ -143,23 +169,4 @@ export class AssignmentDateList extends APIDateList {
 export class AssignmentList extends ModelList<Assignment> {
   resource_name = 'assignment';
   model = Assignment;
-}
-
-export class EmployeeAssignment extends JunctionModel {
-  assignment: Assignment;
-  employee: Employee;
-  resource_name = 'employee_assignment';
-  junction_fields = ['employee', 'assignment'];
-  fields = [
-    'is_confirmed',
-    {
-      name: 'employee',
-      cls: Employee,
-      is_url: true
-    }, {
-      name: 'assignment',
-      cls: Assignment,
-      is_url: true
-    }
-  ];
 }

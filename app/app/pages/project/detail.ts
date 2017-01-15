@@ -13,6 +13,7 @@ import { Assignment } from './models';
 export class ProjectDetailPage {
   assignment: Assignment;
   selected_date: string;
+  selectable_hours = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
   constructor(
         private nav: NavController,
