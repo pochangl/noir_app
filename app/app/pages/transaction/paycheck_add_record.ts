@@ -13,7 +13,6 @@ import {MyPaycheck, MyPaycheckList} from './models';
 export class PaycheckAddRecordPage {
   title: '工資';
   paycheck: MyPaycheck;
-  paychecks: MyPaycheckList;
   employee: any;
   amount: number;
   happened_date: string;
@@ -30,8 +29,8 @@ export class PaycheckAddRecordPage {
     this.amount = 0;  // 設定初始值為0.
     this.paycheck = new MyPaycheck(this.api);
     // this.paycheck.id = params.data.paychecks.objects[0].id;
-    this.employee = params.data.paychecks.employee;
-    this.paycheck.set_employee(params.data.paychecks.employee);
+    this.employee = params.data.employee;
+    this.paycheck.employee = this.employee;
     // var today = new Date();
     // this.happened_date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
   }

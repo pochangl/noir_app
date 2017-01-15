@@ -6,7 +6,7 @@ from hashlib import sha1
 from django.conf import settings
 from django.db import models
 from django.utils.timezone import now, timedelta
-from utils.models import TimeStampModel
+from utils.models import TimeStampModel, VersionedModel
 from django.utils.decorators import classonlymethod
 
 
@@ -24,8 +24,8 @@ class Contact(TimeStampModel):
         return self.name
 
 
-class Client(TimeStampModel):
-    company = models.CharField(max_length=128)
+class Company(TimeStampModel):
+    name = models.CharField(max_length=128)
 
     def __str__(self):
         return self.company
@@ -95,4 +95,11 @@ class RegistrationToken(TimeStampModel):
         """
         self.used = now()
         super(RegistrationToken, self).save()
-        
+
+
+class EmployeeList(models.Model):
+    employees = models.ManyToManyField(Employee)
+
+    class Meta:
+        abstract = True
+

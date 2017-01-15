@@ -47,11 +47,10 @@ export class MyPaycheck extends Paycheck {
   }
   send_data(employee: Employee) {
     return new Promise<any>((resolve, reject) => {
-      var paycheck_data = new Paycheck(this.api);
-      paycheck_data.construct({
+      this.construct({
         employee: this.employee,
       });
-      paycheck_data.commit().then(
+      this.commit().then(
         obj => {
           resolve(this.employee);
           this.set_employee(this.employee);

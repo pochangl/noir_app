@@ -4,6 +4,22 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http/src/static_response';
 
+function filterByObject (filter) {
+  function wrappedFunc (item) {
+    for (let name in filter) {
+      var value = filter[name];
+      if (value instanceof Object) {
+        if (!item.is(value)) {
+          return false;
+        }
+      } else if (item !== value) {
+        return false;
+      }
+    }
+  }
+  return wrappedFunc;
+}
+
 export abstract class Model {
   fields: Array<any> = [];
   id: number = 0;
@@ -142,6 +158,13 @@ export abstract class Model {
     });
    return promise;
   }
+  is (item: any) {
+    if (item instanceof Model) {
+      return this.id === item.id;
+    } else {
+      return filterByObject(item)(this);
+    }
+  }
 }
 
 export abstract class ModelList<T extends Model>{
@@ -200,14 +223,14 @@ export abstract class ModelList<T extends Model>{
       }
     );
   }
-  find(item: T): Array<T> {
-    return this.objects.filter( a => a.id === item.id );
+  find(item: any): Array<T> {
+      return this.objects.filter( a => a.is(item));
   }
-  has (item: T): boolean {
+  has (item: Object): boolean {
     return this.find(item).length > 0;
   }
-  remove (item: T): void {
-    this.objects = this.objects.filter( a => a.id !== item.id);
+  remove (item: Object): void {
+    this.objects = this.objects.filter( a => a.is(item));
   }
   add (item: T, duplicate?: boolean): void {
     if (duplicate || !this.has(item)) {

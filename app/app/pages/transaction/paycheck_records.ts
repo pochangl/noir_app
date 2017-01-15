@@ -34,6 +34,6 @@ export class PaycheckRecordsPage {
     this.nav.push(PaycheckDetailPage, {paycheck: paycheck});
   }
   navToAddRecordPage () {
-    this.nav.push(PaycheckAddRecordPage, {paychecks: this.paychecks});
+    this.nav.push(PaycheckAddRecordPage, {employee: this.employee});
   }
 }
