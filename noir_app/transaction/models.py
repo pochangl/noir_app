@@ -32,7 +32,7 @@ class AccountBalance(AbstractAccountBalance):
 
 
 class OthersAccountBalance(AbstractAccoutBalance):
-    master = models.ForeignKey(AccountBalance, related_name="%(class)s")
+    master = models.OneToOneField(AccountBalance, related_name="%(class)s")
     class Meta:
         abstract = True
 
