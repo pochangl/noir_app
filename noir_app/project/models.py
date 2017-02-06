@@ -8,8 +8,6 @@ from html5lib import filters
 from datetime import datetime, time, date, timedelta
 
 # Create your models here.
-path = FileSystemStorage(location='/media/photos')
-
 class Project(TimeStampModel):
     contact = models.ForeignKey(Contact, related_name='projects')
     client = models.ForeignKey(Client, related_name='projects')
@@ -95,3 +93,4 @@ class Pay(PersonalIncome):
     def __init__(self, *args, **kwargs):
         super(Pay, self).__init__(*args, **kwargs)
         this.note = "pay"
+        

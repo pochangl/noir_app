@@ -7,7 +7,7 @@ from tastypie.authorization import ReadOnlyAuthorization, DjangoAuthorization
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 
 #from account.models import Contact, Client
-from project.models import Project, Assignment, EmployeeAssignment
+from project.models import Project, Assignment, EmployeeAssignment, Pay
 from account.models import Employee
 
 from account.resources import ContactResource, ClientResource, EmployeeResource
@@ -131,7 +131,6 @@ class AssignmentResource(BasicAssignmentResource):
         return orm_filters
 
 
-
 class ProposeAssignmentResource(ModelResource):
     class Meta:
         queryset = Assignment.objects.all()
@@ -150,3 +149,13 @@ class ConfirmAssignmentResource(ProposeAssignmentResource):
     class Meta(ProposeAssignmentResource.Meta):
         resource_name = "confirm_assignment"
         authorization = CustomDjangoAuthorization("confirm")
+
+
+class PayResource(ModelResource):
+    employee_assignment = fields.OneToOneField(EmployeeAssignmentResource, attribute="employees_assignment", full=True, readonly=True)
+    
+    class Meta:
+        queryset = Pay.objects.all()
+        fields = ("id",)
+        resource_name = "pay"
+        

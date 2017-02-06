@@ -102,4 +102,3 @@ class EmployeeList(models.Model):
 
     class Meta:
         abstract = True
-

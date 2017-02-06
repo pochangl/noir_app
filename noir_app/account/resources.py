@@ -5,7 +5,7 @@ from tastypie.resources import Resource, ModelResource, fields, url, trailing_sl
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import ReadOnlyAuthorization, DjangoAuthorization, Authorization
 
-from .models import Contact, Client, Employee, Skill, RegistrationToken
+from .models import Contact, Company, Employee, RegistrationToken
 from tastypie.exceptions import Unauthorized, NotFound
 from tastypie.http import HttpAccepted
 from tastypie.models import create_api_key
@@ -69,11 +69,11 @@ class ContactResource(ModelResource):
         include_resource_uri = False
 
 
-class ClientResource(ModelResource):
+class CompanyResource(ModelResource):
     class Meta:
-        queryset = Client.objects.all()
-        resource_name = "client"
-        fields = ("id", "company",)
+        queryset = Company.objects.all()
+        resource_name = "company"
+        fields = ("id", "name",)
         authentication = ApiKeyAuthentication()
         
         
@@ -88,14 +88,4 @@ class EmployeeResource(ModelResource):
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
         include_resource_uri = False
-       
-   
-class SkillResource(ModelResource):
-    employee = fields.ForeignKey(EmployeeResource, attribute="employee", related_name="skills")
-    
-    class Meta:
-        queryset = Skill.objects.all()
-        resource_name = "skill"
-        fields = ("id","name",)
-        authentication = ApiKeyAuthentication()
              
