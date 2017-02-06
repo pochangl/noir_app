@@ -10,7 +10,7 @@ from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from project.models import Project, Assignment, EmployeeAssignment, Pay
 from account.models import Employee
 
-from account.resources import ContactResource, ClientResource, EmployeeResource
+from account.resources import ContactResource, CompanyResource, EmployeeResource
 from django.db.models import Count, Q, F  # EmployeeAssignment.objects.filer(~Q(id=5))
 import datetime
 from utils.authorization import CustomDjangoAuthorization
@@ -18,7 +18,7 @@ from utils.authorization import CustomDjangoAuthorization
 
 class ProjectResource(ModelResource):
     contact = fields.ForeignKey(ContactResource, attribute="contact", related_name="contact")
-    client = fields.ForeignKey(ClientResource, attribute="client", related_name="client")
+    company = fields.ForeignKey(CompanyResource, attribute="company", related_name="company")
     
     class Meta:
         include_resource_uri = False

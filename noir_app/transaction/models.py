@@ -2,7 +2,7 @@
 # Circular import dependency in Python,將project.models移至account.models
 from django.db import models
 from utils.models import TimeStampModel
-from account.models import Client, Employee
+from account.models import Company, Employee
 from django.core.files.storage import FileSystemStorage
 from datetime import datetime, time, date
 from django.utils.decorators import classonlymethod
@@ -10,8 +10,10 @@ from tastypie.admin import ABSTRACT_APIKEY
 
 
 # Create your models here.
+path = FileSystemStorage(location='/media/photos')
+
 class AbstractAccountBalance(TimeStampModel):
-    previous = models.ForeignKey("transaction.AccountBalance")
+#     previous = models.ForeignKey("transaction.AccountBalance")  #尚未定義transaction.AccountBalnace
     balance = models.PositiveIntegerField()
     income = models.PositiveIntegerField(default=0)
     expense = models.PositiveIntegerField(default=0)
@@ -31,7 +33,7 @@ class AccountBalance(AbstractAccountBalance):
     pass
 
 
-class OthersAccountBalance(AbstractAccoutBalance):
+class OthersAccountBalance(AbstractAccountBalance):
     master = models.ForeignKey(AccountBalance, related_name="%(class)s")
     class Meta:
         abstract = True
@@ -60,7 +62,7 @@ class PersonalIncome(PersonalAccountBalance):
     pass
 
 
-class Salary(TimeStampedModel):
+class Salary(TimeStampModel):
     employee = models.ForeignKey(Employee, related_name="salaries")
     hourly = models.PositiveIntegerField() # hourly pay正常時薪
     overtime = models.PositiveIntegerField() # overtime pay加班時薪

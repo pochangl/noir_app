@@ -3,14 +3,14 @@ from django.db import models
 from utils.models import TimeStampModel, EndorsedModel, VersionedModel
 from django.utils.translation import ugettext as _
 from transaction.models import AccountBalance
-from account.models import Contact, Client, Employee, EmployeeList
+from account.models import Contact, Company, Employee, EmployeeList
 from html5lib import filters
 from datetime import datetime, time, date, timedelta
 
 # Create your models here.
 class Project(TimeStampModel):
     contact = models.ForeignKey(Contact, related_name='projects')
-    client = models.ForeignKey(Client, related_name='projects')
+    company = models.ForeignKey(Company, related_name='projects')
     name = models.CharField(max_length=128)
 
     def __str__(self):
@@ -87,7 +87,8 @@ class EmployeeAssignment(TimeStampModel):
         unique_together = (("employee", "assignment"),)
 
 
-class Pay(PersonalIncome):
+# class Pay(PersonalIncome):    #尚未定義PersonaleIncome的model
+class Pay(TimeStampModel):
     employee_assignment = models.OneToOneField(EmployeeAssignment, related_name="pay")
 
     def __init__(self, *args, **kwargs):

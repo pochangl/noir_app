@@ -12,7 +12,7 @@ from django.views.generic import ListView, DetailView, CreateView
 
 from account.models import Employee
 from project.models import Project
-from transaction.models import PayCheck
+# from transaction.models import PayCheck
 
 
 class TranChooseEmployeeView(LoginRequiredMixin, ListView):
@@ -40,20 +40,20 @@ class ChooseTransactionEmployeeView(LoginRequiredMixin, DetailView):
         return context
 
 
-class TransactionMakePaycheckView(LoginRequiredMixin, CreateView):
-    template_name = 'transaction_make_paycheck.html'
-    model = PayCheck
-    fields = ('employee', 'amount', 'reason_code', 'reason',)
-    #pk_url_kwarg = 'employee_pk'
-    #pk_project_kwarg = 'project_pk'
-
-    def form_valid(self, form):
-        #form.instance.id = self.request.POST.get(id)
-        #form.assignment = self.request.POST.get('assignment')
-        form.save()
-        return super(TransactionMakePaycheckView, self).form_valid(form)
-    
-    def get_context_data(self, **kwargs):
-        context = super(TransactionMakePaycheckView, self).get_context_data(**kwargs)
-        #context["employee_list"] = Employee.objects.all()
-        return context
+# class TransactionMakePaycheckView(LoginRequiredMixin, CreateView):
+#     template_name = 'transaction_make_paycheck.html'
+#     model = PayCheck
+#     fields = ('employee', 'amount', 'reason_code', 'reason',)
+#     #pk_url_kwarg = 'employee_pk'
+#     #pk_project_kwarg = 'project_pk'
+# 
+#     def form_valid(self, form):
+#         #form.instance.id = self.request.POST.get(id)
+#         #form.assignment = self.request.POST.get('assignment')
+#         form.save()
+#         return super(TransactionMakePaycheckView, self).form_valid(form)
+#     
+#     def get_context_data(self, **kwargs):
+#         context = super(TransactionMakePaycheckView, self).get_context_data(**kwargs)
+#         #context["employee_list"] = Employee.objects.all()
+#         return context
