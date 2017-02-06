@@ -28,9 +28,7 @@ export class ProjectListPage {
     });
   }
   ionViewWillEnter () {
-    this.assignments.fetch().then(() => {
-      console.log(this.assignments);
-    });
+    this.assignments.fetch().then(() => {});
   }
 
   click (assignment) {
