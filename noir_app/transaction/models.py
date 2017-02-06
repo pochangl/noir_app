@@ -35,6 +35,7 @@ class AccountBalance(AbstractAccountBalance):
 
 class OthersAccountBalance(AbstractAccountBalance):
     master = models.ForeignKey(AccountBalance, related_name="%(class)s")
+
     class Meta:
         abstract = True
 
