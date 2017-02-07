@@ -3,14 +3,12 @@ import { Iterator } from './iterator';
 import { Api } from '../providers/api/api';
 
 
-function zeroFill( number, width )
-{
-  width -= number.toString().length;
-  if ( width > 0 )
-  {
-    return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
+function zeroFill(num, width ) {
+  width -= num.toString().length;
+  if ( width > 0 ) {
+    return new Array( width + (/\./.test( num ) ? 2 : 1) ).join( '0' ) + num;
   }
-  return number + ""; // always return a string
+  return num + ''; // always return a string
 }
 
 abstract class TreeNode {
@@ -31,8 +29,8 @@ abstract class TreeNode {
     if (this.ChildClass) {
       var childs;
       this[this.childName] = [];
-      if (obj instanceof Array){
-        childs = obj
+      if (obj instanceof Array) {
+        childs = obj;
       } else {
         childs = obj[this.childName];
       }
@@ -49,13 +47,13 @@ abstract class TreeNode {
 
 class Day extends TreeNode {
   parentName = 'week';
-  week: Week
+  week: Week;
   build_child_value () {}
   stringify () {
-    if (this.value === 0){
-      throw 'empty date has no date'
+    if (this.value === 0) {
+      throw 'empty date has no date';
     } else {
-      return this.week.month.year.value + '-' + zeroFill(this.week.month.value, 2) + '-' + zeroFill(this.value, 2)
+      return this.week.month.year.value + '-' + zeroFill(this.week.month.value, 2) + '-' + zeroFill(this.value, 2);
     }
 
   }
@@ -65,17 +63,17 @@ class Week extends TreeNode {
   parentName = 'month';
   childName = 'days';
   ChildClass = Day;
-  month: Month
+  month: Month;
   build_child_value (child, index) {
     return child;
   }
 }
 
 class Month extends TreeNode {
-  parentName = 'year'
+  parentName = 'year';
   childName = 'weeks';
   ChildClass = Week;
-  year: Year
+  year: Year;
 
   build_child_value (child, index) {
     return index + 1;
@@ -94,12 +92,12 @@ class Year extends TreeNode {
 }
 
 class EmptyYear extends Year {
-  value = 0
+  value = 0;
 }
 
 class EmptyMonth extends Month {
-  value = -1
-  year = new EmptyYear(0)
+  value = -1;
+  year = new EmptyYear(0);
 }
 
 
@@ -107,7 +105,14 @@ class Calendar extends Model {
   resource_name = 'calendar';
   years: any = {};
   id_alias = 'year';
-  year: number;
+  _year: number;
+
+  get year () {
+    return this._year = this._year;
+  }
+  set year (value: number) {
+    this.id = value;
+  }
 
   construct (obj) {
     if (!this.years[obj.year]) {
@@ -143,16 +148,16 @@ export class MonthIterator extends Iterator<Month> {
     this.month = month;
     this.year = year
     this.loadYear(year).then(calendar => {
-      this.value = calendar.years[this.year].monthes[this.month-1];
+      this.value = calendar.years[this.year].monthes[this.month - 1];
     });
     this.loadYear(year + 1);
     this.loadYear(year - 1);
   }
   get () {
-    if (!this.value){
-      return new EmptyMonth(-1)
+    if (!this.value) {
+      return new EmptyMonth(-1);
     }
-    this.value = this.calendar.years[this.year].monthes[this.month-1];
+    this.value = this.calendar.years[this.year].monthes[this.month - 1];
     return this.value;
   }
   next () {

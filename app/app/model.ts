@@ -36,18 +36,18 @@ export abstract class Model {
   get Class () {
     return this.constructor;
   }
-  constructor (protected api: Api) {
+  constructor (public api: Api) {
   }
 
   construct (obj?: any) {
-    let cls;
+    let cls = undefined;
     if (typeof obj === 'string') {
       let decompose = obj.split('/');
       let id = parseInt(decompose[decompose.length - 2]);
       this.id = id;
       return this;
     }
-    this[this.id_alias] = obj[this.id_alias];
+    this.id = obj.id;
     for (let field of this.fields) {
       if (!(field.name in obj || field in obj)) {
         continue;
@@ -68,13 +68,22 @@ export abstract class Model {
     }
     return this;
   }
+  build_url_obj (): Object {
+    return {
+      resource_name: this.resource_name,
+      id: this.id
+    };
+  }
+  get url_obj () {
+    return this.build_url_obj();
+  }
+  build_url (): string {
+    return this.api.build_url(this.url_obj);
+  }
   fetch (): Promise<any> {
     var promise = new Promise<any>(
       (resolve, reject) => {
-        this.api.get({
-          resource_name: this.resource_name,
-          id: this[this.id_alias]
-        }).map(
+        this.api.get(this.url_obj).map(
           response => response.json()
         ).subscribe(
           data => {
@@ -92,8 +101,8 @@ export abstract class Model {
     ModelList is skipped
     */
     var obj = {};
-    if (this[this.id_alias]) {
-      obj['id'] = this[this.id_alias];
+    if (this.id) {
+      obj['id'] = this.id;
     }
     for (let field of this.fields) {
       if (typeof field === 'string') {
@@ -110,19 +119,10 @@ export abstract class Model {
     }
     return obj;
   }
-  build_url (): string {
-    return this.api.build_url({
-      resource_name: this.resource_name,
-      id: this[this.id_alias]
-    });
-  }
   create (): Promise<any> {
     var promise = new Promise<any>(
       (resolve, reject) => {
-        this.api.post({
-            resource_name: this.resource_name
-          }, this.serialize()
-        ).map(
+        this.api.post(this.url_obj, this.serialize()).map(
           resp => resp.json()
         ).subscribe(
           data => {
@@ -136,10 +136,7 @@ export abstract class Model {
   }
   update (): Promise<any> {
     var promise = new Promise<any>((resolve, reject) => {
-      this.api.put({
-          resource_name: this.resource_name,
-          id: this[this.id_alias]
-        }, this.serialize()
+      this.api.put(this.url_obj, this.serialize()
       ).map(
           resp => resp.json()
       ).subscribe(
@@ -154,9 +151,9 @@ export abstract class Model {
   commit () {
     /*
       update information to server
-      if no this[this.id_alias], read in id after obj creation
+      if no this.id, read in id after obj creation
     */
-    if (!this[this.id_alias]) {
+    if (!this.id) {
       return this.create();
     } else {
       return this.update();
@@ -165,10 +162,7 @@ export abstract class Model {
   delete (): Promise<any> {
     var promise = new Promise<any>((resolve, reject) => {
       var observable = this.api.delete(
-        {
-          resource_name: this.resource_name,
-          id: this[this.id_alias]
-        }, this.serialize()
+        this.url_obj, this.serialize()
       ).subscribe(
         data => resolve()
       );
@@ -186,6 +180,7 @@ export abstract class Model {
   }
 }
 
+
 export abstract class ModelList<T extends Model>{
   resource_name: string;
   model: any;
@@ -193,7 +188,7 @@ export abstract class ModelList<T extends Model>{
   length: number;
   urlParams: Object = {};
 
-  constructor (protected api: Api) {
+  constructor (public api: Api) {
     this.construct([]);
   }
   construct (objs) {
@@ -218,7 +213,7 @@ export abstract class ModelList<T extends Model>{
           response => response.json()
         ).subscribe(
           data => {
-            this.construct(data.objects);
+            this.construct(data.objects || data);
             resolve(this);
           }
         );
@@ -258,6 +253,36 @@ export abstract class ModelList<T extends Model>{
   }
 }
 
+export abstract class IndirectModelList <T extends Model> extends ModelList<T> {
+  id: number = 0;
+  construct (objs) {
+    if (objs instanceof Array) {
+      super.construct(objs);
+    } else if (objs instanceof Model) {
+      this.api = objs.api;
+      this.id = objs.id;
+    }
+  }
+  fetch (): Promise<any> {
+    var promise = new Promise<ModelList<T>>(
+      (resolve, reject) => {
+        this.api.get({
+          resource_name: this.resource_name,
+          urlParams: this.buildUrlParams(),
+          id: this.id
+        }).map(
+          response => response.json()
+        ).subscribe(
+          data => {
+            this.construct(data);
+            resolve(this);
+          }
+        );
+      }
+    );
+    return promise;
+  }
+}
 
 export abstract class APIDate extends Model {
   fields = ['date'];
@@ -298,7 +323,7 @@ export abstract class JunctionModel extends Model {
           data => {
             var objs = data.objects;
             if (data.objects.length) {
-              this[this.id_alias] = data.objects[0][this.id_alias];
+              this.id = data.objects[0].id;
               resolve(this);
             } else {
               reject (undefined);

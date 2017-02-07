@@ -7,7 +7,7 @@ export class Contact extends Model {
 
 
 export class Employee extends Model {
-  resource_name = 'employee';
+  resource_name = 'account/employee';
   fields = [{
     name: 'contact',
     cls: Contact
@@ -15,8 +15,7 @@ export class Employee extends Model {
   contact: Contact;
 }
 
-
 export class EmployeeList extends ModelList<Employee> {
   model = Employee;
-  resource_name = 'employee';
+  resource_name = 'account/employee';
 }

@@ -40,6 +40,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tastypie',
+    'rest_framework',
+    'rest_framework.authtoken',
     'account',
     'project',
     'transaction',
@@ -120,3 +122,11 @@ TASTYPIE_FULL_DEBUG = True
 
 REG_EXP_DURATION = 600 # app token
 REG_TOKEN_LENGTH = 8 
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'account.authentications.FakeAuthentication',
+    )
+}

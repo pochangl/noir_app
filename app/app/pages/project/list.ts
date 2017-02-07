@@ -24,7 +24,7 @@ export class ProjectListPage {
         this.selected_date = params.data.date.date;
         this.assignments = new AssignmentList(this.api);
         this.assignments.filter({
-            selected_datetime: params.data.date.date
+            start_datetime: params.data.date.date
         });
     }
     ionViewWillEnter() {

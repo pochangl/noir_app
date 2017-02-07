@@ -94,7 +94,7 @@ export class Api {
   }
   delete (url: any, options?: any): Observable<Response> {
     url.id = url.id ? url.id : -1; // prevent deleting the entire database
-    return this.http.delete(this.preprocess_url(url));
+    return this.http.delete(this.preprocess_url(url), this.csrf());
   }
   patch(url: any, body, options?: any): Observable<Response> {
     return this.http.patch(this.preprocess_url(url), body, options);

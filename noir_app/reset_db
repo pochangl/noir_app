@@ -1,0 +1,1 @@
+rm *.sqlite3; python manage.py migrate;echo 'import initial_test'| python manage.py shell

@@ -1,12 +1,15 @@
 from django.conf.urls import patterns, url, include
-from project.views import ChooseProjectView, ChooseProjectEmployeeView
-from django.core.urlresolvers import reverse
+from rest_framework import routers
+from . import views
 
-from project.models import Assignment
+router = routers.DefaultRouter()
+router.register(r'assignment', views.AssignmentViewSet)
+router.register(r'employee_assignment', views.EmployeeAssignmentViewSet)
 
 urlpatterns = (
-    url(r'^$', ChooseProjectView.as_view(), name='project'),      
-    url(r'^assignment/', 
-        ChooseProjectEmployeeView.as_view(model=Assignment, success_url='/account/main_menu/'),
-        name='assignment'),   
+    url('^', include(router.urls)),
+    url(r'available_employee/(?P<assignment>\d+)/', views.AvailableEmployeeListView.as_view()),
+    url(r'confirmed_employee/(?P<assignment>\d+)/', views.ConfirmedEmployeeListView.as_view()),
+    url(r'assign_employee/(?P<pk>\d+)/(?P<employee>\d+)/', views.AssignEmployeeView.as_view()),
 )
+

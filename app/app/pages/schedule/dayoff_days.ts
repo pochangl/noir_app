@@ -14,7 +14,7 @@ import {MonthIterator} from '../../utils/calendar';
 export class DayOffDaysPage {
   dayoff: DayOff;
   dayoffs: DayOffList;
-  selected_employee: any;
+  employee: any;
   month: MonthIterator;
 
   constructor(
@@ -23,12 +23,12 @@ export class DayOffDaysPage {
     private api: Api
   ) {
     var today = new Date();
-    var today_year = today.getFullYear();
-    var today_month = today.getMonth() + 1;
+    var year = today.getFullYear();
+    var month = today.getMonth() + 1;
 
     this.month = new MonthIterator(this.api);
-    this.month.initial(today_year, today_month);
-    this.selected_employee = params.data.employee;
+    this.month.initial(year, month);
+    this.employee = params.data.employee;
     this.dayoff = new DayOff(this.api);
     this.dayoffs = new DayOffList(this.api);
     this.dayoffs.filter({
@@ -44,7 +44,7 @@ export class DayOffDaysPage {
       this.dayoffs.search({start_date: day.stringify()})[0].delete();
     } else {
       // 若請假資料不存在，新增資料
-      this.dayoff.add(day.stringify(), this.selected_employee);
+      this.dayoff.add(day.stringify(), this.employee);
     }
     this.dayoffs.fetch();
   }

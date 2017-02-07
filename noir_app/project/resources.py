@@ -9,24 +9,12 @@ from tastypie.constants import ALL, ALL_WITH_RELATIONS
 #from account.models import Contact, Client
 from project.models import Project, Assignment, EmployeeAssignment, Pay
 from account.models import Employee
-from account.resources import ContactResource, CompanyResource, EmployeeResource, , BasicEmployeeResource
+from account.resources import ContactResource, CompanyResource, EmployeeResource, BasicEmployeeResource
 
 from django.db.models import Count, Q, F  # EmployeeAssignment.objects.filer(~Q(id=5))
 import datetime
 from utils.authorization import CustomDjangoAuthorization
 
-
-class ProjectResource(ModelResource):
-    contact = fields.ForeignKey(ContactResource, attribute="contact", related_name="contact")
-    company = fields.ForeignKey(CompanyResource, attribute="company", related_name="company")
-    
-    class Meta:
-        include_resource_uri = False
-        queryset = Project.objects.all()
-        resource_name = "project"
-        fields = ("id","name",)
-        authentication = ApiKeyAuthentication()
-        
 
 class AssignmentDateResource(Resource):
     class Meta:
@@ -42,6 +30,11 @@ class AssignmentDateResource(Resource):
         return bundle
 
 
+class ProjectResource(Resource):
+    pass
+
+
+
 class BasicAssignmentResource(ModelResource):
     class Meta:
         always_return_data = True
@@ -50,39 +43,8 @@ class BasicAssignmentResource(ModelResource):
         fields = ("id", "comment", "start_datetime", "end_datetime", "number_needed")
 
 
-class EmployeeAssignmentResource(ModelResource):
-    employee = fields.ForeignKey(EmployeeResource, attribute="employee")
-    assignment = fields.ForeignKey(AssignmentResource, attribute="assignment")
-
-    class Meta:
-        always_return_data = True
-        queryset = EmployeeAssignment.objects.all()
-        resource_name = "employee_assignment"
-        include_resource_uri = False
-        fields = ("id", "hours", "overtime")
-        filtering = {
-            "employee": ('exact',),
-            "assignment": ALL_WITH_RELATIONS,
-        }
-        allowed_methods = ['get', 'put', 'post', 'delete']
-        authentication = ApiKeyAuthentication()
-        authorization = DjangoAuthorization()
-
-    def hydrate(self, bundle):
-        bundle = super(EmployeeAssignmentResource, self).hydrate(bundle)
-        if not bundle.data.get('is_confirmed', False):
-            bundle.obj.check_in = bundle.obj.check_out = None
-        else:
-            assignment = Assignment.objects.get(id=bundle.obj.assignment_id)
-            bundle.obj.check_in = assignment.start_datetime
-            bundle.obj.check_out = assignment.end_datetime
-
-        return bundle
-
-
 class AssignmentResource(BasicAssignmentResource):
     project = fields.ForeignKey(ProjectResource, attribute="project", full=True, readonly=True)
-    employee_details = fields.ManyToManyField(EmployeeAssignmentResource, attribute="employees_detail", full=True, readonly=True)
     
     class Meta(BasicAssignmentResource.Meta):
         always_return_data = True
@@ -130,6 +92,36 @@ class AssignmentResource(BasicAssignmentResource):
             orm_filters['start_datetime__gte'] = date
             orm_filters['start_datetime__lt'] = date + datetime.timedelta(days=1)
         return orm_filters
+
+
+class EmployeeAssignmentResource(ModelResource):
+    employee = fields.ForeignKey(EmployeeResource, attribute="employee")
+    assignment = fields.ForeignKey(AssignmentResource, attribute="assignment")
+
+    class Meta:
+        always_return_data = True
+        queryset = EmployeeAssignment.objects.all()
+        resource_name = "employee_assignment"
+        include_resource_uri = False
+        fields = ("id", "hours", "overtime")
+        filtering = {
+            "employee": ('exact',),
+            "assignment": ALL_WITH_RELATIONS,
+        }
+        allowed_methods = ['get', 'put', 'post', 'delete']
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
+
+    def hydrate(self, bundle):
+        bundle = super(EmployeeAssignmentResource, self).hydrate(bundle)
+        if not bundle.data.get('is_confirmed', False):
+            bundle.obj.check_in = bundle.obj.check_out = None
+        else:
+            assignment = Assignment.objects.get(id=bundle.obj.assignment_id)
+            bundle.obj.check_in = assignment.start_datetime
+            bundle.obj.check_out = assignment.end_datetime
+
+        return bundle
 
 
 class ProposeAssignmentResource(ModelResource):

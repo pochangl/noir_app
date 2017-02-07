@@ -17,48 +17,36 @@ Including another URLconf
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-from account.views import index
-
 from tastypie.api import Api
 
-from account.resources import ContactResource, CompanyResource, EmployeeResource, RegistrationResource
-from project.resources import ProjectResource, AssignmentResource, EmployeeAssignmentResource, AssignmentDateResource
-from transaction.resources import AbstractAccountBalanceResource, AccountBalanceResource, OthersAccountBalanceResource, PersonalAccountBalanceResource, PersonalWithdrawResource, SalaryResource
-from schedule.resources import ScheduleResource, DayOffResource, EmployeePreferenceResource, ProjectPreferenceResource
+from project.resources import AssignmentDateResource
+from schedule.resources import ScheduleResource, DayOffResource
+
+from tastypie.models import create_api_key
+from django.conf import settings
+from django.db.models import signals
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
+
+
+@receiver(signals.post_save, sender=settings.AUTH_USER_MODEL) # 帳號產生時自動生成API KEY
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
 
 v1_api = Api(api_name='v1')
 
-v1_api.register(ContactResource())
-v1_api.register(CompanyResource())
-v1_api.register(EmployeeResource())
-# v1_api.register(SkillResource())
-v1_api.register(RegistrationResource())
-
-v1_api.register(ProjectResource())
-v1_api.register(AssignmentResource())
 v1_api.register(AssignmentDateResource())
-v1_api.register(EmployeeAssignmentResource())
-
-v1_api.register(AbstractAccountBalanceResource())
-v1_api.register(AccountBalanceResource())
-v1_api.register(OthersAccountBalanceResource())
-v1_api.register(PersonalAccountBalanceResource())
-v1_api.register(PersonalWithdrawResource())
-v1_api.register(SalaryResource())
-
 v1_api.register(ScheduleResource())
 v1_api.register(DayOffResource())
-v1_api.register(EmployeePreferenceResource())
-v1_api.register(ProjectPreferenceResource())
 
 
 urlpatterns = (
-    url(r'^api/', include(v1_api.urls)),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', index, name='index'),
     
-    url(r'^', include('account.urls')),
-    url(r'^project/', include('project.urls')),
-    url(r'^transaction/', include('transaction.urls')),
-    url(r'^schedule/', include('schedule.urls')),
+    url(r'^api/v1/account/', include('account.urls')),
+    url(r'^api/v1/project/', include('project.urls')),
+    url(r'^api/v1/transaction/', include('transaction.urls')),
+    url(r'^api/v1/schedule/', include('schedule.urls')),
+    url(r'^api/', include(v1_api.urls)),
 )

@@ -3,7 +3,6 @@ from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import ReadOnlyAuthorization, DjangoAuthorization
 from schedule.models import DayOff, EmployeePreference, ProjectPreference
 from account.resources import EmployeeResource
-from project.resources import EmployeeAssignmentResource
 import calendar
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 
@@ -65,23 +64,3 @@ class DayOffResource(ModelResource):
         bundle.data["end_date"] = dayoff.end_datetime.date()
         bundle.data["end_time"] = dayoff.end_datetime.time()
         return bundle
-
-
-class EmployeePreferenceResource(ModelResource):
-    employee_assignment = fields.ForeignKey(EmployeeAssignmentResource, attribute="employee_assignment", related_name="employee_preferences")
-
-    class Meta:
-        queryset = EmployeePreference.objects.all()
-        resource_name = "employee_preference"
-        fields = ("id", "employee_preference",)
-        authentication = ApiKeyAuthentication()
-
-
-class ProjectPreferenceResource(ModelResource):
-    employee_assignment = fields.ForeignKey(EmployeeAssignmentResource, attribute="employee_assignment", related_name="project_preferences")
-
-    class Meta:
-        queryset = ProjectPreference.objects.all()
-        resource_name = "project_preference"
-        fields = ("id", "employee_priority", "project_priority",)
-        authentication = ApiKeyAuthentication()

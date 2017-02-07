@@ -22,7 +22,6 @@ export class WagesDateRangePage {
     private api: Api
   ) {
     this.dates = new AssignmentDateList(api);
-    console.log(this.dates);
       var today = new Date();
       var today_month = today.getMonth() + 1;
       var today_day = today.getDate();

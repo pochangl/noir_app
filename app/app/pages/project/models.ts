@@ -1,4 +1,4 @@
-import { Model, ModelList, JunctionModel, APIDateList} from '../../model';
+import { Model, IndirectModelList, ModelList, JunctionModel, APIDateList} from '../../model';
 import { Employee, EmployeeList } from '../account/models';
 
 import { Observable } from 'rxjs/Observable';
@@ -11,11 +11,11 @@ export class Project extends Model {
 }
 
 export class BasicAssignment extends Model {
-  resource_name = 'assignment';
+  resource_name = 'project/assignment';
 }
 
 export class EmployeeAssignment extends Model {
-  resource_name = 'employee_assignment';
+  resource_name = 'project/employee_assignment';
   assignment: Assignment;
   employee: Employee;
   hours: Number;
@@ -26,24 +26,15 @@ export class EmployeeAssignment extends Model {
     'overtime',
     {
       name: 'employee',
-      cls: Employee,
-      is_url: true
-    }, {
-      name: 'assignment',
-      cls: BasicAssignment,
-      is_url: true
+      cls: Employee
     }
   ];
 }
 
-
-class EmployeeAssignmentList extends ModelList<EmployeeAssignment> {
+export class EmployeeAssignmentList extends ModelList<EmployeeAssignment> {
   model = EmployeeAssignment;
-  has_employee (employee: Employee): Boolean {
-    return this.has({employee: employee});
-  }
+  resource_name = 'project/employee_assignment';
 }
-
 
 export class Assignment extends BasicAssignment {
   fields = ['start_datetime', 'end_datetime', 'number_needed',
@@ -51,10 +42,7 @@ export class Assignment extends BasicAssignment {
       name: 'project',
       cls: Project
     }, {
-      name: 'employee_details',
-      cls: EmployeeAssignmentList
-    }, {
-      name: 'availables',
+      name: 'employees',
       cls: EmployeeList
     }, {
       name: 'confirms',
@@ -64,20 +52,19 @@ export class Assignment extends BasicAssignment {
   start_datetime: string;
   end_datetime: string;
   number_needed: number;
-  employee_details: EmployeeAssignmentList;
-  availables: EmployeeList;
+  employees: EmployeeList;
   confirms: EmployeeList;
 
   add (employee: Employee) {
-    let eas = this.employee_details.find({ employee: employee });
-    let ea = eas.length > 0 ? eas[0] : new EmployeeAssignment(this.api);
-    ea.employee = employee;
-    ea.assignment = this;
+    let ae = new AssignEmployee(this.api);
+    ae.id = this.id;
+    ae.assignment = this;
+    ae.employee = employee;
     return new Promise<any>((resolve, reject) => {
-      ea.create().then(() => {
-        this.employee_details.add(ea);
+      ae.create().then(() => {
+        this.employees.add(employee);
         this.fetch();
-        resolve(ea);
+        resolve(ae);
       }).catch(() => {
         reject();
       });
@@ -85,21 +72,36 @@ export class Assignment extends BasicAssignment {
   }
 
   discard (employee: Employee) {
-    let ea = this.employee_details.find({employee: employee})[0];
+    let ae = new AssignEmployee(this.api);
+    ae.assignment = this;
+    ae.employee = employee;
     return new Promise<any>((resolve, reject) => {
-      ea.delete().then(() => {
-        this.employee_details.remove(ea);
+      ae.delete().then(() => {
+        this.employees.remove(ae);
         this.fetch();
-        resolve(ea);
+        resolve(ae);
       }).catch(() => {
         reject();
       });
     });
   }
   has (employee): boolean {
-    return this.employee_details.has({employee: employee});
+    return this.employees.has(employee);
   }
 }
+
+class AssignEmployee extends Assignment {
+  resource_name = 'project/assign_employee';
+  employee: Employee;
+  assignment: Assignment;
+  build_url_obj (): Object {
+    return {
+      resource_name: this.resource_name,
+      id: this.assignment.id + '/' + this.employee.id
+    };
+  }
+}
+
 export class AssignmentDateList extends APIDateList {
   resource_name = 'assignment_date';
   add_date (today_date) {
@@ -108,6 +110,11 @@ export class AssignmentDateList extends APIDateList {
 }
 
 export class AssignmentList extends ModelList<Assignment> {
-  resource_name = 'assignment';
+  resource_name = 'project/assignment';
   model = Assignment;
+}
+
+export class AvailableEmployeeList extends IndirectModelList<Assignment> {
+  model = Employee;
+  resource_name = 'project/available_employee';
 }

@@ -4,9 +4,19 @@ from project.models import Project, EmployeeAssignment, Assignment
 # from transaction.models import Transaction, Receivable, PayCheck
 from schedule.models import DayOff, EmployeePreference, ProjectPreference
 import datetime
+import noir_app.urls
+from rest_framework.authtoken.models import Token
 
 from django.contrib.auth.models import User
-edward = User.objects.get(username="edward")
+try:
+    edward = User.objects.get(username="edward")
+except User.DoesNotExist:
+    edward = User.objects.create(username="edward", password="password")
+
+Token.objects.filter(user=edward).update(key='123')
+edward.set_password('123')
+edward.save()
+
 
 
 pAccount1 = Contact(name="Mark", title="foreman", address="Kaohsiung", phone="072234567",
