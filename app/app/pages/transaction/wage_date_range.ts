@@ -1,42 +1,40 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 // import { ProjectListPage } from './list';
-import { HomePage } from '../general/home';
 import { AssignmentDateList } from '../project/models';
 import { Api } from '../../providers/api/api';
 import { MonthIterator } from '../../utils/calendar';
 
 
 @Component({
-  templateUrl: 'build/pages/transaction/pick_date.html',
+  templateUrl: 'build/pages/transaction/wage_date_range.html',
   providers: [Api]
 })
 
-export class PickDatePage {
+export class WagesDateRangePage {
   dates: AssignmentDateList;
-  service_choice: string;
-  title: string;
+  start_date: string;
+  end_date: string;
 
   constructor(
     private nav: NavController,
     params: NavParams,
     private api: Api
   ) {
-    this.service_choice = params.data.service_choice;
-    if (this.service_choice === 'add_policy') {
-      this.title = '加保';
-    } else if (this.service_choice === 'delete_policy') {
-      this.title = '退保';
-    };
     this.dates = new AssignmentDateList(api);
+    console.log(this.dates);
+      var today = new Date();
+      var today_month = today.getMonth() + 1;
+      var today_day = today.getDate();
+      var today_date = today.getFullYear() + '-' + (today_month < 10 ? '0' + today_month : today_month) + '-' + (today_day < 10 ? '0' + today_day : today_day);
+      this.start_date = today_date;
+      this.end_date = today_date;
   }
-
   ionViewWillEnter () {
     this.dates.fetch();
   }
 
   click (date) {
-    // 待確認 is_insurance 參數的用法
-    // this.nav.push(EmployeeListPage, {service_choice: this.service_choice, 'date': date});
+    // this.nav.push(ProjectListPage, {'date': date});
   }
 }

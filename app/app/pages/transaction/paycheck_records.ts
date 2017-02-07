@@ -31,10 +31,9 @@ export class PaycheckRecordsPage {
     this.paychecks.fetch();
   }
   click (paycheck) {
-    console.log(paycheck);
     this.nav.push(PaycheckDetailPage, {paycheck: paycheck});
   }
   navToAddRecordPage () {
-    this.nav.push(PaycheckAddRecordPage, {paychecks: this.paychecks});
+    this.nav.push(PaycheckAddRecordPage, {employee: this.employee});
   }
 }

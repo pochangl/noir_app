@@ -10,7 +10,7 @@ export class Paycheck extends Model {
   // junction_fields = ['employee'];
   fields = [
     'amount', 'sign_records', 'happened_date', 'reason_code', 'reason',
-    'signature',
+    'signature', 'normal_work_hour', 'overtime_work_hour',
     {
       name: 'employee',
       cls: Employee
@@ -31,6 +31,8 @@ export class Paycheck extends Model {
   reason_code: string;
   reason: string;
   signature: any;
+  normal_work_hour: number;
+  overtime_work_hour: number;
 }
 
 export class PaycheckList extends ModelList<Paycheck> {
@@ -45,11 +47,10 @@ export class MyPaycheck extends Paycheck {
   }
   send_data(employee: Employee) {
     return new Promise<any>((resolve, reject) => {
-      var paycheck_data = new Paycheck(this.api);
-      paycheck_data.construct({
+      this.construct({
         employee: this.employee,
       });
-      paycheck_data.commit().then(
+      this.commit().then(
         obj => {
           resolve(this.employee);
           this.set_employee(this.employee);

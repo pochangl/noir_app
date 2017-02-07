@@ -1,14 +1,14 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import { Api } from '../../providers/api/api';
-import {PickDatePage} from '../transaction/pick_date';
+import {PickDatePage} from '../transaction/insurance_pick_date';
 
 @Component({
-  templateUrl: 'build/pages/transaction/transaction_choose_service.html',
+  templateUrl: 'build/pages/transaction/insurance_choose_service.html',
   providers: [Api]
 })
 
-export class ChooseServicePage {
+export class InsuranceChooseServicePage {
   constructor(
     private nav: NavController,
     params: NavParams,

@@ -16,6 +16,16 @@
 	  </ion-item>
 	  <ion-item-list-divider light></ion-item-list-divider>
 	  <ion-item>
+      <ion-label primary>正常工時(hr)</ion-label>
+      <ion-input type="number" [(ngModel)]="normal_work_hour"></ion-input>
+	  </ion-item>
+	  <ion-item-list-divider light></ion-item-list-divider>
+	  <ion-item>
+      <ion-label primary>加班工時(hr)</ion-label>
+      <ion-input type="number" [(ngModel)]="overtime_work_hour"></ion-input>
+	  </ion-item>
+	  <ion-item-list-divider light></ion-item-list-divider>
+	  <ion-item>
       <ion-label primary>給薪金額(NT)</ion-label>
       <ion-input type="number" [(ngModel)]="amount"></ion-input>
 	  </ion-item>

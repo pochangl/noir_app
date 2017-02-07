@@ -21,17 +21,17 @@ from account.views import index
 
 from tastypie.api import Api
 
-from account.resources import ContactResource, ClientResource, EmployeeResource, SkillResource, RegistrationResource
+from account.resources import ContactResource, CompanyResource, EmployeeResource, RegistrationResource
 from project.resources import ProjectResource, AssignmentResource, EmployeeAssignmentResource, AssignmentDateResource
-from transaction.resources import DebtResource, ReceivableResource, PayCheckResource, TransactionResource
+from transaction.resources import AbstractAccountBalanceResource, AccountBalanceResource, OthersAccountBalanceResource, PersonalAccountBalanceResource, PersonalWithdrawResource, SalaryResource
 from schedule.resources import ScheduleResource, DayOffResource, EmployeePreferenceResource, ProjectPreferenceResource
 
 v1_api = Api(api_name='v1')
 
 v1_api.register(ContactResource())
-v1_api.register(ClientResource())
+v1_api.register(CompanyResource())
 v1_api.register(EmployeeResource())
-v1_api.register(SkillResource())
+# v1_api.register(SkillResource())
 v1_api.register(RegistrationResource())
 
 v1_api.register(ProjectResource())
@@ -39,10 +39,12 @@ v1_api.register(AssignmentResource())
 v1_api.register(AssignmentDateResource())
 v1_api.register(EmployeeAssignmentResource())
 
-v1_api.register(DebtResource())
-v1_api.register(ReceivableResource())
-v1_api.register(PayCheckResource())
-v1_api.register(TransactionResource())
+v1_api.register(AbstractAccountBalanceResource())
+v1_api.register(AccountBalanceResource())
+v1_api.register(OthersAccountBalanceResource())
+v1_api.register(PersonalAccountBalanceResource())
+v1_api.register(PersonalWithdrawResource())
+v1_api.register(SalaryResource())
 
 v1_api.register(ScheduleResource())
 v1_api.register(DayOffResource())

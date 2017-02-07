@@ -1,8 +1,10 @@
 from django.contrib import admin
-from .models import  Transaction, PayCheck, Debt, Receivable
+from .models import  AbstractAccountBalance, AccountBalance, OthersAccountBalance, PersonalAccountBalance, PersonalWithdraw, Salary
 
 
-admin.site.register(Debt)
-admin.site.register(Receivable)
-admin.site.register(PayCheck)
-admin.site.register(Transaction)
+# admin.site.register(AbstractAccountBalance)
+admin.site.register(AccountBalance)
+# admin.site.register(OthersAccountBalance)
+admin.site.register(PersonalAccountBalance)
+admin.site.register(PersonalWithdraw)
+admin.site.register(Salary)

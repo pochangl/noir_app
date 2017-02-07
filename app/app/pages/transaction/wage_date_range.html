@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar>
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>薪資-篩選日期區間</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-item>
+		<ion-label>開始日期</ion-label>
+		<ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY-MM-DD" min="2017" max="2999-12-31" [(ngModel)]="start_date"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+		<ion-label>結束日期</ion-label>
+		<ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY-MM-DD" min="2017" max="2999-12-31" [(ngModel)]="end_date"></ion-datetime>
+    </ion-item>
+
+	<div padding>
+		<button block (click)="submit()">下一步</button>
+	</div>
+</ion-content>

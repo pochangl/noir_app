@@ -7,10 +7,10 @@ from tastypie.authorization import ReadOnlyAuthorization, DjangoAuthorization
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 
 #from account.models import Contact, Client
-from project.models import Project, Assignment, EmployeeAssignment
+from project.models import Project, Assignment, EmployeeAssignment, Pay
 from account.models import Employee
+from account.resources import ContactResource, CompanyResource, EmployeeResource, , BasicEmployeeResource
 
-from account.resources import ContactResource, ClientResource, EmployeeResource, BasicEmployeeResource
 from django.db.models import Count, Q, F  # EmployeeAssignment.objects.filer(~Q(id=5))
 import datetime
 from utils.authorization import CustomDjangoAuthorization
@@ -18,7 +18,7 @@ from utils.authorization import CustomDjangoAuthorization
 
 class ProjectResource(ModelResource):
     contact = fields.ForeignKey(ContactResource, attribute="contact", related_name="contact")
-    client = fields.ForeignKey(ClientResource, attribute="client", related_name="client")
+    company = fields.ForeignKey(CompanyResource, attribute="company", related_name="company")
     
     class Meta:
         include_resource_uri = False
@@ -95,6 +95,7 @@ class AssignmentResource(BasicAssignmentResource):
         authorization = DjangoAuthorization()
         filtering = {"project": ("exact",),
                      "start_datetime": ALL,
+                     "is_insuranced": "exact",
         }
 
     def employee_list(self, assignment):
@@ -131,7 +132,6 @@ class AssignmentResource(BasicAssignmentResource):
         return orm_filters
 
 
-
 class ProposeAssignmentResource(ModelResource):
     class Meta:
         queryset = Assignment.objects.all()
@@ -150,3 +150,13 @@ class ConfirmAssignmentResource(ProposeAssignmentResource):
     class Meta(ProposeAssignmentResource.Meta):
         resource_name = "confirm_assignment"
         authorization = CustomDjangoAuthorization("confirm")
+
+
+class PayResource(ModelResource):
+    employee_assignment = fields.OneToOneField(EmployeeAssignmentResource, attribute="employees_assignment", full=True, readonly=True)
+    
+    class Meta:
+        queryset = Pay.objects.all()
+        fields = ("id",)
+        resource_name = "pay"
+        

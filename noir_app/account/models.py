@@ -24,13 +24,13 @@ class Contact(TimeStampModel):
         return self.name
 
 
-class Client(TimeStampModel):
-    company = models.CharField(max_length=128)
+class Company(TimeStampModel):
+    name = models.CharField(max_length=128)
 
     def __str__(self):
         return self.company
-
-
+    
+    
 class Employee(TimeStampModel):
     contact = models.ForeignKey(Contact, related_name='employees')
     title = models.CharField(max_length=128)
@@ -102,4 +102,3 @@ class EmployeeList(models.Model):
 
     class Meta:
         abstract = True
-

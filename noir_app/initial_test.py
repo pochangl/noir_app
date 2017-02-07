@@ -1,7 +1,7 @@
 #-*- coding: utf-8 -*-
-from account.models import RegistrationToken, Contact, Client, Employee, Skill
+from account.models import RegistrationToken, Contact, Company, Employee
 from project.models import Project, EmployeeAssignment, Assignment
-from transaction.models import Transaction, Debt, Receivable, PayCheck
+# from transaction.models import Transaction, Receivable, PayCheck
 from schedule.models import DayOff, EmployeePreference, ProjectPreference
 import datetime
 
@@ -22,9 +22,9 @@ pAccount4 = Contact(name="Jane", title="staff", address="Tainan", phone="0632345
                    mobile="0987654321", pid="E123456744", birthday="1980-04-01")
 pAccount4.save()
 
-pAccountC1 = Client(company="Company A",)
+pAccountC1 = Company(name="Company A",)
 pAccountC1.save()
-pAccountC2 = Client(company="Company B",)
+pAccountC2 = Company(name="Company B",)
 pAccountC2.save()
 
 pAccountE1 = Employee(contact=pAccount1, title="staff")
@@ -36,103 +36,65 @@ pAccountE3.save()
 pAccountE4 = Employee(contact=pAccount4, title="staff")
 pAccountE4.save()
 
-pAccountS1 = Skill(employee=pAccountE1, name="striker")
-pAccountS1.save()
-pAccountS2 = Skill(employee=pAccountE2, name="welder")
-pAccountS2.save()
-pAccountS3 = Skill(employee=pAccountE3, name="striker")
-pAccountS3.save()
-pAccountS4 = Skill(employee=pAccountE4, name="welder")
-pAccountS4.save()
-
 #project設定
-pProject1 = Project(contact=pAccount1, client=pAccountC1, name="SkyTower")
+pProject1 = Project(contact=pAccount1, company=pAccountC1, name="SkyTower")
 pProject1.save()
-pProject2 = Project(contact=pAccount2, client=pAccountC2, name="MoonLand")
+pProject2 = Project(contact=pAccount2, company=pAccountC2, name="MoonLand")
 pProject2.save()
 
 
 pProjectA1 = Assignment(project=pProject1, comment="",
                        start_datetime="2016-01-01 08:00", end_datetime="2016-01-01 17:00",
-                       approved=True, 
-                       assignee=edward, number_needed="1", serial="2016-01-01-SkyTower")
+                       number_needed="1")
 pProjectA1.save()
 pProjectA2 = Assignment(project=pProject2, comment="",
                        start_datetime="2016-01-01 08:00", end_datetime="2016-01-01 17:00",
-                       approved=True, 
-                       assignee=edward, number_needed="1", serial="2016-01-01-MoonLand")
+                       number_needed="1")
 pProjectA2.save()
 pProjectA3 = Assignment(project=pProject2, comment="",
                        start_datetime="2016-01-02 08:00", end_datetime="2016-01-02 17:00",
-                       approved=True, 
-                       assignee=edward, number_needed="1", serial="2016-01-02-MoonLand")
+                       number_needed="1")
 pProjectA3.save()
 pProjectA4 = Assignment(project=pProject1, comment="",
                        start_datetime="2016-01-02 08:00", end_datetime="2016-01-02 17:00",
-                       approved=True, 
-                       assignee=edward, number_needed="1", serial="2016-01-02-SkyTower")
+                       number_needed="1")
 pProjectA4.save()
 
-pProjectEA1 = EmployeeAssignment(employee=pAccountE1, assignment=pProjectA1,
-                              check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",
-                              pay="1000", actual_pay="1000",)
+pProjectEA1 = EmployeeAssignment(employee=pAccountE1, assignment=pProjectA1)
 pProjectEA1.save()
-pProjectEA2 = EmployeeAssignment(employee=pAccountE2, assignment=pProjectA2,
-                              check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",
-                              pay="1000", actual_pay="1000", )
+pProjectEA2 = EmployeeAssignment(employee=pAccountE2, assignment=pProjectA2)
 pProjectEA2.save()
-pProjectEA3 = EmployeeAssignment(employee=pAccountE3, assignment=pProjectA2,
-                              check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",
-                              pay="1000", actual_pay="1000",)
+pProjectEA3 = EmployeeAssignment(employee=pAccountE3, assignment=pProjectA2)
 pProjectEA3.save()
-pProjectEA4 = EmployeeAssignment(employee=pAccountE4, assignment=pProjectA1,
-                              check_in="2016-01-01 07:30", check_out="2016-01-01 17:30",
-                              pay="1000", actual_pay="1000", )
+pProjectEA4 = EmployeeAssignment(employee=pAccountE4, assignment=pProjectA1)
 pProjectEA4.save()
-pProjectEA5 = EmployeeAssignment(employee=pAccountE1, assignment=pProjectA3,
-                              check_in="2016-01-02 07:30", check_out="2016-01-02 17:30",
-                              pay="1000", actual_pay="1000",)
+pProjectEA5 = EmployeeAssignment(employee=pAccountE1, assignment=pProjectA3)
 pProjectEA5.save()
-pProjectEA6 = EmployeeAssignment(employee=pAccountE2, assignment=pProjectA3,
-                              check_in="2016-01-02 07:30", check_out="2016-01-02 17:30",
-                              pay="1000", actual_pay="1000", )
+pProjectEA6 = EmployeeAssignment(employee=pAccountE2, assignment=pProjectA3)
 pProjectEA6.save()
-pProjectEA7 = EmployeeAssignment(employee=pAccountE3, assignment=pProjectA4,
-                              check_in="2016-01-02 07:30", check_out="2016-01-02 17:30",
-                              pay="1000", actual_pay="1000",)
+pProjectEA7 = EmployeeAssignment(employee=pAccountE3, assignment=pProjectA4)
 pProjectEA7.save()
-pProjectEA8 = EmployeeAssignment(employee=pAccountE4, assignment=pProjectA4,
-                              check_in="2016-01-02 07:30", check_out="2016-01-02 17:30",
-                              pay="1000", actual_pay="1000", )
+pProjectEA8 = EmployeeAssignment(employee=pAccountE4, assignment=pProjectA4)
 pProjectEA8.save()
 
 #transaction設定
-pTransactionD1 = Debt(amount="1500", note="Note", employee=pAccountE1)
-pTransactionD1.save()
-pTransactionD2 = Debt(amount="2500", note="Note", employee=pAccountE2)
-pTransactionD2.save()
-pTransactionD3 = Debt(amount="3500", note="Note", employee=pAccountE3)
-pTransactionD3.save()
-pTransactionD4 = Debt(amount="4500", note="Note", employee=pAccountE4)
-pTransactionD4.save()
-
-pTransactionR = Receivable(amount="3000", note="Note", client=pAccountC1)
-pTransactionR.save()
-pTransactionR = Receivable(amount="4000", note="Note", client=pAccountC2)
-pTransactionR.save()
-
-pTransactionP1 = PayCheck(amount="5000", note="Note", employee=pAccountE1,
-                         reason_code="reason_code",reason="salary")
-pTransactionP1.save()
-pTransactionP2 = PayCheck(amount="6000", note="Note", employee=pAccountE2,
-                         reason_code="reason_code",reason="bonus")
-pTransactionP2.save()
-pTransactionP3 = PayCheck(amount="7000", note="Note", employee=pAccountE3,
-                         reason_code="reason_code",reason="salary")
-pTransactionP3.save()
-pTransactionP4 = PayCheck(amount="8000", note="Note", employee=pAccountE4,
-                         reason_code="reason_code",reason="bonus")
-pTransactionP4.save()
+# pTransactionR = Receivable(amount="3000", note="Note", Company=pAccountC1)
+# pTransactionR.save()
+# pTransactionR = Receivable(amount="4000", note="Note", Company=pAccountC2)
+# pTransactionR.save()
+# 
+# pTransactionP1 = PayCheck(amount="5000", note="Note", employee=pAccountE1,
+#                          reason_code="reason_code",reason="salary")
+# pTransactionP1.save()
+# pTransactionP2 = PayCheck(amount="6000", note="Note", employee=pAccountE2,
+#                          reason_code="reason_code",reason="bonus")
+# pTransactionP2.save()
+# pTransactionP3 = PayCheck(amount="7000", note="Note", employee=pAccountE3,
+#                          reason_code="reason_code",reason="salary")
+# pTransactionP3.save()
+# pTransactionP4 = PayCheck(amount="8000", note="Note", employee=pAccountE4,
+#                          reason_code="reason_code",reason="bonus")
+# pTransactionP4.save()
 
 #schedule設定
 pScheduleD1 = DayOff(employee=pAccountE1,
