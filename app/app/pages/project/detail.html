@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{ assignment.project.name }} ( {{ assignment.employees.length }} / {{ assignment.number_needed }} )- [ {{ selected_date }} ] 派遺人力</ion-title>
+    <ion-title>{{ assignment.project.name }} ( {{ assignment.employee_details.length }} / {{ assignment.number_needed }} )- [ {{ selected_date }} ] 派遺人力</ion-title>
     <ion-buttons end>
       <button ion-button (click)="manage()" color="dark"><ion-icon name="ios-build-outline"></ion-icon>管理</button>
     </ion-buttons>
@@ -11,7 +11,7 @@
 	<ion-list>
 		<ion-item *ngFor="let employee of assignment.availables.objects">
 			<ion-label>{{ employee.contact.name }}</ion-label>
-			<ion-checkbox [(ngModel)]="employee.selected" (click)="toggle(employee)"></ion-checkbox>
+			<ion-checkbox [checked]="assignment.employee_details.has_employee(employee)" (click)="toggle(employee)"></ion-checkbox>
 		</ion-item>
 	</ion-list>
 </ion-content>

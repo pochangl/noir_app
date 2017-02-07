@@ -7,6 +7,9 @@
     {
         "path": "/api/",
         "proxyUrl": "http://localhost:8000/api/"
+    }, {
+        "path": "/admin/",
+        "proxyUrl": "http://localhost:8000/admin/"
     }
   ]
 }

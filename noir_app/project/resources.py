@@ -10,7 +10,7 @@ from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from project.models import Project, Assignment, EmployeeAssignment
 from account.models import Employee
 
-from account.resources import ContactResource, ClientResource, EmployeeResource
+from account.resources import ContactResource, ClientResource, EmployeeResource, BasicEmployeeResource
 from django.db.models import Count, Q, F  # EmployeeAssignment.objects.filer(~Q(id=5))
 import datetime
 from utils.authorization import CustomDjangoAuthorization
@@ -51,8 +51,8 @@ class BasicAssignmentResource(ModelResource):
 
 
 class EmployeeAssignmentResource(ModelResource):
-    employee = fields.ForeignKey(EmployeeResource, attribute="employee", full=True)
-    assignment = fields.ForeignKey(BasicAssignmentResource, attribute="assignment", full=True)
+    employee = fields.ForeignKey(EmployeeResource, attribute="employee")
+    assignment = fields.ForeignKey(AssignmentResource, attribute="assignment")
 
     class Meta:
         always_return_data = True
@@ -76,6 +76,7 @@ class EmployeeAssignmentResource(ModelResource):
             assignment = Assignment.objects.get(id=bundle.obj.assignment_id)
             bundle.obj.check_in = assignment.start_datetime
             bundle.obj.check_out = assignment.end_datetime
+
         return bundle
 
 

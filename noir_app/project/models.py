@@ -89,7 +89,3 @@ class EmployeeAssignment(TimeStampModel):
 
     class Meta:
         unique_together = (("employee", "assignment"),)
-
-
-    
-    

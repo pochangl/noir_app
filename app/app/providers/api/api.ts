@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http, URLSearchParams } from '@angular/http';
+import { Http, URLSearchParams , Headers, RequestOptions} from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http/src/static_response';
+import * as cookie from './cookie';
 
 
 /*
@@ -73,6 +74,12 @@ export class Api {
   build_url (url: any): string {
     return new APIUrl(url).toString();
   }
+  csrf () {
+    let csrfToken = cookie.parse(document.cookie).csrftoken;
+    let headers = new Headers({'X-CSRFToken': csrfToken});
+    let options = new RequestOptions({headers: headers});
+    return options;
+  }
   request (url: any, options?: any): Observable<Response> {
     return this.http.request(this.preprocess_url(url), options);
   }
@@ -80,10 +87,10 @@ export class Api {
     return this.http.get(this.preprocess_url(url), options);
   }
   post (url: any, body, options?: any): Observable<Response> {
-    return this.http.post(this.preprocess_url(url), body, options);
+    return this.http.post(this.preprocess_url(url), body, this.csrf());
   }
   put (url: any, body, options?: any): Observable<Response> {
-    return this.http.put(this.preprocess_url(url, true), body, options);
+    return this.http.put(this.preprocess_url(url, true), body, this.csrf());
   }
   delete (url: any, options?: any): Observable<Response> {
     url.id = url.id ? url.id : -1; // prevent deleting the entire database

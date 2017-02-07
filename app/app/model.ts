@@ -4,18 +4,24 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http/src/static_response';
 
-function filterByObject (filter) {
-  function wrappedFunc (item) {
+function filterByObject (filter: Object) {
+  function wrappedFunc (item: Model) {
     for (let name in filter) {
-      var value = filter[name];
-      if (value instanceof Object) {
-        if (!item.is(value)) {
+      let filter_value = filter[name];
+      let item_value = item[name];
+      if (filter_value instanceof Model) {
+        if (!item_value.is(filter_value)) {
           return false;
         }
-      } else if (item !== value) {
+      } else if (filter_value instanceof Object) {
+        if (!filterByObject(filter_value)(item_value)) {
+          return false;
+        }
+      } else if (item_value !== filter_value) {
         return false;
       }
     }
+    return true;
   }
   return wrappedFunc;
 }
@@ -27,11 +33,20 @@ export abstract class Model {
   is_removed: boolean = false;
   id_alias: string = 'id';
 
+  get Class () {
+    return this.constructor;
+  }
   constructor (protected api: Api) {
   }
 
   construct (obj?: any) {
-    var cls;
+    let cls;
+    if (typeof obj === 'string') {
+      let decompose = obj.split('/');
+      let id = parseInt(decompose[decompose.length - 2]);
+      this.id = id;
+      return this;
+    }
     this[this.id_alias] = obj[this.id_alias];
     for (let field of this.fields) {
       if (!(field.name in obj || field in obj)) {
@@ -89,6 +104,8 @@ export abstract class Model {
         } else {
           obj[field.name] = this[field.name].build_url();
         }
+      } else if (this[field.name] instanceof Model) {
+        obj[field.name] = this[field.name].serialize();
       }
     }
     return obj;
@@ -158,11 +175,13 @@ export abstract class Model {
     });
    return promise;
   }
-  is (item: any) {
+  is (item: any): boolean {
     if (item instanceof Model) {
-      return this.id === item.id;
-    } else {
+      return (this.id === item.id) && (item instanceof this.Class);
+    } else if (item instanceof Object) {
       return filterByObject(item)(this);
+    } else {
+      return false;
     }
   }
 }
@@ -223,8 +242,8 @@ export abstract class ModelList<T extends Model>{
       }
     );
   }
-  find(item: any): Array<T> {
-      return this.objects.filter( a => a.is(item));
+  find(item: Object): Array<T> {
+    return this.objects.filter( a => a.is(item));
   }
   has (item: Object): boolean {
     return this.find(item).length > 0;

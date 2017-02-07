@@ -3,17 +3,15 @@ import { NavController, NavParams } from 'ionic-angular';
 
 import 'rxjs/add/operator/map';
 import { SelectedPipe } from '../pipes/selected_account';
-import { Assignment } from './models';
+import { Assignment, EmployeeAssignment } from './models';
 
 @Component({
   templateUrl: 'build/pages/project/detail.html',
   pipes: [SelectedPipe]
 })
-
 export class ProjectDetailPage {
   assignment: Assignment;
   selected_date: string;
-  selectable_hours = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
   constructor(
         private nav: NavController,
@@ -41,17 +39,20 @@ export class ProjectDetailPage {
   templateUrl: 'build/pages/project/detail_management.html'
 })
 export class ProjectDetailManagementPage extends ProjectDetailPage {
+  selectable_hours = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   constructor(
         nav: NavController,
         params: NavParams
   ) {
     super(nav, params);
   }
-  confirm (employee) {
-    this.assignment.confirm(employee);
+  hour (ea: EmployeeAssignment, hours) {
+    ea.hours = hours;
+    ea.update();
   }
-  unconfirm (employee) {
-    this.assignment.unconfirm(employee);
+  set_overtime (ea: EmployeeAssignment, overtime) {
+    ea.overtime = overtime;
+    ea.update();
   }
   close () {}
 }

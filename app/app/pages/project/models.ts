@@ -10,23 +10,17 @@ export class Project extends Model {
   name: string;
 }
 
-class SelectedEmployee extends Employee {
-  selected: boolean = false;
-  is_confirmed: boolean = false;
-}
-class SelectedEmployeeList extends ModelList<SelectedEmployee> {
-  model = SelectedEmployee;
-}
-
 export class BasicAssignment extends Model {
   resource_name = 'assignment';
 }
 
-export class EmployeeAssignment extends JunctionModel {
+export class EmployeeAssignment extends Model {
+  resource_name = 'employee_assignment';
   assignment: Assignment;
   employee: Employee;
-  resource_name = 'employee_assignment';
-  junction_fields = ['employee', 'assignment'];
+  hours: Number;
+  overtime: Number;
+
   fields = [
     'hours',
     'overtime',
@@ -45,6 +39,9 @@ export class EmployeeAssignment extends JunctionModel {
 
 class EmployeeAssignmentList extends ModelList<EmployeeAssignment> {
   model = EmployeeAssignment;
+  has_employee (employee: Employee): Boolean {
+    return this.has({employee: employee});
+  }
 }
 
 
@@ -58,102 +55,46 @@ export class Assignment extends BasicAssignment {
       cls: EmployeeAssignmentList
     }, {
       name: 'availables',
-      cls: SelectedEmployeeList
+      cls: EmployeeList
     }, {
       name: 'confirms',
-      cls: SelectedEmployeeList
+      cls: EmployeeList
     }];
   project: Project;
   start_datetime: string;
   end_datetime: string;
   number_needed: number;
   employee_details: EmployeeAssignmentList;
-  availables: SelectedEmployeeList;
-  confirms: SelectedEmployeeList;
+  availables: EmployeeList;
+  confirms: EmployeeList;
 
-  construct (obj?: any) {
-    super.construct(obj);
-    for (let employee of this.availables.objects) {
-      employee.selected = this.has(employee);
-    }
-    return this;
-  }
-
-  add (employee: SelectedEmployee) {
+  add (employee: Employee) {
+    let eas = this.employee_details.find({ employee: employee });
+    let ea = eas.length > 0 ? eas[0] : new EmployeeAssignment(this.api);
+    ea.employee = employee;
+    ea.assignment = this;
     return new Promise<any>((resolve, reject) => {
-      var ea = new EmployeeAssignment(this.api);
-      ea.construct({
-        assignment: this,
-        employee: employee
-      });
-      ea.commit().then(
-        obj => {
-          resolve(this.employee_details);
-          this.employee_details.add(ea);
-        }
-      );
-    });
-  }
-
-  discard (employee: SelectedEmployee) {
-    var ea = new EmployeeAssignment(this.api);
-    ea.construct({
-      assignment: this,
-      employee: employee
-    });
-    ea.fetch().then(
-      () => {
-        ea.delete().then(() => {
-          this.fetch();
-        });
-      }).catch(() => {
+      ea.create().then(() => {
+        this.employee_details.add(ea);
         this.fetch();
-      }
-    );
-    this.employee_details.remove({employee: employee});
-  }
-
-  confirm (employee: SelectedEmployee) {
-    employee.is_confirmed = true;
-    var ea = new EmployeeAssignment(this.api);
-    ea.construct({
-      assignment: this,
-      employee: employee,
-      is_confirmed: true
-    });
-    ea.fetch().then(
-      () => {
-        ea.update().then(() => {
-          this.fetch();
-        });
-      }
-    );
-    this.confirms.add(employee);
-  }
-
-  unconfirm (employee: SelectedEmployee) {
-    employee.is_confirmed = false;
-    var ea = new EmployeeAssignment(this.api);
-    ea.construct({
-      assignment: this,
-      employee: employee,
-      is_confirmed: false
-    });
-    ea.fetch().then(
-      () => {
-        ea.update().then(() => {
-          this.fetch();
-        });
+        resolve(ea);
       }).catch(() => {
-        ea.update().then(() => {
-          this.fetch();
-        });
-      }
-    );
-    this.confirms.remove(employee);
+        reject();
+      });
+    });
   }
-  is_full () {
-    return this.employee_details.objects.length >= this.number_needed;
+
+  discard (employee: Employee) {
+    let ea = this.employee_details.find({employee: employee})[0];
+    return new Promise<any>((resolve, reject) => {
+      ea.delete().then(() => {
+        this.employee_details.remove(ea);
+        this.fetch();
+        resolve(ea);
+      }).catch(() => {
+        reject();
+      });
+    });
   }
   has (employee): boolean {
     return this.employee_details.has({employee: employee});
