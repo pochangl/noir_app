@@ -1,7 +1,7 @@
 from tastypie.resources import ModelResource, fields, Resource
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import ReadOnlyAuthorization, DjangoAuthorization
-from schedule.models import DayOff, EmployeePreference, ProjectPreference
+from schedule.models import DayOff
 from account.resources import EmployeeResource
 import calendar
 from tastypie.constants import ALL, ALL_WITH_RELATIONS

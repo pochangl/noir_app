@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Project, Assignment, EmployeeAssignment
+from .models import Project, Assignment, EmployeeAssignment, ProposedEmployeeList
 
 
 class EmployeeAssignmenAdmin(admin.ModelAdmin):
@@ -12,3 +12,4 @@ class EmployeeAssignmenAdmin(admin.ModelAdmin):
 admin.site.register(Project)
 admin.site.register(Assignment)
 admin.site.register(EmployeeAssignment, EmployeeAssignmenAdmin)
+admin.site.register(ProposedEmployeeList)

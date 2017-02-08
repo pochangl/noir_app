@@ -1,5 +1,6 @@
 #-*- coding: utf-8 -*-
 from django.db import models
+from django.db.models import Max
 from utils.models import TimeStampModel, EndorsedModel, VersionedModel
 from django.utils.translation import ugettext as _
 from transaction.models import AccountBalance
@@ -19,15 +20,21 @@ class Project(TimeStampModel):
 
 class ProposedEmployeeList(EndorsedModel, VersionedModel, EmployeeList):
     # bug proposed list can conflict
-    assignment = models.ForeignKey("project.Assignment", related_name="proposed_employees_history")
+    assignment = models.ForeignKey("project.Assignment", related_name="proposed_employee_lists")
+
+    def is_latest(self):
+        return self.assignment.latest_proposed_empoloyee_list == self
 
     class Meta:
         unique_together = (("version", "assignment"),)
 
+    def propose(self, user, employees):
+        self.employees.add(*employees)
+        super(ProposedEmployeeList, self).propose(user)
+
 
 class Assignment(TimeStampModel):
     project = models.ForeignKey(Project, related_name='assignments')
-    proposed_employees = models.ForeignKey(ProposedEmployeeList, null=True, related_name="assignment2")
     employees = models.ManyToManyField('account.Employee', through="project.EmployeeAssignment", related_name='assignments')
     comment = models.CharField(max_length=1024, blank=True, default="")
     start_datetime = models.DateTimeField(default=datetime.now)
@@ -41,27 +48,43 @@ class Assignment(TimeStampModel):
             ("endorse_assignment", _("Can endorse Assignment")),
         )
 
-    def propose(self, user, employees):
-        previous = self.proposed_employees
-        self.proposed_employees = current = ProposedEmployeeList(assignment=self)
-        if self.proposed_employees is not None:
-            current.version = previous.version + 1
-        self.propose(employees)
-        self.save()
+    @property
+    def latest_proposed_employee_list(self):
+        try:
+            return self.proposed_employee_lists.order_by('-version')[0]
+        except IndexError:
+            return None
 
-    def confirmer(self, user):
+
+    def propose(self, user, employees):
+        if len(employees) is 0:
+            raise self.NoEmployee
+        employees = set(employees)
+        old_list = self.latest_proposed_employee_list
+        old_employees = set(old_list.employees.all()) if old_list is not None else set()
+        if not ((employees - old_employees) or (old_employees - employees)):
+            raise self.AlreadyProposed()
+
+        previous = self.latest_proposed_employee_list
+        current = ProposedEmployeeList(assignment=self)
+        if previous is not None:
+            current.version = previous.version + 1
+        current.save()
+        current.propose(user, list(employees))
+
+    def confirm(self, user):
         self.proposed_employees.confirm(user)
 
     def endorse(self, user):
-        self.proposed_employees.endorse(user)
+        self.latest_proposed_employee_list.endorse(user)
         employees = self.proposed_employees.employees.all()
 
         # remove irrelevant employees
-        not_involed = this.employees.exclude(employee__in=employees)
-        this.employees.remove(not_invoved)
+        not_involed = self.employees.exclude(employee__in=employees)
+        self.employees.remove(not_invoved)
 
         # add relevant employees
-        relevents = set(employees) - this.employees.all()
+        relevents = set(employees) - self.employees.all()
         new_ass = [EmployeeAssignment(assignment=self, employee=employee) for employee in relevants]
         EmployeeAssignment.objects.bulk_create(new_ass)
 
@@ -93,5 +116,5 @@ class Pay(TimeStampModel):
 
     def __init__(self, *args, **kwargs):
         super(Pay, self).__init__(*args, **kwargs)
-        this.note = "pay"
+        self.note = "pay"
 

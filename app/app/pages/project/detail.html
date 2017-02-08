@@ -2,6 +2,9 @@
   <ion-navbar>
     <ion-title>{{ assignment.project.name }} ( {{ assignment.employees.length }} / {{ assignment.number_needed }} )- [ {{ selected_date }} ] 派遺人力</ion-title>
     <ion-buttons end>
+      <button ion-button (click)="assignment.propose()" color="dark"><ion-icon name="ios-build-outline"></ion-icon>提交</button>
+      <button ion-button (click)="assignment.confirm()" color="dark"><ion-icon name="ios-build-outline"></ion-icon>確認</button>
+      <button ion-button (click)="assignment.endorse()" color="dark"><ion-icon name="ios-build-outline"></ion-icon>簽合</button>
       <button ion-button (click)="manage()" color="dark"><ion-icon name="ios-build-outline"></ion-icon>管理</button>
     </ion-buttons>
   </ion-navbar>

@@ -251,6 +251,9 @@ export abstract class ModelList<T extends Model>{
       this.objects.push(item);
     }
   }
+  serialize () {
+    return this.objects.map(model => model.serialize())
+  }
 }
 
 export abstract class IndirectModelList <T extends Model> extends ModelList<T> {

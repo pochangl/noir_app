@@ -18,13 +18,21 @@ class BaseAssignmentSerializer(serializers.ModelSerializer):
         fields = ('id', )
 
 
+class ProposedEmployeeList(serializers.ModelSerializer):
+    employees = EmployeeSerializer(many=True)
+    class Meta:
+        model = models.ProposedEmployeeList
+        fields = ('id', 'proposer', 'confirmer', 'endorser', 'employees')
+
+
 class AssignmentSerializer(serializers.ModelSerializer):
     project = ProjectSerializer()
     employees = EmployeeSerializer(many=True)
+    proposed = ProposedEmployeeList(source="latest_proposed_employee_list", read_only=True, allow_null=True)
 
     class Meta:
         model = models.Assignment
-        fields = ('id', 'start_datetime', 'end_datetime', 'number_needed', 'project', 'employees')
+        fields = ('id', 'start_datetime', 'end_datetime', 'number_needed', 'project', 'employees', 'proposed')
 
 
 class EmployeeAssignmentSerializer(serializers.ModelSerializer):

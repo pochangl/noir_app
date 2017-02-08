@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
 class TimeStampModel(models.Model):
@@ -24,6 +25,10 @@ class EndorsedModel(models.Model):
     proposer = models.ForeignKey("auth.User", null=True, blank=True, related_name="%(class)s_proposer")
     confirmer = models.ForeignKey("auth.User", null=True, blank=True, related_name="%(class)s_confirmer")
     endorser = models.ForeignKey("auth.User", null=True, blank=True, related_name="%(class)s_endorser")
+
+    propose_time = models.DateField(null=True, blank=True, default=None)
+    confirm_time = models.DateField(null=True, blank=True, default=None)
+    endorse_time = models.DateField(null=True, blank=True, default=None)
     
     class AlreadyProposed(Exception):
         pass
@@ -34,23 +39,19 @@ class EndorsedModel(models.Model):
     class Meta:
         abstract = True
 
-    def propose(self, user, employees):
-        if this.employees.count() > 0:
-            raise self.AlreadyProposed()
-        elif len(employees) is 0:
-            raise self.NoEmployee
-
-        self.employees.add(employees)
+    def propose(self, user):
         self.proposer = user
+        self.propose_time = timezone.now()
         self.save()
 
     def confirm(self, user):
-        if not self.confirmer:
+        if not self.confirmer and not self.endorser:
             self.confirmer = user
-            self.endorser = None
+            self.confirm_time = timezone.now()
             self.save()
 
     def endorse(self, user):
         if not self.endorser:
             self.endorser = user
+            self.endorse_time = timezone.now()
             self.save()

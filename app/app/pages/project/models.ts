@@ -88,6 +88,24 @@ export class Assignment extends BasicAssignment {
   has (employee): boolean {
     return this.employees.has(employee);
   }
+  propose () {
+    this.api.post({
+      resource_name: "project/propose_employee",
+      id: this.id
+    }, this.employees.serialize()).subscribe(this.fetch);
+  }
+  confirm () {
+    this.api.post({
+      resource_name: "project/confirm_employee",
+      id: this.id
+    }, {}).subscribe(this.fetch);
+  }
+  endorse () {
+    this.api.post({
+      resource_name: "project/endorse_employee",
+      id: this.id
+    }, {}).subscribe(this.fetch);
+  }
 }
 
 class AssignEmployee extends Assignment {

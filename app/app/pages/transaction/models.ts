@@ -6,7 +6,7 @@ import { Response } from '@angular/http/src/static_response';
 
 // export class Paycheck extends JunctionModel {
 export class Paycheck extends Model {
-  resource_name = 'paycheck';
+  resource_name = 'transaction/paycheck';
   // junction_fields = ['employee'];
   fields = [
     'amount', 'sign_records', 'happened_date', 'reason_code', 'reason',
@@ -16,15 +16,6 @@ export class Paycheck extends Model {
       cls: Employee
     }
   ];
-  // fields = [
-  //   'amount', 'sign_records', 'happened_date', 'reason_code', 'reason',
-  //   'signature',
-  //   {
-  //     name: 'employee',
-  //     cls: Employee,
-  //     is_url: true
-  //   }
-  // ];
   amount: number;
   sign_records: any;
   employee: Employee;
@@ -36,7 +27,7 @@ export class Paycheck extends Model {
 }
 
 export class PaycheckList extends ModelList<Paycheck> {
-  resource_name = 'paycheck';
+  resource_name = 'transaction/paycheck';
   model = Paycheck;
 }
 

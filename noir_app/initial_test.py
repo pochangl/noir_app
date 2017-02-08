@@ -2,7 +2,7 @@
 from account.models import RegistrationToken, Contact, Company, Employee
 from project.models import Project, EmployeeAssignment, Assignment
 # from transaction.models import Transaction, Receivable, PayCheck
-from schedule.models import DayOff, EmployeePreference, ProjectPreference
+from schedule.models import DayOff
 import datetime
 import noir_app.urls
 from rest_framework.authtoken.models import Token
@@ -15,6 +15,7 @@ except User.DoesNotExist:
 
 Token.objects.filter(user=edward).update(key='123')
 edward.set_password('123')
+edward.is_superuser = edward.is_staff = True
 edward.save()
 
 
@@ -87,25 +88,6 @@ pProjectEA7.save()
 pProjectEA8 = EmployeeAssignment(employee=pAccountE4, assignment=pProjectA4)
 pProjectEA8.save()
 
-#transaction設定
-# pTransactionR = Receivable(amount="3000", note="Note", Company=pAccountC1)
-# pTransactionR.save()
-# pTransactionR = Receivable(amount="4000", note="Note", Company=pAccountC2)
-# pTransactionR.save()
-# 
-# pTransactionP1 = PayCheck(amount="5000", note="Note", employee=pAccountE1,
-#                          reason_code="reason_code",reason="salary")
-# pTransactionP1.save()
-# pTransactionP2 = PayCheck(amount="6000", note="Note", employee=pAccountE2,
-#                          reason_code="reason_code",reason="bonus")
-# pTransactionP2.save()
-# pTransactionP3 = PayCheck(amount="7000", note="Note", employee=pAccountE3,
-#                          reason_code="reason_code",reason="salary")
-# pTransactionP3.save()
-# pTransactionP4 = PayCheck(amount="8000", note="Note", employee=pAccountE4,
-#                          reason_code="reason_code",reason="bonus")
-# pTransactionP4.save()
-
 #schedule設定
 pScheduleD1 = DayOff(employee=pAccountE1,
                     start_datetime="2016-02-03 08:00",
@@ -124,14 +106,3 @@ pScheduleD4 = DayOff(employee=pAccountE4,
                     end_datetime="2016-02-02 17:00")
 pScheduleD4.save()
 
-pScheduleEA1 = EmployeePreference(employee_assignment=pProjectEA1, employee_preference="1")
-pScheduleEA1.save()
-pScheduleEA2 = EmployeePreference(employee_assignment=pProjectEA2, employee_preference="1")
-pScheduleEA2.save()
-
-pSchedulePP = ProjectPreference(employee_assignment=pProjectEA1,employee_priority="high",
-                                project_priority="middle")
-pSchedulePP.save()
-pSchedulePP = ProjectPreference(employee_assignment=pProjectEA2,employee_priority="middle",
-                                project_priority="high")
-pSchedulePP.save()
