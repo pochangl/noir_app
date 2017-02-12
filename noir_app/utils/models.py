@@ -1,5 +1,8 @@
 from django.db import models
 from django.utils import timezone
+from rest_framework import exceptions
+from django.utils.translation import ugettext_lazy as _
+
 
 # Create your models here.
 class TimeStampModel(models.Model):
@@ -30,11 +33,8 @@ class EndorsedModel(models.Model):
     confirm_time = models.DateField(null=True, blank=True, default=None)
     endorse_time = models.DateField(null=True, blank=True, default=None)
     
-    class AlreadyProposed(Exception):
-        pass
-
-    class NoEmployee(Exception):
-        pass
+    class AlreadyProposed(exceptions.PermissionDenied):
+        default_detail = _('This list is already proposed.')
 
     class Meta:
         abstract = True

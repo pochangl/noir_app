@@ -7,6 +7,7 @@ from transaction.models import AccountBalance
 from account.models import Contact, Company, Employee, EmployeeList
 from html5lib import filters
 from datetime import datetime, time, date, timedelta
+from rest_framework import exceptions
 
 # Create your models here.
 class Project(TimeStampModel):
@@ -27,6 +28,9 @@ class ProposedEmployeeList(EndorsedModel, VersionedModel, EmployeeList):
 
     class Meta:
         unique_together = (("version", "assignment"),)
+
+    class NoEmployee(exceptions.NotAcceptable):
+        default_detail = _('No Emploee found')
 
     def propose(self, user, employees):
         self.employees.add(*employees)
@@ -58,12 +62,12 @@ class Assignment(TimeStampModel):
 
     def propose(self, user, employees):
         if len(employees) is 0:
-            raise self.NoEmployee
+            raise ProposedEmployeeList.NoEmployee()
         employees = set(employees)
         old_list = self.latest_proposed_employee_list
         old_employees = set(old_list.employees.all()) if old_list is not None else set()
         if not ((employees - old_employees) or (old_employees - employees)):
-            raise self.AlreadyProposed()
+            raise EndorsedModel.AlreadyProposed()
 
         previous = self.latest_proposed_employee_list
         current = ProposedEmployeeList(assignment=self)

@@ -56,7 +56,6 @@ class AssignEmployeeView(mixins.CreateModelMixin, generics.RetrieveUpdateDestroy
 class EmployeeAssignmentViewSet(viewsets.ModelViewSet):
     queryset = models.EmployeeAssignment.objects.all()
     serializer_class = serializers.EmployeeAssignmentSerializer
-    filter_class = filters.AssignmentFilter
 
 
 class ProposeEmployeeListView(mixins.CreateModelMixin, EmployeeListView):

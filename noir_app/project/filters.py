@@ -12,7 +12,8 @@ class AssignmentDateFilter(django_filters.FilterSet):
         fields = ('start_datetime', )
 
 
-class AssignmentFilter(django_filters.FilterSet):
+class EmployeeAssignmentFilter(django_filters.FilterSet):
     assignment = django_filters.ModelChoiceFilter(queryset=models.Assignment.objects.all(), required=True)
     class Meta:
+        model = models.EmployeeAssignment
         fields = ('assignment',)
