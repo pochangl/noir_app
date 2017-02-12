@@ -40,6 +40,9 @@ export abstract class Model {
   }
 
   construct (obj?: any) {
+    if (!obj) {
+      return;
+    }
     let cls = undefined;
     if (typeof obj === 'string') {
       let decompose = obj.split('/');

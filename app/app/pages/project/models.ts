@@ -14,6 +14,20 @@ export class BasicAssignment extends Model {
   resource_name = 'project/assignment';
 }
 
+export class ProposedEmployee extends Model {
+  proposer: number;
+  confirmer: number;
+  endorser: number;
+  employees: EmployeeList;
+
+  fields = ['proposer', 'confirmer', 'endorse',
+    {
+      name: 'employees',
+      cls: EmployeeList
+    }
+  ];
+}
+
 export class EmployeeAssignment extends Model {
   resource_name = 'project/employee_assignment';
   assignment: Assignment;
@@ -47,6 +61,9 @@ export class Assignment extends BasicAssignment {
     }, {
       name: 'confirms',
       cls: EmployeeList
+    }, {
+      name: 'proposed',
+      cls: ProposedEmployee
     }];
   project: Project;
   start_datetime: string;
@@ -54,6 +71,7 @@ export class Assignment extends BasicAssignment {
   number_needed: number;
   employees: EmployeeList;
   confirms: EmployeeList;
+  proposed: ProposedEmployee;
 
   add (employee: Employee) {
     let ae = new AssignEmployee(this.api);
@@ -90,20 +108,20 @@ export class Assignment extends BasicAssignment {
   }
   propose () {
     this.api.post({
-      resource_name: "project/propose_employee",
+      resource_name: 'project/propose_employee',
       id: this.id
     }, this.employees.serialize()).subscribe(this.fetch);
   }
   confirm () {
     this.api.post({
-      resource_name: "project/confirm_employee",
-      id: this.id
+      resource_name: 'project/confirm_employee',
+      id: this.proposed.id
     }, {}).subscribe(this.fetch);
   }
   endorse () {
     this.api.post({
-      resource_name: "project/endorse_employee",
-      id: this.id
+      resource_name: 'project/endorse_employee',
+      id: this.proposed.id
     }, {}).subscribe(this.fetch);
   }
 }
