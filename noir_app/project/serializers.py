@@ -40,4 +40,4 @@ class EmployeeAssignmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.EmployeeAssignment
-        fields = ('id', 'employee', 'hours', 'overtime')
+        fields = ('id', 'employee', 'hours', 'overtime', 'assignment')

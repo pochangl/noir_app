@@ -71,7 +71,7 @@ export abstract class Model {
     }
     return this;
   }
-  build_url_obj (): Object {
+  build_url_obj (): any {
     return {
       resource_name: this.resource_name,
       id: this.id
@@ -255,7 +255,7 @@ export abstract class ModelList<T extends Model>{
     }
   }
   serialize () {
-    return this.objects.map(model => model.serialize())
+    return this.objects.map(model => model.serialize());
   }
 }
 

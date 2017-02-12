@@ -30,7 +30,7 @@ export class ProposedEmployee extends Model {
 
 export class EmployeeAssignment extends Model {
   resource_name = 'project/employee_assignment';
-  assignment: Assignment;
+  assignment: number;
   employee: Employee;
   hours: Number;
   overtime: Number;
@@ -38,11 +38,19 @@ export class EmployeeAssignment extends Model {
   fields = [
     'hours',
     'overtime',
+    'assignment',
     {
       name: 'employee',
       cls: Employee
     }
   ];
+  build_url_obj (): Object {
+    let obj = super.build_url_obj();
+    obj.urlParams = {
+      assignment: this.assignment
+    };
+    return obj;
+  }
 }
 
 export class EmployeeAssignmentList extends ModelList<EmployeeAssignment> {
