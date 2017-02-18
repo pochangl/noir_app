@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Api} from '../../providers/api/api';
-import {WorkHourRecordsPage} from '../transaction/work_hour_records';
+import {WorkHourRecordsPage} from './work_hour_records';
 import {Assignment, EmployeeAssignment, EmployeeAssignmentList, AvailableEmployeeList} from '../project/models';
 
 @Component({
@@ -20,7 +20,7 @@ export class WorkHourEmployeesPage {
     params: NavParams,
     private api: Api
   ) {
-    this.title = '工時';
+    this.title = '出勤工時';
     this.start_date = params.data.start_date;
     this.end_date = params.data.end_date;
     // this.employee_assignments.filter(

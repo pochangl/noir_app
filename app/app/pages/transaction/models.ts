@@ -4,61 +4,57 @@ import { Employee, EmployeeList } from '../account/models';
 import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http/src/static_response';
 
-// export class Paycheck extends JunctionModel {
-export class Paycheck extends Model {
-  resource_name = 'transaction/paycheck';
-  // junction_fields = ['employee'];
+
+export class PersonalAccountBalnace extends Model {
+  resource_name = 'transaction/personal_account_balance';
   fields = [
-    'amount', 'sign_records', 'happened_date', 'reason_code', 'reason',
-    'signature', 'normal_work_hour', 'overtime_work_hour',
+    'balance', 'income', 'expense', 'note', 'date',
     {
       name: 'employee',
       cls: Employee
     }
   ];
-  amount: number;
-  sign_records: any;
+  balance: number;
+  income: number;
+  expense: number;
+  note: string;
+  date: string;
   employee: Employee;
-  reason_code: string;
-  reason: string;
-  signature: any;
-  normal_work_hour: number;
-  overtime_work_hour: number;
 }
 
-export class PaycheckList extends ModelList<Paycheck> {
-  resource_name = 'transaction/paycheck';
-  model = Paycheck;
+export class PersonalAccountBalnaceList extends ModelList<PersonalAccountBalnace> {
+  resource_name = 'transaction/personal_account_balance';
+  model = PersonalAccountBalnace;
 }
 
-export class MyPaycheck extends Paycheck {
-
-  set_employee(employee: Employee) {
-    this.employee = employee;
-  }
-  send_data(employee: Employee) {
-    return new Promise<any>((resolve, reject) => {
-      this.construct({
-        employee: this.employee,
-      });
-      this.commit().then(
-        obj => {
-          resolve(this.employee);
-          this.set_employee(this.employee);
-        }
-      );
-    });
-  }
-}
-
-export class MyPaycheckList extends PaycheckList {
-  employee: Employee;
-  set_employee(employee: Employee) {
-    this.employee = employee;
-  }
-  buildUrlParams () {
-    var params = super.buildUrlParams();
-    params['employee'] = this.employee.id;
-    return params;
-  }
-}
+// export class MyPaycheck extends Paycheck {
+//
+//   set_employee(employee: Employee) {
+//     this.employee = employee;
+//   }
+//   send_data(employee: Employee) {
+//     return new Promise<any>((resolve, reject) => {
+//       this.construct({
+//         employee: this.employee,
+//       });
+//       this.commit().then(
+//         obj => {
+//           resolve(this.employee);
+//           this.set_employee(this.employee);
+//         }
+//       );
+//     });
+//   }
+// }
+//
+// export class MyPaycheckList extends PaycheckList {
+//   employee: Employee;
+//   set_employee(employee: Employee) {
+//     this.employee = employee;
+//   }
+//   buildUrlParams () {
+//     var params = super.buildUrlParams();
+//     params['employee'] = this.employee.id;
+//     return params;
+//   }
+// }

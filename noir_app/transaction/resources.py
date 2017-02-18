@@ -6,8 +6,8 @@ from tastypie.authorization import ReadOnlyAuthorization, DjangoAuthorization
 from transaction.models import AbstractAccountBalance, AccountBalance, OthersAccountBalance, PersonalAccountBalance, PersonalWithdraw
 
 from account.resources import CompanyResource, EmployeeResource
-
-
+    
+    
 class AbstractAccountBalanceResource(ModelResource):
 #     previous = fields.ForeignKey(AccountBalanceResource, attribute="previous", related_name="abstract_account_balance")
 
@@ -38,8 +38,9 @@ class PersonalAccountBalanceResource(OthersAccountBalanceResource):
     class Meta:
         queryset = PersonalAccountBalance.objects.all()
         resource_name = "personal_account_balance"
-        fields = ("id",)
-        
+        fields = ("id", "date",)
+        allowed_methods = ['get',]
+
         
 class PersonalWithdrawResource(PersonalAccountBalanceResource):
     class Meta:
@@ -61,3 +62,5 @@ class SalaryResource(ModelResource):
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
         
+
+    

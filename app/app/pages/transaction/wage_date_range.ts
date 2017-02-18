@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { EmployeeAssignmentList } from '../project/models';
+// import { ProjectListPage } from './list';
+import { PersonalAccountBalnaceList } from './models';
 import { Api } from '../../providers/api/api';
 import { MonthIterator } from '../../utils/calendar';
-import {WorkHourEmployeesPage} from './work_hour_employees';
+import { WageEmployeesPage } from './wage_employees';
 
 
 @Component({
@@ -11,9 +12,9 @@ import {WorkHourEmployeesPage} from './work_hour_employees';
   providers: [Api]
 })
 
-export class WorkHourDateRangePage {
+export class WageDateRangePage {
   title: string;
-  ea: EmployeeAssignmentList;
+  personal_account_balances: PersonalAccountBalnaceList;
   date_from: string;
   date_to: string;
 
@@ -21,8 +22,7 @@ export class WorkHourDateRangePage {
     private nav: NavController,
     private api: Api
   ) {
-    this.title = '出勤工時';
-    this.ea = new EmployeeAssignmentList(api);
+    this.title = '薪給紀錄';
     var today = new Date();
     var today_month = today.getMonth() + 1;
     var today_day = today.getDate();
@@ -31,13 +31,11 @@ export class WorkHourDateRangePage {
     this.date_to = today_date;
   }
   ionViewWillEnter () {
-    this.ea.fetch();
-    console.log('ea =', this.ea);
   }
 
   next_step () {
     this.nav.push(
-      WorkHourEmployeesPage,
+      WageEmployeesPage,
       {'date_from': this.date_from, 'date_to': this.date_to}
     );
   }

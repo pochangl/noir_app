@@ -2,8 +2,8 @@ import { Component, Injectable } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Api } from '../../providers/api/api';
 import 'rxjs/add/operator/map';
-import {PaycheckDetailPage} from '../transaction/paycheck_detail';
-import {MyPaycheckList} from './models';
+// import {PaycheckDetailPage} from '../transaction/paycheck_detail';
+// import {MyPaycheckList} from './models';
 import {Employee} from '../account/models';
 
 @Component({
@@ -13,7 +13,7 @@ import {Employee} from '../account/models';
 
 export class WorkHourRecordsPage {
   title: '工資';
-  paychecks: MyPaycheckList;
+  // paychecks: MyPaycheckList;
   employee: Employee;
   amount: number;
 
@@ -22,14 +22,14 @@ export class WorkHourRecordsPage {
     params: NavParams,
     private api: Api
   ) {
-    this.paychecks = new MyPaycheckList(this.api);
-    this.employee = params.data.employee;
-    this.paychecks.set_employee(this.employee);
+    // this.paychecks = new MyPaycheckList(this.api);
+    // this.employee = params.data.employee;
+    // this.paychecks.set_employee(this.employee);
   }
   ionViewWillEnter () {
-    this.paychecks.fetch();
+    // this.paychecks.fetch();
   }
-  click (paycheck) {
-    this.nav.push(PaycheckDetailPage, {paycheck: paycheck});
-  }
+  // click (paycheck) {
+  //   this.nav.push(PaycheckDetailPage, {paycheck: paycheck});
+  // }
 }
