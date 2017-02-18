@@ -23,14 +23,13 @@ export class WorkHourEmployeesPage {
     this.title = '工時';
     this.start_date = params.data.start_date;
     this.end_date = params.data.end_date;
-    console.log(this.start_date, this.end_date);
-    // super(nav, params);
-    // this.employee_assignments.api = this.assignment.api;
-    // this.employee_assignments.filter({assignment: this.assignment.id});
+    // this.employee_assignments.filter(
+    //   {start_date__gt: this.start_date},
+    //   {end_date__lt: this.end_date}
+    // );
   }
   ionViewWillEnter () {
-    // this.assignment.fetch();
-    this.employee_assignments.fetch();
+    // this.employee_assignments.fetch();
   }
   click (employee) {
     this.nav.push(WorkHourRecordsPage, {employee: employee});
