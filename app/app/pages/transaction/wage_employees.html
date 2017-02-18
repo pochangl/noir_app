@@ -3,14 +3,15 @@
     <button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{title}} - 選擇人員</ion-title>
+    <ion-title>{{employee_name}}的薪給紀錄</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <button ion-item *ngFor="let employee of employees.objects" (click)="click(employee)">
-      {{ employee.contact.name }}
+  <ion-title>---日期---||賺得工資||支付薪資||--餘額--</ion-title>
+    <button ion-item *ngFor="let personal_account_balance of personal_account_balances.objects">
+      {{ personal_account_balance.date }} || {{ personal_account_balance.income }} || {{ personal_account_balance.expense }} || {{ personal_account_balance.balance}}
       <ion-icon name="md-arrow-forward" item-right></ion-icon>
     </button>
   </ion-list>
