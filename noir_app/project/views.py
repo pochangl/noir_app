@@ -6,7 +6,10 @@ from account.views import EmployeeListView
 from django.utils.functional import cached_property
 from rest_framework.views import APIView
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.filters import OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 from django.http.response import HttpResponse
+import django_filters
 
 
 class HttpAccepted(HttpResponse):
@@ -53,10 +56,17 @@ class AssignEmployeeView(mixins.CreateModelMixin, generics.RetrieveUpdateDestroy
         models.EmployeeAssignment.objects.filter(assignment=self.assignment, employee=self.employee).delete()
 
 
-class EmployeeAssignmentViewSet(viewsets.ModelViewSet):
+class EmployeeAssignmentViewSet(viewsets.ModelViewSet, generics.ListAPIView):
     queryset = models.EmployeeAssignment.objects.all()
     serializer_class = serializers.EmployeeAssignmentSerializer
     filter_class = filters.EmployeeAssignmentFilter
+#     filter_backends = (filters.OrderingFilter,)
+    ordering = ('work_date',)
+    
+# Error: Cannot resolve keyword 'work_date' into field.
+#     def filter_queryset(self, queryset):
+#         queryset = super(EmployeeAssignmentViewSet, self).filter_queryset(queryset)
+#         return queryset.order_by('-work_date')
 
 
 class ProposeEmployeeListView(mixins.CreateModelMixin, EmployeeListView):

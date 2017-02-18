@@ -13,7 +13,13 @@ class AssignmentDateFilter(django_filters.FilterSet):
 
 
 class EmployeeAssignmentFilter(django_filters.FilterSet):
-    assignment = django_filters.ModelChoiceFilter(queryset=models.Assignment.objects.all(), required=True)
+#     assignment = django_filters.ModelChoiceFilter(queryset=models.Assignment.objects.all(), required=True)
+#     assignment = django_filters.ModelChoiceFilter(queryset=models.Assignment.objects.all())
+    date_from = django_filters.DateFilter(name='work_date', lookup_expr='gte')
+    date_to = django_filters.DateFilter(name='work_date', lookup_expr='lte')
+    
     class Meta:
         model = models.EmployeeAssignment
-        fields = ('assignment',)
+        fields = ('assignment', 'employee', 'date_from', 'date_to',)
+        ordering = ('work_date',)
+        

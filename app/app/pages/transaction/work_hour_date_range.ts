@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { EmployeeAssignmentList } from '../project/models';
+import { EmployeeList } from '../account/models';
 import { Api } from '../../providers/api/api';
 import { MonthIterator } from '../../utils/calendar';
-import {WorkHourEmployeesPage} from './work_hour_employees';
+import { WorkHourEmployeesPage } from './work_hour_employees';
 
 
 @Component({
@@ -13,7 +13,7 @@ import {WorkHourEmployeesPage} from './work_hour_employees';
 
 export class WorkHourDateRangePage {
   title: string;
-  ea: EmployeeAssignmentList;
+  employees: EmployeeList;
   date_from: string;
   date_to: string;
 
@@ -22,23 +22,22 @@ export class WorkHourDateRangePage {
     private api: Api
   ) {
     this.title = '出勤工時';
-    this.ea = new EmployeeAssignmentList(api);
     var today = new Date();
-    var today_month = today.getMonth() + 1;
+    var date_frome_month = today.getMonth();  // 預設為上一個月
+    var tdate_to_month = today.getMonth() + 1;
     var today_day = today.getDate();
-    var today_date = today.getFullYear() + '-' + (today_month < 10 ? '0' + today_month : today_month) + '-' + (today_day < 10 ? '0' + today_day : today_day);
-    this.date_from = today_date;
-    this.date_to = today_date;
+    this.date_from = today.getFullYear() + '-' + (date_frome_month < 10 ? '0' + date_frome_month : date_frome_month) + '-' + (today_day < 10 ? '0' + today_day : today_day);
+    this.date_to = today.getFullYear() + '-' + (tdate_to_month < 10 ? '0' + tdate_to_month : tdate_to_month) + '-' + (today_day < 10 ? '0' + today_day : today_day);
+    this.employees = new EmployeeList(api);
   }
   ionViewWillEnter () {
-    this.ea.fetch();
-    console.log('ea =', this.ea);
+    this.employees.fetch();
   }
 
-  next_step () {
+  click (employee) {
     this.nav.push(
       WorkHourEmployeesPage,
-      {'date_from': this.date_from, 'date_to': this.date_to}
+      {employee: employee, 'date_from': this.date_from, 'date_to': this.date_to}
     );
   }
 }

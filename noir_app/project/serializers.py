@@ -37,7 +37,8 @@ class AssignmentSerializer(serializers.ModelSerializer):
 
 class EmployeeAssignmentSerializer(serializers.ModelSerializer):
     employee = EmployeeSerializer(read_only=True)
+    assignment = AssignmentSerializer(read_only=True)
 
     class Meta:
         model = models.EmployeeAssignment
-        fields = ('id', 'employee', 'hours', 'overtime', 'assignment')
+        fields = ('id', 'employee', 'hours', 'overtime', 'assignment', 'work_date',)

@@ -34,11 +34,13 @@ export class EmployeeAssignment extends Model {
   employee: Employee;
   hours: Number;
   overtime: Number;
-
+  work_date: string;
+  
   fields = [
     'hours',
     'overtime',
     'assignment',
+    'work_date',
     {
       name: 'employee',
       cls: Employee

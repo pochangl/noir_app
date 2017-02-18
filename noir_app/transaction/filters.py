@@ -3,11 +3,9 @@ import django_filters
 from . import models
 
 
-class PersonalAccountBalanceDateFilter(django_filters.FilterSet):
-#     employee = django_filters.Filter(name='id')
+class PersonalAccountBalanceFilter(django_filters.FilterSet):
     date_from = django_filters.DateFilter(name='date', lookup_expr='gte')
     date_to = django_filters.DateFilter(name='date', lookup_expr='lte')
-
 
     class Meta:
         model = models.PersonalAccountBalance

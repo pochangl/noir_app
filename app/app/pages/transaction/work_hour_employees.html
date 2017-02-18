@@ -3,15 +3,16 @@
     <button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{title}} - 選擇人員</ion-title>
+    <ion-title>{{employee_name}}的工時紀錄</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <!-- <button ion-item *ngFor="let employee of ea.employees.objects" (click)="click(employee)">
-      {{ ea.employee.contact.name }}
+    <ion-title>---日期---||正常工時||加班工時</ion-title>
+    <button ion-item *ngFor="let employee_assignment of employee_assignments.objects">
+      {{ employee_assignment.work_date }} || {{ employee_assignment.hours }} || {{ employee_assignment.overtime }}
       <ion-icon name="md-arrow-forward" item-right></ion-icon>
-    </button> -->
+    </button>
   </ion-list>
 </ion-content>

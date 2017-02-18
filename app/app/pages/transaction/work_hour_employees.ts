@@ -3,6 +3,7 @@ import {NavController, NavParams} from 'ionic-angular';
 import {Api} from '../../providers/api/api';
 import {WorkHourRecordsPage} from './work_hour_records';
 import {Assignment, EmployeeAssignment, EmployeeAssignmentList, AvailableEmployeeList} from '../project/models';
+import {Employee} from '../account/models';
 
 @Component({
   templateUrl: 'build/pages/transaction/work_hour_employees.html',
@@ -10,28 +11,31 @@ import {Assignment, EmployeeAssignment, EmployeeAssignmentList, AvailableEmploye
 })
 
 export class WorkHourEmployeesPage {
-  employee_assignments: EmployeeAssignmentList = new EmployeeAssignmentList(undefined);
-  title: string;
-  start_date: string;
-  end_date: string;
+  employee_assignments: EmployeeAssignmentList;
+  employee: Employee;
+  employee_name: string;
+  date_from: string;
+  date_to: string;
 
   constructor(
     private nav: NavController,
     params: NavParams,
     private api: Api
   ) {
-    this.title = '出勤工時';
-    this.start_date = params.data.start_date;
-    this.end_date = params.data.end_date;
-    // this.employee_assignments.filter(
-    //   {start_date__gt: this.start_date},
-    //   {end_date__lt: this.end_date}
-    // );
+    this.employee = params.data.employee;
+    this.date_from = params.data.date_from;
+    this.date_to = params.data.date_to;
+    this.employee_name = this.employee.contact.name;
+    this.employee_assignments = new EmployeeAssignmentList(api);
+    this.employee_assignments.filter({
+      employee: this.employee.id,
+      assignment__start_datetime: this.date_from
+    });
   }
   ionViewWillEnter () {
-    // this.employee_assignments.fetch();
+    this.employee.fetch();
+    this.employee_assignments.fetch();
   }
-  click (employee) {
-    this.nav.push(WorkHourRecordsPage, {employee: employee});
+  click (employee_assignment) {
   }
 }

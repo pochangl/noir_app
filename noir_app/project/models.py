@@ -112,8 +112,12 @@ class EmployeeAssignment(TimeStampModel):
 
     class Meta:
         unique_together = (("employee", "assignment"),)
-
-
+ 
+    @property
+    def work_date(self):
+        return self.assignment.start_datetime.date()
+    
+    
 # class Pay(PersonalIncome):    #尚未定義PersonaleIncome的model
 class Pay(TimeStampModel):
     employee_assignment = models.OneToOneField(EmployeeAssignment, related_name="pay")
