@@ -3,16 +3,15 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Api } from '../../providers/api/api';
 import 'rxjs/add/operator/map';
 import {PaycheckDetailPage} from '../transaction/paycheck_detail';
-import {PaycheckAddRecordPage} from '../transaction/paycheck_add_record';
 import {MyPaycheckList} from './models';
 import {Employee} from '../account/models';
 
 @Component({
-  templateUrl: 'build/pages/transaction/paycheck_records.html',
+  templateUrl: 'build/pages/transaction/work_hour_records.html',
   providers: [Api]
 })
 
-export class PaycheckRecordsPage {
+export class WorkHourRecordsPage {
   title: '工資';
   paychecks: MyPaycheckList;
   employee: Employee;
@@ -32,8 +31,5 @@ export class PaycheckRecordsPage {
   }
   click (paycheck) {
     this.nav.push(PaycheckDetailPage, {paycheck: paycheck});
-  }
-  navToAddRecordPage () {
-    this.nav.push(PaycheckAddRecordPage, {employee: this.employee});
   }
 }

@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
-import { Api } from '../../providers/api/api';
-import {PaycheckEmployeesPage} from '../transaction/paycheck_employees';
+import {Api} from '../../providers/api/api';
+import {WorkHourDateRangePage} from '../transaction/work_hour_date_range';
+// import {WageDateRangePage} from '../transaction/wage_date_range';
 
 @Component({
   templateUrl: 'build/pages/transaction/paycheck_choose_service.html',
@@ -16,9 +17,9 @@ export class PaycheckChooseServicePage {
   ) {
   }
   work_hour_record () {
-    this.nav.push(PaycheckEmployeesPage);
+    this.nav.push(WorkHourDateRangePage);
   }
   payment_record () {
-    this.nav.push(PaycheckEmployeesPage);
+    // this.nav.push(WageDateRangePage);
   }
 }

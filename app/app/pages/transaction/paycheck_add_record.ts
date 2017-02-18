@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Api} from '../../providers/api/api';
 import 'rxjs/add/operator/map';
-import {PaycheckEmployeesPage} from '../transaction/paycheck_employees';
+// import {WageEmployeesPage} from '../transaction/wage_employees';
 import {MyPaycheck, MyPaycheckList} from './models';
 
 @Component({
@@ -10,7 +10,7 @@ import {MyPaycheck, MyPaycheckList} from './models';
   providers: [Api]
 })
 
-export class PaycheckAddRecordPage {
+export class WageAddRecordPage {
   title: '工資';
   paycheck: MyPaycheck;
   employee: any;
@@ -52,7 +52,7 @@ export class PaycheckAddRecordPage {
       return;
     } else {
       this.paycheck.send_data(this.employee);
-      // this.nav.push(PaycheckEmployeesPage);
+      // this.nav.push(WageEmployeesPage);
     }
   }
 }

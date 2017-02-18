@@ -3,7 +3,6 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Headers } from '@angular/http';
 import { Api } from '../../providers/api/api';
 import 'rxjs/add/operator/map';
-import {PaycheckEmployeesPage} from '../transaction/paycheck_employees';
 import {Paycheck} from './models';
 
 @Component({
