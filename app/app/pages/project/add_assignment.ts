@@ -25,6 +25,8 @@ export class AddAssignmentPage {
 
     add () {
       console.log(this.assignment);
-      this.assignment.create();
+      this.assignment.create().then(() => {
+        this.nav.pop();
+      });
     }
 }
