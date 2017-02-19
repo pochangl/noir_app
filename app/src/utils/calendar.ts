@@ -1,4 +1,4 @@
-import { Model, ModelList } from '../model';
+import { Model} from '../model';
 import { Iterator } from './iterator';
 import { Api } from '../providers/api/api';
 

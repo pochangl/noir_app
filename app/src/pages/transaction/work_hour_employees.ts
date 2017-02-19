@@ -1,14 +1,10 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Api} from '../../providers/api/api';
-import {WorkHourRecordsPage} from './work_hour_records';
-import {Assignment, EmployeeAssignment, EmployeeAssignmentList, AvailableEmployeeList} from '../project/models';
+import {EmployeeAssignmentList} from '../project/models';
 import {Employee} from '../account/models';
 
-@Component({
-  templateUrl: 'work_hour_employees.html',
-  providers: [Api]
-})
+@Component({templateUrl: 'work_hour_employees.html',providers: [Api]})
 export class WorkHourEmployeesPage {
   employee_assignments: EmployeeAssignmentList;
   employee: Employee;

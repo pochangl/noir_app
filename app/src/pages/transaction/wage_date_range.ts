@@ -1,17 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-// import { ProjectListPage } from './list';
-import { PersonalAccountBalnaceList } from './models';
+import { Component } from '@angular/core';
+import { NavController} from 'ionic-angular';
 import { EmployeeList } from '../account/models';
 import { Api } from '../../providers/api/api';
-import { MonthIterator } from '../../utils/calendar';
 import { WageEmployeesPage } from './wage_employees';
 
 
-@Component({
-  templateUrl: 'paycheck_date_range.html',
-  providers: [Api]
-})
+@Component({templateUrl: 'paycheck_date_range.html',providers: [Api]})
 export class WageDateRangePage {
   title: string;
   employees: EmployeeList;

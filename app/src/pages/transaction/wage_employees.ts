@@ -3,13 +3,8 @@ import {NavController, NavParams} from 'ionic-angular';
 import {Api} from '../../providers/api/api';
 import {PersonalAccountBalnaceList} from './models';
 import {Employee} from '../account/models';
-import {WorkHourRecordsPage} from '../transaction/work_hour_records';
-import {Assignment, EmployeeAssignment, EmployeeAssignmentList, AvailableEmployeeList} from '../project/models';
 
-@Component({
-  templateUrl: 'wage_employees.html',
-  providers: [Api]
-})
+@Component({templateUrl: 'wage_employees.html',providers: [Api]})
 export class WageEmployeesPage {
   personal_account_balances: PersonalAccountBalnaceList;
   employee: Employee;

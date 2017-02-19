@@ -3,10 +3,7 @@ import {NavController, NavParams} from 'ionic-angular';
 import { Api } from '../../providers/api/api';
 import {PickDatePage} from '../transaction/insurance_pick_date';
 
-@Component({
-  templateUrl: 'insurance_choose_service.html',
-  providers: [Api]
-})
+@Component({templateUrl: 'insurance_choose_service.html',providers: [Api]})
 export class InsuranceChooseServicePage {
   constructor(
     private nav: NavController,

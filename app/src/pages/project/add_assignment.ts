@@ -4,10 +4,7 @@ import 'rxjs/add/operator/map';
 import {Api} from '../../providers/api/api';
 import {Assignment, ProjectList} from './models';
 
-@Component({
-    templateUrl: 'add_assignment.html',
-    providers: [Api]
-})
+@Component({templateUrl: 'add_assignment.html',providers: [Api]})
 export class AddAssignmentPage {
     assignment: Assignment;
     projects: ProjectList;
@@ -18,9 +15,6 @@ export class AddAssignmentPage {
         ) {
         this.projects = new ProjectList(this.api);
         this.assignment = new Assignment(this.api);
-    }
-    ionViewWillEnter() {
-        this.projects.fetch();
     }
 
     add () {

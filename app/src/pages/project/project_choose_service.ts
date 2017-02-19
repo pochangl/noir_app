@@ -4,10 +4,7 @@ import { Api } from '../../providers/api/api';
 import {PickDatePage} from '../project/pick_date';
 import {AddAssignmentPage} from './add_assignment';
 
-@Component({
-  templateUrl: 'project_choose_service.html',
-  providers: [Api]
-})
+@Component({templateUrl: 'project_choose_service.html',providers: [Api]})
 export class ProjectChooseServicePage {
   constructor(
     private nav: NavController,

@@ -4,9 +4,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 import { Assignment, EmployeeAssignment, EmployeeAssignmentList, AvailableEmployeeList } from './models';
 
-@Component({
-  templateUrl: 'detail.html'
-})
+@Component({templateUrl: 'detail.html'})
 export class ProjectDetailPage {
   assignment: Assignment;
   availables: AvailableEmployeeList = new AvailableEmployeeList(undefined);

@@ -1,15 +1,10 @@
-import { Component, Injectable } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Api } from '../../providers/api/api';
 import 'rxjs/add/operator/map';
-// import {PaycheckDetailPage} from '../transaction/paycheck_detail';
-// import {MyPaycheckList} from './models';
 import {Employee} from '../account/models';
 
-@Component({
-  templateUrl: 'work_hour_records.html',
-  providers: [Api]
-})
+@Component({templateUrl: 'work_hour_records.html',providers: [Api]})
 export class WorkHourRecordsPage {
   title: '工資';
   // paychecks: MyPaycheckList;

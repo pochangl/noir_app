@@ -4,10 +4,7 @@ import {Api} from '../../providers/api/api';
 import 'rxjs/add/operator/map';
 import {MyPaycheck} from './models';
 
-@Component({
-  templateUrl: 'paycheck_add_record.html',
-  providers: [Api]
-})
+@Component({templateUrl: 'paycheck_add_record.html',providers: [Api]})
 export class WageAddRecordPage {
   title: '工資';
   paycheck: MyPaycheck;

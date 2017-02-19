@@ -4,10 +4,7 @@ import { Api } from '../../providers/api/api';
 import {DayOffDaysPage} from '../schedule/dayoff_days';
 import {EmployeeList} from '../account/models';
 
-@Component({
-  templateUrl: '../account/list.html',
-  providers: [Api]
-})
+@Component({templateUrl: '../account/list.html',providers: [Api]})
 export class DayOffEmployeesPage {
   employees: EmployeeList;
   title: string;

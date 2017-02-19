@@ -4,9 +4,7 @@ import {StatusBar} from 'ionic-native';
 import {SignInPage} from '../pages/general/sign_in';
 import {HomePage} from '../pages/general/home';
 
-@Component({
-  templateUrl: 'app.html'
-})
+@Component({templateUrl: 'app.html'})
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 

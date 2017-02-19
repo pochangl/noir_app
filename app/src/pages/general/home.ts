@@ -5,9 +5,7 @@ import {DayOffEmployeesPage} from '../schedule/dayoff_employees';
 import {PaycheckChooseServicePage} from '../transaction/paycheck_choose_service';
 import {InsuranceChooseServicePage} from '../transaction/insurance_choose_service';
 
-@Component({
-  templateUrl: 'home.html',
-})
+@Component({templateUrl: 'home.html'})
 export class HomePage {
   constructor(private nav: NavController) {
   }

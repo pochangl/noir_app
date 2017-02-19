@@ -1,9 +1,7 @@
 import {Component} from '@angular/core';
 import { NavController} from 'ionic-angular';
 
-@Component({
-  templateUrl: 'sign_in.html'
-})
+@Component({templateUrl: 'sign_in.html'})
 export class SignInPage {
   username: string;
   password: string;

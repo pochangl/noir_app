@@ -5,10 +5,7 @@ import {Api} from '../../providers/api/api';
 import {ProjectDetailPage} from './detail';
 import {AssignmentList} from './models';
 
-@Component({
-    templateUrl: 'list.html',
-    providers: [Api]
-})
+@Component({templateUrl: 'list.html',providers: [Api]})
 export class ProjectListPage {
     assignments: AssignmentList;
     selected_date: string;
