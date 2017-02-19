@@ -61,7 +61,7 @@ class EmployeeAssignmentViewSet(viewsets.ModelViewSet, generics.ListAPIView):
     serializer_class = serializers.EmployeeAssignmentSerializer
     filter_class = filters.EmployeeAssignmentFilter
 #     filter_backends = (filters.OrderingFilter,)
-    ordering = ('work_date',)
+#     ordering = ('work_date',)
     
 # Error: Cannot resolve keyword 'work_date' into field.
 #     def filter_queryset(self, queryset):

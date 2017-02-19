@@ -21,5 +21,5 @@ class EmployeeAssignmentFilter(django_filters.FilterSet):
     class Meta:
         model = models.EmployeeAssignment
         fields = ('assignment', 'employee', 'date_from', 'date_to',)
-        ordering = ('work_date',)
+#         ordering = ('work_date')
         
