@@ -146,7 +146,7 @@ export class MonthIterator extends Iterator<Month> {
   }
   initial (year: number, month: number) {
     this.month = month;
-    this.year = year
+    this.year = year;
     this.loadYear(year).then(calendar => {
       this.value = calendar.years[this.year].monthes[this.month - 1];
     });

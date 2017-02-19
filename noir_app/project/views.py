@@ -16,6 +16,11 @@ class HttpAccepted(HttpResponse):
     status_code = 202
 
 
+class ProjectViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.ProjectSerializer
+    queryset = models.Project.objects.all()
+
+
 class AssignmentViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.AssignmentSerializer
     queryset = models.Assignment.objects.all()

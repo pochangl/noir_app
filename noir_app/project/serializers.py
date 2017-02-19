@@ -10,6 +10,12 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Project
         fields = ('id', 'name', 'company')
+        extra_kwargs = {
+            "id": {
+                "read_only": False,
+                "required": False,
+            },
+        }
 
 
 class BaseAssignmentSerializer(serializers.ModelSerializer):
@@ -27,12 +33,17 @@ class ProposedEmployeeList(serializers.ModelSerializer):
 
 class AssignmentSerializer(serializers.ModelSerializer):
     project = ProjectSerializer()
-    employees = EmployeeSerializer(many=True)
+    employees = EmployeeSerializer(many=True, read_only=True)
     proposed = ProposedEmployeeList(source="latest_proposed_employee_list", read_only=True, allow_null=True)
 
     class Meta:
         model = models.Assignment
         fields = ('id', 'start_datetime', 'end_datetime', 'number_needed', 'project', 'employees', 'proposed')
+    
+    def create(self, validated_data):
+        data = dict(validated_data)
+        data['project'] = models.Project.objects.get(id=data['project']['id'])
+        return models.Assignment.objects.create(**data)
 
 
 class EmployeeAssignmentSerializer(serializers.ModelSerializer):

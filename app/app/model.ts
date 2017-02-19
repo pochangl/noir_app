@@ -183,7 +183,6 @@ export abstract class Model {
   }
 }
 
-
 export abstract class ModelList<T extends Model>{
   resource_name: string;
   model: any;

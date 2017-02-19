@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>新增派工</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="ProjectDetailPage">
+	<ion-list>
+		<ion-item>
+      <ion-label>專案: </ion-label>
+      <ion-select [(ngModel)]="assignment.project">
+        <ion-option [value]="project" *ngFor="let project of projects.objects">{{ project.company.name }} - {{ project.name }}</ion-option>
+      </ion-select>
+		</ion-item>
+    <ion-item>
+      <ion-label>時間: </ion-label>
+      <ion-datetime [(ngModel)]="assignment.start_datetime"  displayFormat="YYYY-MM-DD HH:mm" pickerFormat="YYYY-MM-DD HH:mm"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>人數: </ion-label>
+      <ion-input type="number"></ion-input>
+    </ion-item>
+    <ion-item>
+      <button (click)="add()" ion-button full>新增</button>
+    </ion-item>
+	</ion-list>
+</ion-content>
