@@ -8,11 +8,18 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-title>---日期---||賺得工資||支付薪資||--餘額--</ion-title>
-    <button ion-item *ngFor="let personal_account_balance of personal_account_balances.objects">
-      {{ personal_account_balance.date }} || {{ personal_account_balance.income }} || {{ personal_account_balance.expense }} || {{ personal_account_balance.balance}}
-      <ion-icon name="md-arrow-forward" item-right></ion-icon>
-    </button>
-  </ion-list>
+  <ion-grid>
+    <ion-row>
+      <ion-col width-20>日期</ion-col>
+      <ion-col width-20>賺得工資</ion-col>
+      <ion-col width-20>支付薪資</ion-col>
+      <ion-col width-20>餘額</ion-col>
+    </ion-row>
+    <ion-row *ngFor = "let personal_account_balance of personal_account_balances.objects">
+      <ion-col width-20>{{ personal_account_balance.date }}</ion-col>
+      <ion-col width-20>{{ personal_account_balance.income }}</ion-col>
+      <ion-col width-20>{{ personal_account_balance.expense }}</ion-col>
+      <ion-col width-20>{{ personal_account_balance.balance }}</ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

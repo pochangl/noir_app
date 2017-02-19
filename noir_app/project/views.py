@@ -62,16 +62,9 @@ class AssignEmployeeView(mixins.CreateModelMixin, generics.RetrieveUpdateDestroy
 
 
 class EmployeeAssignmentViewSet(viewsets.ModelViewSet, generics.ListAPIView):
-    queryset = models.EmployeeAssignment.objects.all()
+    queryset = models.EmployeeAssignment.objects.all().order_by("-assignment__start_datetime")
     serializer_class = serializers.EmployeeAssignmentSerializer
     filter_class = filters.EmployeeAssignmentFilter
-#     filter_backends = (filters.OrderingFilter,)
-#     ordering = ('work_date',)
-    
-# Error: Cannot resolve keyword 'work_date' into field.
-#     def filter_queryset(self, queryset):
-#         queryset = super(EmployeeAssignmentViewSet, self).filter_queryset(queryset)
-#         return queryset.order_by('-work_date')
 
 
 class ProposeEmployeeListView(mixins.CreateModelMixin, EmployeeListView):
