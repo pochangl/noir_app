@@ -167,7 +167,8 @@ export abstract class Model {
       var observable = this.api.delete(
         this.url_obj, this.serialize()
       ).subscribe(
-        data => resolve()
+        data => resolve(),
+        error => reject(error)
       );
     });
    return promise;
