@@ -1,13 +1,26 @@
 import { Model, IndirectModelList, ModelList, JunctionModel, APIDateList} from '../../model';
-import { Employee, EmployeeList } from '../account/models';
+import { Employee, EmployeeList, Company } from '../account/models';
 
 import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http/src/static_response';
 
-
 export class Project extends Model {
-  fields = ['name'];
+  resource_name = 'project/project';
+  company: Company;
   name: string;
+
+  fields = ['name',
+    {
+      name: 'company',
+      cls: Company
+    }
+  ];
+}
+
+
+export class ProjectList extends ModelList<Project> {
+  model = Project;
+  resource_name = 'project/project';
 }
 
 export class BasicAssignment extends Model {
@@ -35,7 +48,7 @@ export class EmployeeAssignment extends Model {
   hours: Number;
   overtime: Number;
   work_date: string;
-  
+
   fields = [
     'hours',
     'overtime',

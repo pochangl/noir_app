@@ -19,3 +19,9 @@ export class EmployeeList extends ModelList<Employee> {
   model = Employee;
   resource_name = 'account/employee';
 }
+
+export class Company extends Model {
+  name: string;
+  resource_name = 'account/employee';
+  fields = ['name'];
+}
