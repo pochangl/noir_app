@@ -10,6 +10,7 @@ import { ProjectListPage } from '../pages/project/list';
 import { PickDatePage as ProjectPickDatePage } from '../pages/project/pick_date';
 
 import { DayOffEmployeesPage } from '../pages/schedule/dayoff_employees';
+import { DayOffDaysPage } from '../pages/schedule/dayoff_days';
 
 import { InsuranceChooseServicePage } from '../pages/transaction/insurance_choose_service';
 import { PickDatePage as InsurancePickDatePage } from '../pages/transaction/insurance_pick_date';
@@ -36,6 +37,7 @@ import { WorkHourRecordsPage } from '../pages/transaction/work_hour_records';
     ProjectChooseServicePage,
 
     DayOffEmployeesPage,
+    DayOffDaysPage,
 
     InsuranceChooseServicePage,
     InsurancePickDatePage,
@@ -67,6 +69,7 @@ import { WorkHourRecordsPage } from '../pages/transaction/work_hour_records';
     ProjectChooseServicePage,
 
     DayOffEmployeesPage,
+    DayOffDaysPage,
 
     InsuranceChooseServicePage,
     InsurancePickDatePage,
