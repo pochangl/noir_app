@@ -4,6 +4,8 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/general/home';
 
 import { AccInfoChooseServicePage } from '../pages/account/acc_info_choose_service';
+import { AccInfoEmplyeesPage } from '../pages/account/acc_info_employees';
+import { AccInfoEmplyeeDetailPage } from '../pages/account/acc_info_employee_detail';
 
 import { ProjectChooseServicePage } from '../pages/project/project_choose_service';
 import { AddAssignmentPage } from '../pages/project/add_assignment';
@@ -28,6 +30,8 @@ import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees'
     HomePage,
 
     AccInfoChooseServicePage,
+    AccInfoEmplyeesPage,
+    AccInfoEmplyeeDetailPage,
 
     ProjectChooseServicePage,
     AddAssignmentPage,
@@ -58,6 +62,8 @@ import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees'
     HomePage,
 
     AccInfoChooseServicePage,
+    AccInfoEmplyeesPage,
+    AccInfoEmplyeeDetailPage,
 
     ProjectChooseServicePage,
     AddAssignmentPage,
