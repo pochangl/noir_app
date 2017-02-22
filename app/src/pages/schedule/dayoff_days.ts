@@ -5,10 +5,7 @@ import { Api } from '../../providers/api/api';
 import {DayOff, DayOffList} from './models';
 import {MonthIterator} from '../../utils/calendar';
 
-@Component({
-  templateUrl: '../general/calendar.html',
-  providers: [Api]
-})
+@Component({templateUrl: '../general/calendar.html', providers: [Api]})
 export class DayOffDaysPage {
   dayoff: DayOff;
   dayoffs: DayOffList;
