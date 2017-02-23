@@ -5,7 +5,7 @@ from . import models
 class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Contact
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'title', 'address', 'phone', 'mobile', 'ssn', 'birthday')
 
 
 class CompanySerializer(serializers.ModelSerializer):
@@ -19,4 +19,4 @@ class EmployeeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Employee
-        fields = ('id', 'contact')
+        fields = ('id', 'contact', 'is_active')

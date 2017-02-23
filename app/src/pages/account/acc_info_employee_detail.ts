@@ -21,6 +21,11 @@ export class AccInfoEmplyeeDetailPage {
     this.employee.fetch();
   }
 
-  click () {
+  modify () {
+    console.log(this.employee);
+    // this.employee.update().then(() => {
+    //   this.nav.pop();
+    // });
+    this.employee.update();
   }
 }

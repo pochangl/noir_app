@@ -9,7 +9,36 @@
 
 <ion-content>
     <ion-list>
-      <ion-label fixed>姓名</ion-label>
-      <ion-input type="text">{{ employee.contact.name }}</ion-input>
+      <ion-item>
+        <ion-label fixed>姓名</ion-label>
+        <ion-input type="text" [(ngModel)]="employee.contact.name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>職稱</ion-label>
+        <ion-input type="text" [(ngModel)]="employee.contact.title"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>地址</ion-label>
+        <ion-input type="text" [(ngModel)]="employee.contact.address"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>住家電話</ion-label>
+        <ion-input type="text" [(ngModel)]="employee.contact.phone"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>行動電話</ion-label>
+        <ion-input type="text" [(ngModel)]="employee.contact.mobile"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>身份證字號</ion-label>
+        <ion-input type="text" [(ngModel)]="employee.contact.ssn"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>生日</ion-label>
+        <ion-input type="text" [(ngModel)]="employee.contact.birthday"></ion-input>
+      </ion-item>
     </ion-list>
 </ion-content>
+<ion-footer>
+  <button (click)="modify()" ion-button full>修改</button>
+</ion-footer>

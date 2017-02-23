@@ -33,7 +33,7 @@ class Company(TimeStampModel):
     
 class Employee(TimeStampModel):
     contact = models.ForeignKey(Contact, related_name='employees')
-    title = models.CharField(max_length=128)
+#     title = models.CharField(max_length=128)
     is_active = models.BooleanField(default=True)
     
     def __str__(self):

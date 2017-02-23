@@ -1,16 +1,23 @@
 import { Model, ModelList } from '../../model';
 
 export class Contact extends Model {
-  fields = ['name'];
+  fields = ['name', 'title', 'address', 'phone', 'mobile', 'ssn', 'birthday'];
   name: string;
+  title: string;
+  address: string;
+  phone: number;
+  mobile: number;
+  ssn: string;
+  birthday: string;
 }
 
 export class Employee extends Model {
   resource_name = 'account/employee';
-  fields = [{
+  fields = ['is_active', {
     name: 'contact',
     cls: Contact
   }];
+  is_active: boolean;
   contact: Contact;
 }
 
