@@ -19,6 +19,6 @@ class EmployeeView(viewsets.ModelViewSet):
     queryset = models.Employee.objects.all()
     
     def perform_destroy(self, instance):
-        instance.is_active = True
+        instance.is_active = False
         instance.save()
     

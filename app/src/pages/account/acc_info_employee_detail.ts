@@ -20,12 +20,21 @@ export class AccInfoEmplyeeDetailPage {
     this.contact.api = this.employee.api;
     this.contact.id = this.employee.id;
   }
+
   ionViewWillEnter () {
     this.employee.fetch();
     this.contact.fetch();
   }
 
+  new_employee () {
+    this.contact.add(this.contact);
+  }
+
   modify_acc_info () {
     this.contact.update();
+  }
+
+  delete_emloyee () {
+    this.employee.delete();
   }
 }

@@ -10,6 +10,27 @@ export class Contact extends Model {
   mobile: number;
   ssn: string;
   birthday: string;
+
+  add (contact: Contact) {
+    let new_contact = new Contact(this.api);
+    new_contact.id = this.id;
+    new_contact.name = this.name;
+    new_contact.title = this.title;
+    new_contact.address = this.address;
+    new_contact.phone = this.phone;
+    new_contact.mobile = this.mobile;
+    new_contact.ssn = this.ssn;
+    new_contact.birthday = this.birthday;
+    return new Promise<any>((resolve, reject) => {
+      new_contact.create().then(() => {
+        this.add(contact);
+        this.fetch();
+        resolve(new_contact);
+      }).catch(() => {
+        reject();
+      });
+    });
+  }
 }
 
 export class Employee extends Model {
