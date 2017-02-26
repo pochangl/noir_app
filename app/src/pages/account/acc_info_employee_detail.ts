@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Employee } from './models';
+import { Employee, Contact } from './models';
 import { Api } from '../../providers/api/api';
 
 
@@ -8,6 +8,7 @@ import { Api } from '../../providers/api/api';
 export class AccInfoEmplyeeDetailPage {
   title: string;
   employee: Employee;
+  contact: Contact = new Contact(undefined);
 
   constructor(
     private nav: NavController,
@@ -16,16 +17,15 @@ export class AccInfoEmplyeeDetailPage {
   ) {
     this.title = '個人資料-編輯員工資料';
     this.employee = params.data.employee;
+    this.contact.api = this.employee.api;
+    this.contact.id = this.employee.id;
   }
   ionViewWillEnter () {
     this.employee.fetch();
+    this.contact.fetch();
   }
 
-  modify () {
-    console.log(this.employee);
-    // this.employee.update().then(() => {
-    //   this.nav.pop();
-    // });
-    this.employee.update();
+  modify_acc_info () {
+    this.contact.update();
   }
 }

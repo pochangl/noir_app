@@ -1,6 +1,7 @@
 import { Model, ModelList } from '../../model';
 
 export class Contact extends Model {
+  resource_name = 'account/contact';
   fields = ['name', 'title', 'address', 'phone', 'mobile', 'ssn', 'birthday'];
   name: string;
   title: string;
@@ -28,6 +29,6 @@ export class EmployeeList extends ModelList<Employee> {
 
 export class Company extends Model {
   name: string;
-  resource_name = 'account/employee';
+  resource_name = 'account/company';
   fields = ['name'];
 }
