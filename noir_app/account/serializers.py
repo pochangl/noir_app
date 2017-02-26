@@ -16,7 +16,7 @@ class ContactSerializer(serializers.ModelSerializer):
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Company
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'is_active')
 
 
 class EmployeeSerializer(serializers.HyperlinkedModelSerializer):

@@ -26,14 +26,14 @@ class Contact(TimeStampModel):
 
 class Company(TimeStampModel):
     name = models.CharField(max_length=128)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.company
+        return self.name
     
     
 class Employee(TimeStampModel):
     contact = models.ForeignKey(Contact, related_name='employees')
-#     title = models.CharField(max_length=128)
     is_active = models.BooleanField(default=True)
     
     def __str__(self):

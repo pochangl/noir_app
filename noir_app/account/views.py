@@ -1,7 +1,7 @@
 from rest_framework import generics, viewsets, mixins
 from . import models
 from . import serializers
-from account.models import Employee
+from account.models import Employee, Company
     
     
 class ContactView(viewsets.ModelViewSet):
@@ -21,4 +21,19 @@ class EmployeeView(viewsets.ModelViewSet):
     def perform_destroy(self, instance):
         instance.is_active = False
         instance.save()
+    
+    
+class CompanyView(viewsets.ModelViewSet):
+    serializer_class = serializers.CompanySerializer
+    queryset = models.Company.objects.all()
+    
+    def perform_destroy(self, instance):
+        instance.is_active = False
+        instance.save()
+        
+        
+class CompanyListView(generics.ListAPIView):
+    serializer_class = serializers.CompanySerializer
+    queryset = models.Company.objects.filter(is_active=True)
+    
     

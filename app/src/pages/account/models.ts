@@ -50,6 +50,12 @@ export class EmployeeList extends ModelList<Employee> {
 
 export class Company extends Model {
   name: string;
+  is_active: boolean;
   resource_name = 'account/company';
-  fields = ['name'];
+  fields = ['name', 'is_active'];
+}
+
+export class CompanyList extends ModelList<Company> {
+  model: Company;
+  resource_name = 'account/company';
 }
