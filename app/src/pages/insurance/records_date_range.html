@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{title}}-日期區間</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-item>
+		<ion-label>開始日期</ion-label>
+		<ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY-MM-DD" min="2017" max="2999-12-31" [(ngModel)]="date_from"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+		<ion-label>結束日期</ion-label>
+		<ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY-MM-DD" min="2017" max="2999-12-31" [(ngModel)]="date_to"></ion-datetime>
+    </ion-item>
+    <ion-footer>
+      <button (click)="click()" ion-button full>下一步</button>
+    </ion-footer>
+</ion-content>

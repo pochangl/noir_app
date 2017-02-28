@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import { Api } from '../../providers/api/api';
 import { PickDatePage } from './pick_date';
+import { InsuranceDateRangePage} from './records_date_range';
 
 @Component({templateUrl: 'choose_service.html',providers: [Api]})
 export class InsuranceChooseServicePage {
@@ -16,5 +17,8 @@ export class InsuranceChooseServicePage {
   }
   delete_policy () {
     this.nav.push(PickDatePage, {service_choice: 'delete_policy'});
+  }
+  records () {
+    this.nav.push(InsuranceDateRangePage);
   }
 }
