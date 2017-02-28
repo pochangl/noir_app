@@ -107,12 +107,31 @@ class EmployeeAssignment(TimeStampModel):
     """
     employee = models.ForeignKey(Employee, related_name='assignments_detail')
     assignment = models.ForeignKey(Assignment, related_name='employees_detail')
-    hours = models.PositiveIntegerField(default=0) # 現場派工工作時數
-    overtime = models.PositiveIntegerField(default=0) # 現場派工加班時數
+    minutes = models.PositiveIntegerField(default=0) # 現場派工工作時數
+    overminutes = models.PositiveIntegerField(default=0) # 現場派工加班時數
 
     class Meta:
         unique_together = (("employee", "assignment"),)
+
+    @property
+    def hours(self):
+        return self.minutes/60.0
  
+    @hours.setter
+    def hours(self, value):
+        self.minutes = int(round(value * 60))
+        return self.hours
+
+    @property
+    def overtime(self):
+        return self.overminutes/60.0
+    
+    @overtime.setter
+    def overtime(self, value):
+        self.overminutes = int(round(value * 60))
+        return self.overtime
+
+    
     @property
     def work_date(self):
         return self.assignment.start_datetime.date()
