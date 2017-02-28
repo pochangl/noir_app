@@ -99,7 +99,7 @@ class RegistrationToken(TimeStampModel):
 
 
 class EmployeeList(models.Model):
-    employees = models.ManyToManyField(Employee)
+    employees = models.ManyToManyField(Employee, related_name="%(app_label)s_%(class)s_employees")
 
     class Meta:
         abstract = True

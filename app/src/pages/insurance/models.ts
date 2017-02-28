@@ -10,9 +10,8 @@ export class Insurance extends Model {
   date: string;
   employee: Employee;
   fields =  [
-    'date',
     {
-      name: 'employee',
+      name: 'employees',
       cls: Employee
     }
   ]
@@ -20,5 +19,5 @@ export class Insurance extends Model {
 
 export class InsuranceList extends ModelList<Insurance> {
   model = Insurance;
-  resource_name = 'insurance'
+  resource_name = 'insurance/recent'
 }

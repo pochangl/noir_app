@@ -1,11 +1,7 @@
 from django.conf.urls import patterns, url, include
 from . import views
-from rest_framework import routers
-router = routers.DefaultRouter()
-
-router.register(r'insurance', views.InsuranceViewSet)
-
-
 urlpatterns = (
-    url(r'^', include(router.urls)),
+    url(r'^recent/$', views.RecentInsuranceListView.as_view()),
+    url(r'^add/$', views.AddInsuranceView.as_view()),
+    url(r'^remove/$', views.RemoveInsuranceView.as_view()),
 )
