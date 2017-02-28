@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <button menuToggle>
+    <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>主選單</ion-title>
@@ -10,11 +10,11 @@
 
 <ion-content>
   <ion-list>
-	  <button ion-item (click)="project()">派工作業</button>
-  	<button ion-item (click)="insurance()">保險業務</button>
-	  <button ion-item (click)="paycheck()">薪資業務</button>
-	  <button ion-item (click)="dayoff()">請假紀錄</button>
-	  <button ion-item (click)="acc_info()">個人/公司資料管理</button>
+	  <ion-item (click)="project()">派工作業</ion-item>
+  	<ion-item (click)="insurance()">保險業務</ion-item>
+	  <ion-item (click)="paycheck()">薪資業務</ion-item>
+	  <ion-item (click)="dayoff()">請假紀錄</ion-item>
+	  <ion-item (click)="acc_info()">個人/公司資料管理</ion-item>
   </ion-list>
 
 </ion-content>
