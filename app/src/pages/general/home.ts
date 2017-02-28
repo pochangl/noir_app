@@ -3,7 +3,7 @@ import {NavController} from 'ionic-angular';
 import {ProjectChooseServicePage} from '../project/project_choose_service';
 import {DayOffEmployeesPage} from '../schedule/dayoff_employees';
 import {PaycheckChooseServicePage} from '../transaction/paycheck_choose_service';
-import {InsuranceChooseServicePage} from '../transaction/insurance_choose_service';
+import {InsuranceChooseServicePage} from '../insurance/choose_service';
 import {AccInfoChooseServicePage} from '../account/acc_info_choose_service';
 
 @Component({templateUrl: 'home.html'})

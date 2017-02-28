@@ -48,5 +48,6 @@ urlpatterns = (
     url(r'^api/v1/project/', include('project.urls')),
     url(r'^api/v1/transaction/', include('transaction.urls')),
     url(r'^api/v1/schedule/', include('schedule.urls')),
+    url(r'^api/v1/insurance/', include('insurance.urls')),
     url(r'^api/', include(v1_api.urls)),
 )

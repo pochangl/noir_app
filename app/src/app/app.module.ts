@@ -17,8 +17,10 @@ import { PickDatePage as ProjectPickDatePage } from '../pages/project/pick_date'
 import { DayOffEmployeesPage } from '../pages/schedule/dayoff_employees';
 import { DayOffDaysPage } from '../pages/schedule/dayoff_days';
 
-import { InsuranceChooseServicePage } from '../pages/transaction/insurance_choose_service';
-import { PickDatePage as InsurancePickDatePage } from '../pages/transaction/insurance_pick_date';
+import { InsuranceChooseServicePage } from '../pages/insurance/choose_service';
+import { PickDatePage as InsurancePickDatePage } from '../pages/insurance/pick_date';
+import { InsuranceListPage } from '../pages/insurance/list';
+
 import { PaycheckChooseServicePage } from '../pages/transaction/paycheck_choose_service';
 import { WageDateRangePage } from '../pages/transaction/wage_date_range';
 import { WageEmployeesPage } from '../pages/transaction/wage_employees';
@@ -48,12 +50,13 @@ import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees'
 
     InsuranceChooseServicePage,
     InsurancePickDatePage,
+    InsuranceListPage,
+
     PaycheckChooseServicePage,
     WageDateRangePage,
     WageEmployeesPage,
     WorkHourDateRangePage,
     WorkHourEmployeesPage
-
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -81,6 +84,8 @@ import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees'
 
     InsuranceChooseServicePage,
     InsurancePickDatePage,
+    InsuranceListPage,
+
     PaycheckChooseServicePage,
     WageDateRangePage,
     WageEmployeesPage,
