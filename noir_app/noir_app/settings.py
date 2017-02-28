@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'transaction',
     'utils',
     'schedule',
+    'insurance',
 )
 
 MIDDLEWARE_CLASSES = (

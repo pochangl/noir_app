@@ -13,8 +13,8 @@ export class ProjectListPage {
     constructor(
         protected nav: NavController,
         params: NavParams,
-        private api: Api
-        ) {
+        protected api: Api
+      ) {
         this.selected_date = params.data.date.date;
         this.assignments = new AssignmentList(this.api);
         this.assignments.filter({

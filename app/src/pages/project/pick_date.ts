@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import { ProjectListPage } from './list';
 import { HomePage } from '../general/home';
 import { AssignmentDateList } from './models';
@@ -11,11 +11,10 @@ export class PickDatePage {
   dates: AssignmentDateList;
 
   constructor(
-    private nav: NavController,
-    params: NavParams,
-    private api: Api
+    protected nav: NavController,
+    protected api: Api
   ) {
-    this.dates = new AssignmentDateList(api);
+    this.dates = new AssignmentDateList(this.api);
   }
 
   ionViewWillEnter () {
