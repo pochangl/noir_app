@@ -16,7 +16,7 @@ class EmployeeListView(generics.ListAPIView):
 
 class EmployeeView(viewsets.ModelViewSet):
     serializer_class = serializers.EmployeeSerializer
-    queryset = models.Employee.objects.all()
+    queryset = models.Employee.objects.filter(is_active=True)
     
     def perform_destroy(self, instance):
         instance.is_active = False

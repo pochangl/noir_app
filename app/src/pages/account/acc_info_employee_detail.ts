@@ -34,7 +34,7 @@ export class AccInfoEmplyeeDetailPage {
     this.contact.update();
   }
 
-  delete_emloyee () {
+  delete_employee () {
     this.employee.delete();
   }
 }

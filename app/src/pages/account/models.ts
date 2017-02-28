@@ -56,6 +56,6 @@ export class Company extends Model {
 }
 
 export class CompanyList extends ModelList<Company> {
-  model: Company;
+  model = Company;
   resource_name = 'account/company';
 }

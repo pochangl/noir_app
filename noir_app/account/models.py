@@ -15,9 +15,9 @@ class Contact(TimeStampModel):
     name = models.CharField(max_length=128)
     title = models.CharField(max_length=128)
     address = models.CharField(max_length=128)
-    phone = models.IntegerField()
-    mobile = models.IntegerField()
-    ssn = models.CharField(max_length=128) # social security number
+    phone = models.CharField(max_length=128)
+    mobile = models.CharField(max_length=128)
+    ssn = models.CharField(max_length=128, unique=True) # social security number
     birthday = models.DateField()
     
     def __str__(self):

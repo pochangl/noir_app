@@ -19,9 +19,7 @@ export class AccInfoCompaniesPage {
   }
 
   ionViewWillEnter () {
-    console.log(this.companies);
     this.companies.fetch();
-    console.log(this.companies);
   }
 
   click (company) {
