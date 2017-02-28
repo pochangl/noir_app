@@ -6,6 +6,7 @@ import { HomePage } from '../pages/general/home';
 import { AccInfoChooseServicePage } from '../pages/account/acc_info_choose_service';
 import { AccInfoEmplyeesPage } from '../pages/account/acc_info_employees';
 import { AccInfoEmplyeeDetailPage } from '../pages/account/acc_info_employee_detail';
+import { AccInfoCompaniesPage } from '../pages/account/acc_info_companies';
 
 import { ProjectChooseServicePage } from '../pages/project/project_choose_service';
 import { AddAssignmentPage } from '../pages/project/add_assignment';
@@ -19,6 +20,8 @@ import { DayOffDaysPage } from '../pages/schedule/dayoff_days';
 import { InsuranceChooseServicePage } from '../pages/insurance/choose_service';
 import { PickDatePage as InsurancePickDatePage } from '../pages/insurance/pick_date';
 import { InsuranceListPage } from '../pages/insurance/list';
+import { InsuranceDateRangePage } from '../pages/insurance/records_date_range';
+import { InsuranceRecordsPage } from '../pages/insurance/insurance_records';
 
 import { PaycheckChooseServicePage } from '../pages/transaction/paycheck_choose_service';
 import { WageDateRangePage } from '../pages/transaction/wage_date_range';
@@ -34,6 +37,7 @@ import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees'
     AccInfoChooseServicePage,
     AccInfoEmplyeesPage,
     AccInfoEmplyeeDetailPage,
+    AccInfoCompaniesPage,
 
     ProjectChooseServicePage,
     AddAssignmentPage,
@@ -49,6 +53,8 @@ import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees'
     InsuranceChooseServicePage,
     InsurancePickDatePage,
     InsuranceListPage,
+    InsuranceDateRangePage,
+    InsuranceRecordsPage,
 
     PaycheckChooseServicePage,
     WageDateRangePage,
@@ -67,6 +73,7 @@ import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees'
     AccInfoChooseServicePage,
     AccInfoEmplyeesPage,
     AccInfoEmplyeeDetailPage,
+    AccInfoCompaniesPage,
 
     ProjectChooseServicePage,
     AddAssignmentPage,
@@ -82,6 +89,8 @@ import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees'
     InsuranceChooseServicePage,
     InsurancePickDatePage,
     InsuranceListPage,
+    InsuranceDateRangePage,
+    InsuranceRecordsPage,
 
     PaycheckChooseServicePage,
     WageDateRangePage,

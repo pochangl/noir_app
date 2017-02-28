@@ -17,6 +17,7 @@ export class AccInfoEmplyeesPage {
     this.title = '個人資料-員工清單';
     this.employees = new EmployeeList(api);
   }
+
   ionViewWillEnter () {
     this.employees.fetch();
   }

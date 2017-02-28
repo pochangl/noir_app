@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>投保紀錄</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col width-20>日期</ion-col>
+      <ion-col width-20>姓名</ion-col>
+      <ion-col width-20>執行動作</ion-col>
+    </ion-row>
+    <ion-row *ngFor = "let insurance of insurances.objects">
+      <ion-col width-20>{{ insurance.date }}</ion-col>
+      <ion-col width-20>{{ insurance.employee.contact.name }}</ion-col>
+      <ion-col width-20>{{ insurance.action }}</ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

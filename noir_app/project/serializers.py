@@ -2,6 +2,7 @@ from rest_framework import serializers
 from account.serializers import CompanySerializer, EmployeeSerializer
 
 from . import models
+from utils.serializers import PositiveFloatField
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -49,6 +50,8 @@ class AssignmentSerializer(serializers.ModelSerializer):
 class EmployeeAssignmentSerializer(serializers.ModelSerializer):
     employee = EmployeeSerializer(read_only=True)
     assignment = AssignmentSerializer(read_only=True)
+    hours = PositiveFloatField()
+    overtime = PositiveFloatField()
 
     class Meta:
         model = models.EmployeeAssignment
