@@ -26,10 +26,6 @@ export class AccInfoEmplyeeDetailPage {
     this.contact.fetch();
   }
 
-  new_employee () {
-    this.contact.add(this.contact);
-  }
-
   modify_acc_info () {
     this.contact.update();
   }
