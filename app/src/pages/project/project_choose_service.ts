@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
-import { Api } from '../../providers/api/api';
+import {Api} from '../../providers/api/api';
 import {PickDatePage} from '../project/pick_date';
 import {AddAssignmentPage} from './add_assignment';
 
@@ -17,8 +17,5 @@ export class ProjectChooseServicePage {
   }
   add_assignment () {
     this.nav.push(AddAssignmentPage);
-  }
-  approve_assignment () {
-    this.nav.push(PickDatePage);
   }
 }
