@@ -1,14 +1,38 @@
-from rest_framework import viewsets, mixins 
+import datetime
+from django.utils import timezone
+from rest_framework import mixins, generics
 from . import serializers, models
+from account.views import EmployeeListView
 
 
-class InsuranceViewSet(viewsets.ModelViewSet):
+class RecentInsuranceListView(generics.ListAPIView):
     serializer_class = serializers.InsuranceSerializer
     queryset = models.Insurance.objects.all()
-    filter_fields = ("date",)
 
-    def post(self, *args, **kwargs):
-        employee = self.request.data['id']
-        date = self.request.data['date']
-        obj = models.Insurance.objects.get_or_create(employee=employee, date=date)
-        return self.get(pk=obj.id, *args, **kwargs)
+    def get_queryset(self):
+        now = timezone.now()
+        yesterday = now.date() - datetime.timedelta(day=1)
+        return super(RecentInsuranceListView, self).get_queryset().filter(time_created__gte=yesterday)
+
+
+class AddInsuranceView(mixins.CreateModelMixin, EmployeeListView):
+    def get_queryset(self):
+        ids = [employee['id'] for employee in self.request.data]
+        return Employee.objects.filter(id__in=ids)
+
+    def get_serializer(self, *args, **kwargs):
+        kwargs['many'] = True
+        return super(ProposeEmployeeListView, self).get_serializer(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.create(request, *args, **kwargs)
+        return self.get(request, *args, **kwargs)
+
+    def perform_create(self, serializer):
+        Insurance.add(self.get_queryset())
+
+
+class RemoveInsuranceView(AddInsuranceView):
+    def perform_create(self, serializer):
+        Insurance.remove(self.get_queryset())
+
