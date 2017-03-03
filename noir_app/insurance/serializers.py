@@ -7,4 +7,4 @@ class InsuranceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Insurance
-        fields = ('employees', 'time_created')
+        fields = ('employees', 'create_time', 'date')

@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { ProjectListPage } from '../project/list';
 import { Api } from '../../providers/api/api';
-import { InsuranceList, Insurance, Employee } from './models';
+import { InsuranceEmployeeList, Insurance, ActiveWorkerList} from './models';
 
 @Component({templateUrl: 'list.html', providers: [Api]})
-export class InsuranceListPage extends ProjectListPage {
-    insurances: InsuranceList;
-    employees: Array<Employee>;
-    insureds: any;
+export class InsuranceListPage {
+    insuranced_employees: InsuranceEmployeeList;
+    employees: ActiveWorkerList;
+    still_insuranced_employees: Array<Insurance>
     date: any;
 
     constructor(
@@ -16,13 +15,13 @@ export class InsuranceListPage extends ProjectListPage {
         protected params: NavParams,
         protected api: Api
     ) {
-        super(nav, params, api);
-        this.insurances = new InsuranceList(api);
-        this.date = params.get('date').date;
-        this.assignments.filter({
+        this.date = params.get('date').date
+        this.employees = new ActiveWorkerList(api);
+        this.insuranced_employees = new InsuranceEmployeeList(api);
+        this.employees.filter({
           date: this.date
         });
-        this.insurances.filter({
+        this.insuranced_employees.filter({
           date: this.date
         });
     }
@@ -30,40 +29,37 @@ export class InsuranceListPage extends ProjectListPage {
       this.refresh();
     }
     refresh () {
-      this.assignments.fetch().then(() => {
-        this.valueUpdated();
+      this.insuranced_employees.fetch().then(
+        () => {
+          this.employees.fetch().then(() => this.update());
+        }
+      );
+    }
+    update () {
+      this.employees.objects.map(employee => {
+        employee.is_insuranced = false;
       });
-      this.insurances.fetch().then(() => {
-        this.valueUpdated();
+      this.still_insuranced_employees = [];
+      this.insuranced_employees.objects.map(insurance => {
+        let results = this.employees.find(insurance);
+        if (results.length) {
+          results[0].is_insuranced = true;
+        } else {
+          this.still_insuranced_employees.push(insurance);
+        }
       });
     }
-    valueUpdated () {
-      let employees = []
-      this.insureds = {};
-      for (let insurance of this.insurances.objects) {
-        this.registerInsurance(insurance);
-      }
-      for (let assignment of this.assignments.objects) {
-        employees.concat(assignment.employees.objects);
-      }
-      this.employees = employees
-    }
-    registerInsurance (insurance) {
-      this.insureds[insurance.employee.id] = insurance;
-    }
-    insuranceUpdate (employee) {
-      if (employee.id in this.insureds) {
-        this.insureds[employee.id].delete(() => {
-          this.valueUpdated();
-        })
-      } else {
-        let insurance = new Insurance(this.api);
+    insuranceUpdate (employee, value) {
+      let insurance = new Insurance(this.api);
+      insurance.date = this.date;
+      if (value) {
         insurance.employee = employee;
-        insurance.date = this.date;
-        insurance.create().then(() => {
-          this.valueUpdated();
-          this.registerInsurance(insurance);
-        })
+        this.insuranced_employees.add(employee);
+        insurance.add().then(() => this.refresh());
+      } else {
+        insurance.employee = employee;
+        this.insuranced_employees.remove(employee);
+        insurance.remove().then(() => this.refresh());
       }
     }
 }

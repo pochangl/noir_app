@@ -9,9 +9,18 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let employee of employees">
-      <ion-label> {{ employee.contact.name }}</ion-label>
-      <ion-toggle [ngModel]="employee.is_insuranced"></ion-toggle> <!--  (value)="insuraceUpdate(employee) -->
+    <ion-item-divider>
+      今日派工人員
+    </ion-item-divider>
+    <ion-item *ngFor="let employee of employees.objects">
+      <ion-label> {{ employee.contact.name }} {{ employee.is_insuranced }}</ion-label>
+      <ion-toggle [ngModel]="employee.is_insuranced" (ngModelChange)="insuranceUpdate(employee, $event)"></ion-toggle>
+    </ion-item>
+    <ion-item-divider>
+      仍受保人員
+    </ion-item-divider>
+    <ion-item *ngFor="let employee of still_insuranced_employees">
+      <ion-label>{{ employee.contact.name }}</ion-label>
     </ion-item>
   </ion-list>
 </ion-content>

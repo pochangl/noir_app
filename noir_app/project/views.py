@@ -10,6 +10,8 @@ from rest_framework.filters import OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 from django.http.response import HttpResponse
 import django_filters
+from django.utils.dateparse import parse_date
+import datetime
 
 
 class HttpAccepted(HttpResponse):
@@ -110,3 +112,12 @@ class EndorseEmployeeListView(APIView):
         else:
             raise PermissionDenied('You may not endorse older version')
         return HttpAccepted()
+
+
+class ActiveWorkerView(EmployeeListView):
+    def get_queryset(self):
+        queryset = super(ActiveWorkerView, self).get_queryset()
+        date = datetime.datetime.combine(parse_date(self.request.GET['date']), datetime.time(0, 0, 0, 0))
+        end_of_the_date = date + datetime.timedelta(hours=23, minutes=59)
+        return queryset.filter(assignments__start_datetime__range=(date, end_of_the_date))
+    

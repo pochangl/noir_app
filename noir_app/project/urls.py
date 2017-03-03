@@ -14,5 +14,6 @@ urlpatterns = (
     url(r'propose_employee/(?P<assignment>\d+)/', views.ProposeEmployeeListView.as_view()),
     url(r'confirm_employee/(?P<employee_list>\d+)/', views.ConfirmEmployeeListView.as_view()),
     url(r'endorse_employee/(?P<employee_list>\d+)/', views.EndorseEmployeeListView.as_view()),
+    url(r'employee/active/$', views.ActiveWorkerView.as_view()),
 )
 

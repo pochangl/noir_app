@@ -94,7 +94,7 @@ export abstract class Model {
     );
     return promise;
   }
-  serialize (): Object {
+  serialize () {
     /*
     convert model to javascript object
     ModelList is skipped
@@ -220,7 +220,7 @@ export abstract class ModelList<T extends Model>{
     );
     return promise;
   }
-  filter (kwargs: Object): this {
+  filter (kwargs: any): this {
     this.urlParams = kwargs;
     return this;
   }
