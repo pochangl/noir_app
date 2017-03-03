@@ -2,6 +2,10 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/general/home';
+import { LoginPage } from '../pages/general/login';
+import { RegisterPage } from '../pages/general/register';
+
+import { AuthService } from '../providers/auth-service';
 
 import { AccInfoChooseServicePage } from '../pages/account/acc_info_choose_service';
 import { AccInfoEmplyeesPage } from '../pages/account/acc_info_employees';
@@ -34,6 +38,8 @@ import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees'
   declarations: [
     MyApp,
     HomePage,
+    LoginPage,
+    RegisterPage,
 
     AccInfoChooseServicePage,
     AccInfoEmplyeesPage,
@@ -71,6 +77,8 @@ import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees'
   entryComponents: [
     MyApp,
     HomePage,
+    LoginPage,
+    RegisterPage,
 
     AccInfoChooseServicePage,
     AccInfoEmplyeesPage,
@@ -101,6 +109,6 @@ import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees'
     WorkHourDateRangePage,
     WorkHourEmployeesPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AuthService]
 })
 export class AppModule {}

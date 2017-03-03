@@ -20,13 +20,15 @@ export class NewEmployeePage {
   }
 
   new_contact () {
-    this.contact.create().then(() => {
-      this.employee.create().then(() => {
-
-      }).catch(() => {
-        
-      });
-    }).catch(() => {
-    });
+    this.contact.create();
+    this.employee.create();
+    // this.contact.create().then(() => {
+    //   this.employee.create().then(() => {
+    //
+    //   }).catch(() => {
+    //
+    //   });
+    // }).catch(() => {
+    // });
   }
 }

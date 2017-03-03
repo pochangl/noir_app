@@ -1,15 +1,15 @@
 import {Component, ViewChild} from '@angular/core';
 import {Platform, MenuController, Nav} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
-import {SignInPage} from '../pages/general/sign_in';
 import {HomePage} from '../pages/general/home';
+import {LoginPage} from '../pages/general/login';
 
 @Component({templateUrl: 'app.html'})
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   // make HelloIonicPage the root (or first) page
-  rootPage: any = HomePage;
+  rootPage: any = LoginPage;
   pages: Array<{title: string, component: any}>;
 
   constructor(
@@ -20,7 +20,6 @@ export class MyApp {
 
     // set our app's pages
     this.pages = [
-      { title: '使用者登錄', component: SignInPage },
       { title: '主選單', component: HomePage }
     ];
   }

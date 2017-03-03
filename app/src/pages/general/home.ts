@@ -6,9 +6,17 @@ import {PaycheckChooseServicePage} from '../transaction/paycheck_choose_service'
 import {InsuranceChooseServicePage} from '../insurance/choose_service';
 import {AccInfoChooseServicePage} from '../account/acc_info_choose_service';
 
-@Component({templateUrl: 'home.html'})
+import { AuthService } from '../../providers/auth-service';
+import { LoginPage } from './login';
+
+@Component({templateUrl: 'home.html', selector: 'page-home'})
 export class HomePage {
-  constructor(private nav: NavController) {
+  username = '';
+  email = '';
+  constructor(private nav: NavController, private auth: AuthService) {
+    let info = this.auth.getUserInfo();
+    this.username = info.name;
+    this.email = info.email;
   }
 
   project () {
@@ -25,5 +33,11 @@ export class HomePage {
   }
   acc_info () {
     this.nav.push(AccInfoChooseServicePage);
+  }
+
+  public logout() {
+    this.auth.logout().subscribe(succ => {
+        this.nav.setRoot(LoginPage)
+    });
   }
 }

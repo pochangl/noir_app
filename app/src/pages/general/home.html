@@ -1,14 +1,22 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="dark">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>主選單</ion-title>
+    <ion-title>
+      Member Area
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-
-<ion-content>
+<ion-content class="home" padding>
+  <h3>Welcome inside, {{username}}!</h3>
+  Your Email is: {{email}}
   <ion-list>
 	  <ion-item (click)="project()">派工作業</ion-item>
   	<ion-item (click)="insurance()">保險業務</ion-item>
@@ -16,5 +24,4 @@
 	  <ion-item (click)="dayoff()">請假紀錄</ion-item>
 	  <ion-item (click)="acc_info()">個人/公司資料管理</ion-item>
   </ion-list>
-
 </ion-content>
