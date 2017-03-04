@@ -14,7 +14,7 @@ from django.db.models.deletion import CASCADE
 # Create your models here.
 
 class BaseAccountBalance(TimeStampModel):
-    balance = models.PositiveIntegerField()
+    balance = models.PositiveIntegerField(default=0)
     income = models.PositiveIntegerField(default=0)
     expense = models.PositiveIntegerField(default=0)
     note = models.CharField(max_length=1024, blank=True, default="")
@@ -71,9 +71,8 @@ class PersonalIncome(PersonalAccountBalance):
 
 @receiver(post_save, sender=PersonalAccountBalance)
 def pay_given(instance, created, **kwargs):
-    print instance.id
     if created:
-        balance = AccountBalance(due_to=instance, income=instance.expense, expense=instance.income, date=instance.date, note=instance.note)
+        balance = AccountBalance(due_to=instance, income=instance.expense, expense=instance.income, date=instance.date, note=instance.note, create_time=instance.create_time)
         balance.save()
     else:
         AccountBalance.objects.filter(due_to=instance).update(due_to=instance, income=instance.expense, expense=instance.income, date=instance.date, note=instance.note)
