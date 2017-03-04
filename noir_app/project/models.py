@@ -8,6 +8,7 @@ from account.models import Contact, Company, Employee, EmployeeList
 from html5lib import filters
 from datetime import datetime, time, date, timedelta
 from rest_framework import exceptions
+from django.utils.decorators import classonlymethod
 
 # Create your models here.
 class Project(TimeStampModel):
@@ -136,11 +137,19 @@ class EmployeeAssignment(TimeStampModel):
         return self.assignment.start_datetime.date()
     
     
-# class Pay(PersonalIncome):    #尚未定義PersonaleIncome的model
-class Pay(TimeStampModel):
-    employee_assignment = models.OneToOneField(EmployeeAssignment, related_name="pay")
+class Pay(PersonalIncome):
+    employee_assignment = models.OneToOneField(EmployeeAssignment, related_name="pays")
 
     def __init__(self, *args, **kwargs):
         super(Pay, self).__init__(*args, **kwargs)
         self.note = "pay"
 
+    @classonlymethod
+    def pay(cls, assignment, employee, date, amount):
+        super(Pay, cls).pay(employee=employee, date=date, amount=amount)
+        try:
+            self.employee_assignment = EmployeeAssignment.objects.get(assignment=assignment, employee=employee)
+        except EmployeeAssignment.DoesNotExist:
+            return None
+        return this.save()
+   
