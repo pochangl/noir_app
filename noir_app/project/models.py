@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models import Max
 from utils.models import TimeStampModel, EndorsedModel, VersionedModel
 from django.utils.translation import ugettext as _
-from transaction.models import AccountBalance
+from transaction.models import PersonalAccountBalance
 from account.models import Contact, Company, Employee, EmployeeList
 from html5lib import filters
 from datetime import datetime, time, date, timedelta
@@ -137,7 +137,7 @@ class EmployeeAssignment(TimeStampModel):
         return self.assignment.start_datetime.date()
     
     
-class Pay(PersonalIncome):
+class Pay(PersonalAccountBalance):
     employee_assignment = models.OneToOneField(EmployeeAssignment, related_name="pays")
 
     def __init__(self, *args, **kwargs):
