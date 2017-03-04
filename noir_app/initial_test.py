@@ -21,16 +21,16 @@ edward.save()
 
 
 pAccount1 = Contact(name="Mark", title="foreman", address="Kaohsiung", phone="072234567",
-                   mobile="0987654321", pid="E123456711", birthday="1980-01-01")
+                   mobile="0987654321", ssn="E123456711", birthday="1980-01-01")
 pAccount1.save()
 pAccount2 = Contact(name="Mary", title="manager", address="Tainan", phone="062234567",
-                   mobile="0987654321", pid="E123456722", birthday="1980-02-01")
+                   mobile="0987654321", ssn="E123456722", birthday="1980-02-01")
 pAccount2.save()
 pAccount3 = Contact(name="Jack", title="staff", address="Kaohsiung", phone="073234567",
-                   mobile="0987654321", pid="E123456733", birthday="1980-03-01")
+                   mobile="0987654321", ssn="E123456733", birthday="1980-03-01")
 pAccount3.save()
 pAccount4 = Contact(name="Jane", title="staff", address="Tainan", phone="063234567",
-                   mobile="0987654321", pid="E123456744", birthday="1980-04-01")
+                   mobile="0987654321", ssn="E123456744", birthday="1980-04-01")
 pAccount4.save()
 
 pAccountC1 = Company(name="Company A",)
@@ -38,13 +38,13 @@ pAccountC1.save()
 pAccountC2 = Company(name="Company B",)
 pAccountC2.save()
 
-pAccountE1 = Employee(contact=pAccount1, title="staff")
+pAccountE1 = Employee(contact=pAccount1)
 pAccountE1.save()
-pAccountE2 = Employee(contact=pAccount2, title="manager")
+pAccountE2 = Employee(contact=pAccount2)
 pAccountE2.save()
-pAccountE3 = Employee(contact=pAccount3, title="staff")
+pAccountE3 = Employee(contact=pAccount3)
 pAccountE3.save()
-pAccountE4 = Employee(contact=pAccount4, title="staff")
+pAccountE4 = Employee(contact=pAccount4)
 pAccountE4.save()
 
 #project設定
@@ -105,4 +105,3 @@ pScheduleD4 = DayOff(employee=pAccountE4,
                     start_datetime="2016-02-03 08:00",
                     end_datetime="2016-02-02 17:00")
 pScheduleD4.save()
-

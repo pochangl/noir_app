@@ -22,6 +22,7 @@ export class NewEmployeePage {
   new_contact () {
     // this.contact.create();
     // this.employee.create();
+    delete this.contact.id;
     this.contact.create().then(() => {
       this.employee.contact = this.contact;
       this.employee.create();

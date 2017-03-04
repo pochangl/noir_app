@@ -7,9 +7,13 @@ import { HomePage } from './home';
 @Component({selector: 'page-login', templateUrl: 'login.html'})
 export class LoginPage {
   loading: Loading;
-  registerCredentials = {email: '', password: ''};
+  registerCredentials = {email: 'qoodydy@gmail.com', password: '123'};
 
-  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {}
+  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
+    this.auth.login(this.registerCredentials).subscribe(() => {
+      this.nav.setRoot(HomePage)
+    });
+  }
 
   public createAccount() {
     this.nav.push(RegisterPage);
