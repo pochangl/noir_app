@@ -131,7 +131,6 @@ class EmployeeAssignment(TimeStampModel):
         self.overminutes = int(round(value * 60))
         return self.overtime
 
-    
     @property
     def work_date(self):
         return self.assignment.start_datetime.date()

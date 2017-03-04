@@ -6,11 +6,6 @@ class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Contact
         fields = ('id', 'name', 'title', 'address', 'phone', 'mobile', 'ssn', 'birthday')
-
-#     def create(self, validated_data):
-#         data = dict(validated_data)
-#         data['contact'] = models.Contact.objects.all()
-#         return models.Contact.objects.create(**data)
     
     
 class CompanySerializer(serializers.ModelSerializer):

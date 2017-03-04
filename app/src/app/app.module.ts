@@ -2,10 +2,15 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/general/home';
+import { LoginPage } from '../pages/general/login';
+import { RegisterPage } from '../pages/general/register';
+
+import { AuthService } from '../providers/auth-service';
 
 import { AccInfoChooseServicePage } from '../pages/account/acc_info_choose_service';
 import { AccInfoEmplyeesPage } from '../pages/account/acc_info_employees';
 import { AccInfoEmplyeeDetailPage } from '../pages/account/acc_info_employee_detail';
+import { NewEmployeePage } from '../pages/account/new_employee';
 import { AccInfoCompaniesPage } from '../pages/account/acc_info_companies';
 
 import { ProjectChooseServicePage } from '../pages/project/project_choose_service';
@@ -33,10 +38,13 @@ import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees'
   declarations: [
     MyApp,
     HomePage,
+    LoginPage,
+    RegisterPage,
 
     AccInfoChooseServicePage,
     AccInfoEmplyeesPage,
     AccInfoEmplyeeDetailPage,
+    NewEmployeePage,
     AccInfoCompaniesPage,
 
     ProjectChooseServicePage,
@@ -69,10 +77,13 @@ import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees'
   entryComponents: [
     MyApp,
     HomePage,
+    LoginPage,
+    RegisterPage,
 
     AccInfoChooseServicePage,
     AccInfoEmplyeesPage,
     AccInfoEmplyeeDetailPage,
+    NewEmployeePage,
     AccInfoCompaniesPage,
 
     ProjectChooseServicePage,
@@ -98,6 +109,6 @@ import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees'
     WorkHourDateRangePage,
     WorkHourEmployeesPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AuthService]
 })
 export class AppModule {}

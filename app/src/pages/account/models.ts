@@ -11,21 +11,21 @@ export class Contact extends Model {
   ssn: string;
   birthday: string;
 
-  add (contact: Contact) {
+  new_contact (contact: Contact) {
     let new_contact = new Contact(this.api);
     new_contact.id = this.id;
-    new_contact.name = this.name;
-    new_contact.title = this.title;
-    new_contact.address = this.address;
-    new_contact.phone = this.phone;
-    new_contact.mobile = this.mobile;
-    new_contact.ssn = this.ssn;
-    new_contact.birthday = this.birthday;
+    new_contact = this;
+    let new_employee = new Employee(this.api);
+    new_employee.id = this.id;
+    new_employee.contact.id = this.id;
+    new_employee.is_active = true;
     return new Promise<any>((resolve, reject) => {
+      console.log(new_contact);
+      console.log(new_employee);
       new_contact.create().then(() => {
-        this.add(contact);
-        this.fetch();
-        resolve(new_contact);
+        // new_contact.create();
+        // this.fetch();
+        // resolve(new_employee);
       }).catch(() => {
         reject();
       });
