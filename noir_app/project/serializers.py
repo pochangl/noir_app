@@ -40,7 +40,7 @@ class AssignmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Assignment
         fields = ('id', 'start_datetime', 'end_datetime', 'number_needed', 'project', 'employees', 'proposed')
-    
+
     def create(self, validated_data):
         data = dict(validated_data)
         data['project'] = models.Project.objects.get(id=data['project']['id'])

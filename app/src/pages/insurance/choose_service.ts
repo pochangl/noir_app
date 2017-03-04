@@ -10,7 +10,7 @@ export class InsuranceChooseServicePage {
     private nav: NavController,
     params: NavParams,
     private api: Api
-  ) {
+) {
   }
   manage_insurance () {
     this.add_policy()
