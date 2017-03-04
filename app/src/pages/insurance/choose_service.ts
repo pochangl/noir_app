@@ -12,6 +12,9 @@ export class InsuranceChooseServicePage {
     private api: Api
   ) {
   }
+  manage_insurance () {
+    this.add_policy()
+  }
   add_policy () {
     this.nav.push(PickDatePage, {service_choice: 'add_policy'});
   }

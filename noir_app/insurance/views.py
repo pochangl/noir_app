@@ -1,8 +1,10 @@
 import datetime
 from django.utils import timezone
-from rest_framework import mixins, generics
+from django.db.models import Max, F
+from django.utils.dateparse import parse_date
+from rest_framework import mixins, generics, views
 from . import serializers, models
-from account.views import EmployeeListView
+from account.views import EmployeeListView, EmployeeView
 
 
 class RecentInsuranceListView(generics.ListAPIView):
@@ -11,28 +13,30 @@ class RecentInsuranceListView(generics.ListAPIView):
 
     def get_queryset(self):
         now = timezone.now()
-        yesterday = now.date() - datetime.timedelta(day=1)
-        return super(RecentInsuranceListView, self).get_queryset().filter(time_created__gte=yesterday)
+        yesterday = now.date() - datetime.timedelta(days=2)
+        return super(RecentInsuranceListView, self).get_queryset().filter(date__gte=yesterday)
 
 
-class AddInsuranceView(mixins.CreateModelMixin, EmployeeListView):
+class InsuranceEmployeeListView(EmployeeListView):
     def get_queryset(self):
-        ids = [employee['id'] for employee in self.request.data]
-        return Employee.objects.filter(id__in=ids)
+        date = parse_date(self.request.GET['date'])
+        queryset = super(InsuranceEmployeeListView, self).get_queryset()
+        ids = [ employee.id for employee in queryset if models.Insurance.is_insuranced(employee, date)]
+        return queryset.filter(id__in=ids)
 
-    def get_serializer(self, *args, **kwargs):
-        kwargs['many'] = True
-        return super(ProposeEmployeeListView, self).get_serializer(*args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        self.create(request, *args, **kwargs)
-        return self.get(request, *args, **kwargs)
+class AddInsuranceView(EmployeeView):
+    def get_employee(self):
+        return self.queryset.model.objects.get(id=self.request.data['id'])
+
+    def get_date(self):
+        return parse_date(self.request.data['date'])
 
     def perform_create(self, serializer):
-        Insurance.add(self.get_queryset())
+        models.Insurance.add([self.get_employee()], self.get_date())
 
 
 class RemoveInsuranceView(AddInsuranceView):
     def perform_create(self, serializer):
-        Insurance.remove(self.get_queryset())
+        models.Insurance.remove([self.get_employee()], self.get_date())
 

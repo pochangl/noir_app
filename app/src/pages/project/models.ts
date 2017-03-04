@@ -174,3 +174,8 @@ export class AvailableEmployeeList extends IndirectModelList<Assignment> {
   model = Employee;
   resource_name = 'project/available_employee';
 }
+
+
+export class ActiveWorkerList extends EmployeeList {
+  resource_name = 'project/employee/active';
+}
