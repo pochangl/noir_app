@@ -6,6 +6,12 @@ class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Contact
         fields = ('id', 'name', 'title', 'address', 'phone', 'mobile', 'ssn', 'birthday')
+        extra_kwargs = {
+            "id": {
+                "read_only": False,
+                "required": False,
+            },
+        }
     
     
 class CompanySerializer(serializers.ModelSerializer):
@@ -14,8 +20,9 @@ class CompanySerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'is_active')
 
 
-class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
-    contact = ContactSerializer(many=False, read_only=True)
+class EmployeeSerializer(serializers.ModelSerializer):
+    contact = ContactSerializer()
+#     contact = ContactSerializer(many=False, read_only=True)
     
     class Meta:
         model = models.Employee
