@@ -17,6 +17,11 @@ export class AddAssignmentPage {
         this.assignment = new Assignment(this.api);
     }
 
+    ionViewWillEnter () {
+      this.projects.fetch();
+      this.assignment.fetch();
+    }
+
     add () {
       console.log(this.assignment);
       this.assignment.create().then(() => {
