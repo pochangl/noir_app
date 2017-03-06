@@ -14,7 +14,7 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.contrib import admin
 
 from tastypie.api import Api
@@ -43,8 +43,9 @@ v1_api.register(DayOffResource())
 
 urlpatterns = (
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^', include('django.contrib.auth.urls')),
     
-    url(r'^api/v1/account/', include('account.urls')),
+    url(r'^api/v1/account/', include('account.urls', namespace='account')),
     url(r'^api/v1/project/', include('project.urls')),
     url(r'^api/v1/transaction/', include('transaction.urls')),
     url(r'^api/v1/schedule/', include('schedule.urls')),
