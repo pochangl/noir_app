@@ -1,4 +1,4 @@
-django==1.9.5
+django==1.10.6
 django-tastypie==0.13.3
 html5lib==0.999999999
 pytz==2016.7

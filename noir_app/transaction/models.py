@@ -2,38 +2,35 @@
 # Circular import dependency in Python,將project.models移至account.models
 from django.db import models
 from utils.models import TimeStampModel
-from django.core.files.storage import FileSystemStorage
 from datetime import datetime, time, date
 from django.utils.decorators import classonlymethod
 from tastypie.admin import ABSTRACT_APIKEY
 from account.models import Company, Employee
-# from project.models import EmployeeAssignment
+from django.dispatch import Signal
+from django.dispatch.dispatcher import receiver
+from django.db.models.signals import pre_save, post_save
+from django.db.models.deletion import CASCADE
 
 # Create your models here.
-path = FileSystemStorage(location='/media/photos')
 
-class AbstractAccountBalance(TimeStampModel):
-#     previous = models.ForeignKey("transaction.AccountBalance")  #尚未定義transaction.AccountBalnace
-    balance = models.PositiveIntegerField()
+class BaseAccountBalance(TimeStampModel):
+    balance = models.PositiveIntegerField(default=0)
     income = models.PositiveIntegerField(default=0)
     expense = models.PositiveIntegerField(default=0)
-    note = models.CharField(max_length=1024, null=True, blank=True)
+    note = models.CharField(max_length=1024, blank=True, default="")
     date = models.DateField(default=datetime.now) # 實際收入/支出日期
 
     @classonlymethod
     def withdraw(cls, amount):
         raise NotImplemented()
 
-    class Meta:
-        abstract = True
 
-
-class AccountBalance(AbstractAccountBalance):
+class AccountBalance(BaseAccountBalance):
+    due_to = models.OneToOneField(BaseAccountBalance, unique=True, on_delete=CASCADE, related_name="account_balance")
     # 公司總計帳戶
-    pass
 
 
-class OthersAccountBalance(AbstractAccountBalance):
+class OthersAccountBalance(BaseAccountBalance):
     class Meta:
         abstract = True
 
@@ -43,13 +40,17 @@ class CompanyBalance(OthersAccountBalance):
 
 class PersonalAccountBalance(OthersAccountBalance):
     # 個人的戶頭
-    employee = models.ForeignKey(Employee, related_name='my_balance')
+    employee = models.ForeignKey(Employee, related_name='my_balances')
 
     def __str__(self):
         return self.employee.contact.name
 
+    @classonlymethod
+    def pay(cls, employee, date, amount):
+        return PersonalAccountBalance.objects.create(employee=employee, date=date, income=amount, note=pay)
+
 class PersonalWithdraw(PersonalAccountBalance):
-    signature = models.ImageField(storage=path, null=True, blank=True)
+    signature = models.ImageField(upload_to="signature", null=True, blank=True)
 
     def __init__(self, *args, **kwargs):
         super(PersonalWithdraw, self).__init__(*args, **kwargs)
@@ -64,18 +65,14 @@ class Salary(TimeStampModel):
     
     
 class PersonalIncome(PersonalAccountBalance):
-# class PersonalIncome(PersonalAccountBalance, EmployeeAssignment, Salary):
-    # please verify
-#     @receiver
-#     def latest_salary(pre_save, sender=Salary):
-#         try:
-#             return salaries.order_by('-salaries.start_time')[0]
-#         except IndexError:
-#             return None
-#         
-#     @receiver(pre_save, sender=EmployeeAssignment)
-#     def income(sender, **kwargs):
-#         self.income = EmployeeAssignment.minutes/60 * latest_salary.hourly + EmployeeAssignment.overminutes/60 * latest_salary.overtime
-#         self.income.save()
-#         return self.income        
-    pass
+    class Meta:
+        abstract =True
+
+
+@receiver(post_save, sender=PersonalAccountBalance)
+def pay_given(instance, created, **kwargs):
+    if created:
+        balance = AccountBalance(due_to=instance, income=instance.expense, expense=instance.income, date=instance.date, note=instance.note, create_time=instance.create_time)
+        balance.save()
+    else:
+        AccountBalance.objects.filter(due_to=instance).update(due_to=instance, income=instance.expense, expense=instance.income, date=instance.date, note=instance.note)
