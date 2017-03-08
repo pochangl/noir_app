@@ -23,10 +23,18 @@ export class AccInfoCompanyDetailPage {
   }
 
   modify_acc_info () {
-    this.company.update();
+    this.company.update().then(() => {
+        this.nav.pop();
+    }).catch(() => {
+      alert('error');
+    });
   }
 
   delete_company () {
-    this.company.delete();
+    this.company.delete().then(() => {
+        this.nav.pop();
+    }).catch(() => {
+      alert('error');
+    });
   }
 }

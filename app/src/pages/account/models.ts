@@ -23,9 +23,6 @@ export class Contact extends Model {
       console.log(new_contact);
       console.log(new_employee);
       new_contact.create().then(() => {
-        // new_contact.create();
-        // this.fetch();
-        // resolve(new_employee);
       }).catch(() => {
         reject();
       });

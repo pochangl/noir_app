@@ -27,10 +27,18 @@ export class AccInfoEmplyeeDetailPage {
   }
 
   modify_acc_info () {
-    this.contact.update();
+    this.contact.update().then(() => {
+        this.nav.pop();
+    }).catch(() => {
+      alert('error');
+    });
   }
 
   delete_employee () {
-    this.employee.delete();
+    this.employee.delete().then(() => {
+        this.nav.pop();
+    }).catch(() => {
+      alert('error');
+    });
   }
 }
