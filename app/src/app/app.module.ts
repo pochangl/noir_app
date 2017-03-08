@@ -12,6 +12,7 @@ import { AccInfoEmplyeesPage } from '../pages/account/acc_info_employees';
 import { AccInfoEmplyeeDetailPage } from '../pages/account/acc_info_employee_detail';
 import { NewEmployeePage } from '../pages/account/new_employee';
 import { AccInfoCompaniesPage } from '../pages/account/acc_info_companies';
+import { AccInfoCompanyDetailPage } from '../pages/account/acc_info_company_detail';
 
 import { ProjectChooseServicePage } from '../pages/project/project_choose_service';
 import { AddAssignmentPage } from '../pages/project/add_assignment';
@@ -46,6 +47,7 @@ import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees'
     AccInfoEmplyeeDetailPage,
     NewEmployeePage,
     AccInfoCompaniesPage,
+    AccInfoCompanyDetailPage,
 
     ProjectChooseServicePage,
     AddAssignmentPage,
@@ -85,6 +87,7 @@ import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees'
     AccInfoEmplyeeDetailPage,
     NewEmployeePage,
     AccInfoCompaniesPage,
+    AccInfoCompanyDetailPage,
 
     ProjectChooseServicePage,
     AddAssignmentPage,

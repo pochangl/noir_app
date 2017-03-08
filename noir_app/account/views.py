@@ -27,7 +27,7 @@ class EmployeeView(viewsets.ModelViewSet):
 
 class CompanyView(viewsets.ModelViewSet):
     serializer_class = serializers.CompanySerializer
-    queryset = models.Company.objects.all()
+    queryset = models.Company.objects.filter(is_active=True)
 
     def perform_destroy(self, instance):
         instance.is_active = False

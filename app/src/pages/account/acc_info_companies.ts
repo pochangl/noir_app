@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController} from 'ionic-angular';
 import { CompanyList } from './models';
 import { Api } from '../../providers/api/api';
-// import { AccInfoEmplyeeDetailPage } from './acc_info_employee_detail';
+import { AccInfoCompanyDetailPage } from './acc_info_company_detail';
 
 
 @Component({templateUrl: 'acc_info_companies.html',providers: [Api]})
@@ -23,6 +23,6 @@ export class AccInfoCompaniesPage {
   }
 
   click (company) {
-    // this.nav.push(AccInfoCompanyDetailPage, {company: company});
+    this.nav.push(AccInfoCompanyDetailPage, {company: company});
   }
 }
