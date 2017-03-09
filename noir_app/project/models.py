@@ -136,6 +136,9 @@ class EmployeeAssignment(TimeStampModel):
     def work_date(self):
         return self.assignment.start_datetime.date()
     
+    def __str__(self):
+        return "%s: %s" % (self.assignment.project.name, self.employee.contact.name)
+    
     
 class Pay(PersonalAccountBalance):
     employee_assignment = models.OneToOneField(EmployeeAssignment, related_name="pays")
@@ -144,6 +147,15 @@ class Pay(PersonalAccountBalance):
         super(Pay, self).__init__(*args, **kwargs)
         self.note = "pay"
 
+    @property
+    def amount(self):
+        return self.employee_assignment.hours*self.employee_assignment.employee.salaries.hourly
+ 
+    @amount.setter
+    def amount(self, value):
+        self.hours = int(round(value * self.employee_assignment.employee.salaries.hourly))
+        return self.amount
+    
     @classonlymethod
     def pay(cls, assignment, employee, date, amount):
         super(Pay, cls).pay(employee=employee, date=date, amount=amount)

@@ -58,7 +58,7 @@ class PersonalWithdraw(PersonalAccountBalance):
 
 
 class Salary(TimeStampModel):
-    employee = models.ForeignKey(Employee, related_name="salaries")
+    employee = models.OneToOneField(Employee, related_name="salaries")
     hourly = models.PositiveIntegerField() # hourly pay正常時薪
     overtime = models.PositiveIntegerField() # overtime pay加班時薪
     start_time = models.DateTimeField()

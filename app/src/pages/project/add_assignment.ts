@@ -23,7 +23,7 @@ export class AddAssignmentPage {
     }
 
     add () {
-      console.log(this.assignment);
+      this.assignment.end_datetime = this.assignment.start_datetime;
       this.assignment.create().then(() => {
         this.nav.pop();
       });
