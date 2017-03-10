@@ -1,40 +1,37 @@
 import { Model, ModelList} from '../../model';
-import { Employee, EmployeeList } from '../account/models';
+import { Employee} from '../account/models';
 
 export class DayOff extends Model {
-  resource_name = 'dayoff';
+  resource_name = 'schedule/dayoff';
   fields = [
-    'start_datetime', 'end_datetime',
-    'start_date', 'end_date',
-    'start_time', 'end_time', 'id',
+    'start_datetime', 'end_datetime', 'id',
     {
       name: 'employee',
-      cls: Employee,
-      is_url: true
+      cls: Employee
     }
   ];
   start_datetime: string;
   end_datetime: string;
-  start_date: string;
-  end_date: string;
-  start_time: string;
-  end_time: string;
   employee: Employee;
-  employees: EmployeeList;
+
+  get start_date () {
+    return this.start_datetime.split('T')[0]
+  }
+  get end_date () {
+    return this.end_datetime.split('T')[0]
+  }
 
   add (start_date: string, employee: Employee) {
     var ea = new DayOff(this.api);
-    ea.construct({
-      start_datetime: start_date + 'T' + '08:00:00',
-      end_datetime: start_date + 'T' + '17:00:00',
-      employee: employee
-    });
-    ea.commit();
+    ea.start_datetime = start_date + 'T' + '08:00:00';
+    ea.end_datetime = start_date + 'T' + '17:00:00';
+    ea.employee = employee;
+    return ea.commit();
   }
 }
 
 export class DayOffList extends ModelList<DayOff> {
-  resource_name = 'dayoff';
+  resource_name = 'schedule/dayoff';
   model = DayOff;
 }
 

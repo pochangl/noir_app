@@ -31,15 +31,22 @@ export class DayOffDaysPage {
     });
   }
   ionViewWillEnter () {
+    this.refresh()
+  }
+  refresh () {
     this.dayoffs.fetch();
   }
   selectDate (day) {
     if (this.dayoffs.search({start_date: day.stringify()}).length > 0) {
       // 若請假資料已存在，刪除資料
-      this.dayoffs.search({start_date: day.stringify()})[0].delete();
+      this.dayoffs.search({start_date: day.stringify()})[0].delete().then(() => {
+        this.refresh();
+      });
     } else {
       // 若請假資料不存在，新增資料
-      this.dayoff.add(day.stringify(), this.employee);
+      this.dayoff.add(day.stringify(), this.employee).then(() => {
+        this.refresh();
+      });
     }
     this.dayoffs.fetch();
   }
