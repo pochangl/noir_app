@@ -16,7 +16,7 @@
         <p>工時 {{ employee_assignment.hours }}</p>
       </ion-col>
       <ion-col width-10 *ngFor="let hours of selectable_hours">
-        <button ion-button full [class.button-secondary]="hours == employee_assignment.hours" (click)="set_hour(employee_assignment, hours)">{{ hours }}</button>
+        <button ion-button full [class.button-md-secondary]="hours == employee_assignment.hours" (click)="set_hour(employee_assignment, hours)">{{ hours }}</button>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -24,7 +24,7 @@
         <p>超時 {{ employee_assignment.overtime }}</p>
       </ion-col>
       <ion-col width-10 *ngFor="let hours of selectable_hours">
-        <button ion-button full [class.button-secondary]="hours == employee_assignment.overtime" (click)="set_overtime(employee_assignment, hours)">{{ hours }}</button>
+        <button ion-button full [class.button-md-secondary]="hours == employee_assignment.overtime" (click)="set_overtime(employee_assignment, hours)">{{ hours }}</button>
       </ion-col>
     </ion-row>
   </ion-grid>
