@@ -13,13 +13,7 @@ export class InsuranceChooseServicePage {
 ) {
   }
   manage_insurance () {
-    this.add_policy()
-  }
-  add_policy () {
-    this.nav.push(PickDatePage, {service_choice: 'add_policy'});
-  }
-  delete_policy () {
-    this.nav.push(PickDatePage, {service_choice: 'delete_policy'});
+    this.nav.push(PickDatePage);
   }
   records () {
     this.nav.push(InsuranceDateRangePage);
