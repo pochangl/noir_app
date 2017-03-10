@@ -3,13 +3,14 @@ from django.utils import timezone
 from django.db.models import Max, F
 from django.utils.dateparse import parse_date
 from rest_framework import mixins, generics, views
-from . import serializers, models
+from . import serializers, models, filters
 from account.views import EmployeeListView, EmployeeView
 
 
 class RecentInsuranceListView(generics.ListAPIView):
     serializer_class = serializers.InsuranceSerializer
     queryset = models.Insurance.objects.all()
+    filter_class = filters.InsuranceFilter
 
     def get_queryset(self):
         now = timezone.now()
