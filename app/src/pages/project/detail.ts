@@ -19,14 +19,17 @@ export class ProjectDetailPage {
     this.selected_date = params.data.assignment.start_datetime.split('T')[0];
   }
   ionViewWillEnter () {
+    this.refresh()
+  }
+  refresh () {
     this.assignment.fetch();
     this.availables.fetch();
   }
   toggle (employee) {
     if (this.assignment.has(employee)) {
-      this.assignment.discard(employee);
+      this.assignment.discard(employee).then(() => this.refresh());
     } else {
-      this.assignment.add(employee);
+      this.assignment.add(employee).then(() => this.refresh());
     }
   }
   manage () {
@@ -48,8 +51,8 @@ export class ProjectDetailManagementPage extends ProjectDetailPage {
     this.employee_assignments.api = this.assignment.api;
     this.employee_assignments.filter({assignment: this.assignment.id});
   }
-  ionViewWillEnter () {
-    this.assignment.fetch();
+  refresh () {
+    super.refresh()
     this.employee_assignments.fetch();
   }
   set_hour (ea: EmployeeAssignment, hours) {
