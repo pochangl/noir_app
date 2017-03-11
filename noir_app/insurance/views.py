@@ -33,9 +33,9 @@ class AddInsuranceView(EmployeeView):
     @property
     def insurance(self):
         try:
-            return models.Insurance.objects.get(employee=employee, date=self.date)
+            return models.Insurance.objects.get(employee=self.employee, date=self.date)
         except models.Insurance.DoesNotExist:
-             return models.Insurance.objects.create(employee=employee, date=self.date, action='add')
+             return models.Insurance.objects.create(employee=self.employee, date=self.date, action='add')
 
     def perform_create(self, serializer):
         insurance = self.insurance
