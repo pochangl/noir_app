@@ -12,32 +12,45 @@ from django.utils.decorators import classonlymethod
 
 # Create your models here.
 class Contact(TimeStampModel):
-    name = models.CharField(max_length=128)
     title = models.CharField(max_length=128)
-    address = models.CharField(max_length=128)
+    name = models.CharField(max_length=128)
     phone = models.CharField(max_length=128)
-    mobile = models.CharField(max_length=128)
-    ssn = models.CharField(max_length=128, unique=True) # social security number
-    birthday = models.DateField()
-    
+    fax = models.CharField(max_length=128, blank=True, default="")
+    address = models.CharField(max_length=128, blank=True, default="")
+    note = models.CharField(max_length=128, blank=True, default="")
+    is_active = models.BooleanField(default=False)
+
     def __str__(self):
         return self.name
 
 
 class Company(TimeStampModel):
+    contact = models.ForeignKey(Contact, related_name='company')
     name = models.CharField(max_length=128)
+    vat = models.CharField(max_length=16)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
-    
-    
-class Employee(TimeStampModel):
-    contact = models.ForeignKey(Contact, related_name='employees')
+
+
+class CompanyContact(Contact):
+    company = models.ForeignKey(Company, related_name='contacts')
+
+
+class Employee(Contact):
+    contact = models.ForeignKey(Contact, related_name='employee')
     is_active = models.BooleanField(default=True)
+    ssn = models.CharField(max_length=128, unique=True) # social security number
+    birthday = models.DateField()
+    insurance_status = models.CharField(max_length=62, null=True, blank=True)
     
     def __str__(self):
         return self.contact.name
+    
+    
+class EmployeeContact(Contact):
+    employee = models.ForeignKey(Employee, related_name='contacts')
 
 
 class Skill(TimeStampModel):
