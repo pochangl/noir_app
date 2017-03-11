@@ -13,12 +13,12 @@ class ContactView(viewsets.ModelViewSet):
 
 class EmployeeListView(generics.ListAPIView):
     serializer_class = serializers.EmployeeSerializer
-    queryset = models.Employee.objects.filter(is_active=True)
+    queryset = models.Employee.objects.filter()
 
 
 class EmployeeView(viewsets.ModelViewSet):
     serializer_class = serializers.EmployeeSerializer
-    queryset = models.Employee.objects.filter(is_active=True)
+    queryset = models.Employee.objects.filter()
 
     def perform_destroy(self, instance):
         instance.is_active = False
