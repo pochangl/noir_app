@@ -31,7 +31,7 @@ class AssignmentViewSet(viewsets.ModelViewSet):
 
 class AvailableEmployeeListView(EmployeeListView):
     def get_queryset(self):
-        employees = super(AvailableEmployeeListView, self).get_queryset()
+        employees = super(AvailableEmployeeListView, self).get_queryset().filter(is_active=True)
         assignment = models.Assignment.objects.get(id=self.kwargs['assignment'])
         return employees.exclude(
             Q(assignments__end_datetime__range = assignment.time_range) | 
