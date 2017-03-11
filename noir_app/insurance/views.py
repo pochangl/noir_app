@@ -22,17 +22,29 @@ class InsuranceEmployeeListView(EmployeeListView):
 
 
 class AddInsuranceView(EmployeeView):
-    def get_employee(self):
+    @property
+    def employee(self):
         return self.queryset.model.objects.get(id=self.request.data['id'])
 
-    def get_date(self):
+    @property
+    def date(self):
         return parse_date(self.request.data['date'])
 
+    @property
+    def insurance(self):
+        try:
+            return models.Insurance.objects.get(employee=employee, date=self.date)
+        except models.Insurance.DoesNotExist:
+             return models.Insurance.objects.create(employee=employee, date=self.date, action='add')
+
     def perform_create(self, serializer):
-        models.Insurance.add([self.get_employee()], self.get_date())
+        insurance = self.insurance
+        insurance.action = 'add'
+        insurance.save()
 
 
 class RemoveInsuranceView(AddInsuranceView):
     def perform_create(self, serializer):
-        models.Insurance.remove([self.get_employee()], self.get_date())
-
+        insurance = self.insurance
+        insurance.action = 'remove'
+        insurance.save()

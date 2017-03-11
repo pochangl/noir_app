@@ -19,9 +19,15 @@
     <ion-item-divider>
       今日己退保
     </ion-item-divider>
+    <ion-item *ngFor="let insurance of removes">
+      <ion-label> {{ insurance.employee.contact.name }} </ion-label>
+    </ion-item>
     <ion-item-divider>
       今日己加保
     </ion-item-divider>
+    <ion-item *ngFor="let insurance of adds">
+      <ion-label> {{ insurance.employee.contact.name }} </ion-label>
+    </ion-item>
     <ion-item-divider>
       今日無事, 仍受保人員
     </ion-item-divider>

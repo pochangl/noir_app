@@ -9,3 +9,11 @@ class InsuranceFilter(django_filters.FilterSet):
     class Meta:
         model = models.Insurance
         fields = ('date',)
+
+
+class TodayInsuranceFilter(django_filters.FilterSet):
+    date = django_filters.DateFilter(lookup_expr='exact')
+
+    class Meta:
+        model = models.Insurance
+        fields = ('date',)

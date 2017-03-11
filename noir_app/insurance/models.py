@@ -15,6 +15,9 @@ class Insurance(TimeStampModel):
         ('remove', 'remove'),
     ))
 
+    class Meta:
+        unique_together = (('date', 'employee'),)
+
     @classonlymethod
     def is_insuranced(cls, employee, date):
         try:
@@ -26,15 +29,3 @@ class Insurance(TimeStampModel):
     @classonlymethod
     def get_ids(cls, employees):
         return [employee.id for employee in employees]
-
-    @classonlymethod
-    def add(cls, employees, date):
-        for employee in employees:
-            if not Insurance.is_insuranced(employee, date):
-                Insurance.objects.create(employee=employee, action="add", date=date)
-        
-    @classonlymethod
-    def remove(cls, employees, date):
-        for employee in employees:
-            if Insurance.is_insuranced(employee, date):
-                Insurance.objects.create(employee=employee, action="remove", date=date)
