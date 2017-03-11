@@ -10,13 +10,30 @@ export class Insurance extends Model {
   date: string;
   employee: Employee;
   is_insuranced = true;
+  _action: string;
+
   fields =  [
     'date',
+    'action',
+    'create_time',
     {
-      name: 'employees',
+      name: 'employee',
       cls: Employee
     }
   ]
+  get action () {
+    switch (this._action) {
+      case 'add':
+        return '加保';
+      case 'remove':
+        return '退保'
+      default:
+        return '未知動作'
+    }
+  }
+  set action (value) {
+    this._action = value
+  }
   serializeEmployee () {
     let obj:any = this.employee.serialize();
     obj.date = this.date;

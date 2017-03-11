@@ -8,14 +8,9 @@ from account.views import EmployeeListView, EmployeeView
 
 
 class RecentInsuranceListView(generics.ListAPIView):
-    serializer_class = serializers.InsuranceSerializer
     queryset = models.Insurance.objects.all()
+    serializer_class = serializers.InsuranceSerializer
     filter_class = filters.InsuranceFilter
-
-    def get_queryset(self):
-        now = timezone.now()
-        yesterday = now.date() - datetime.timedelta(days=2)
-        return super(RecentInsuranceListView, self).get_queryset().filter(date__gte=yesterday)
 
 
 class InsuranceEmployeeListView(EmployeeListView):

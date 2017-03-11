@@ -3,7 +3,8 @@ from . import models
 
 
 class InsuranceFilter(django_filters.FilterSet):
-    date = django_filters.DateTimeFromToRangeFilter(name='date')
+    required = True
+    date = django_filters.DateTimeFromToRangeFilter()
     
     class Meta:
         model = models.Insurance

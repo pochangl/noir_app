@@ -3,8 +3,8 @@ from account import serializers as account_serializers
 from . import models
 
 class InsuranceSerializer(serializers.ModelSerializer):
-    employees = account_serializers.EmployeeSerializer(many=True)
+    employee = account_serializers.EmployeeSerializer()
 
     class Meta:
         model = models.Insurance
-        fields = ('employees', 'create_time', 'date')
+        fields = ('id', 'employee', 'create_time', 'date', 'action')
