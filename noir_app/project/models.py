@@ -110,6 +110,7 @@ class EmployeeAssignment(TimeStampModel):
     assignment = models.ForeignKey(Assignment, related_name='employees_detail')
     minutes = models.PositiveIntegerField(default=0) # 現場派工工作時數
     overminutes = models.PositiveIntegerField(default=0) # 現場派工加班時數
+    custom_salary = models.PositiveIntegerField(default=0) # 臨時薪資更動 0為預設, 其它數字為時薪
 
     class Meta:
         unique_together = (("employee", "assignment"),)
