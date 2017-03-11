@@ -17,10 +17,17 @@
       <ion-toggle [ngModel]="employee.is_insuranced" (ngModelChange)="insuranceUpdate(employee, $event)"></ion-toggle>
     </ion-item>
     <ion-item-divider>
-      仍受保人員
+      今日己退保
+    </ion-item-divider>
+    <ion-item-divider>
+      今日己加保
+    </ion-item-divider>
+    <ion-item-divider>
+      今日無事, 仍受保人員
     </ion-item-divider>
     <ion-item *ngFor="let employee of still_insuranced_employees">
-      <ion-label>{{ employee.contact.name }}</ion-label>
+      <ion-label> {{ employee.contact.name }} </ion-label>
+      <ion-toggle [ngModel]="employee.is_insuranced" (ngModelChange)="insuranceUpdate(employee, $event)"></ion-toggle>
     </ion-item>
   </ion-list>
 </ion-content>

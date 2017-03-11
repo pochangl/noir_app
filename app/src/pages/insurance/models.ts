@@ -5,6 +5,10 @@ export class Employee extends BaseEmployee {
     is_insuranced: Boolean = false
 }
 
+class InsurancedEmployee extends Employee {
+  is_insuranced: Boolean = true
+}
+
 export class Insurance extends Model {
   resource_name = 'insurance'
   date: string;
@@ -65,7 +69,7 @@ export class InsuranceList extends ModelList<Insurance> {
 }
 
 export class InsuranceEmployeeList extends ModelList<Insurance> {
-  model = Employee;
+  model = InsurancedEmployee;
   resource_name = 'insurance/employees'
 }
 

@@ -17,12 +17,10 @@ class Insurance(TimeStampModel):
 
     @classonlymethod
     def is_insuranced(cls, employee, date):
-        end_of_time = datetime.datetime.combine(date, datetime.time(hour=23, minute=59, second=59))
         try:
-            insurance = employee.insurances.filter(date__lte=end_of_time).latest('create_time')
+            insurance = employee.insurances.filter(date__lte=date).latest('create_time')
         except Insurance.DoesNotExist:
             return False
-
         return insurance.action == 'add'
 
     @classonlymethod
@@ -40,5 +38,3 @@ class Insurance(TimeStampModel):
         for employee in employees:
             if Insurance.is_insuranced(employee, date):
                 Insurance.objects.create(employee=employee, action="remove", date=date)
-        
-                
