@@ -3,12 +3,16 @@ from django.db import models
 from django.db.models import Max
 from utils.models import TimeStampModel, EndorsedModel, VersionedModel
 from django.utils.translation import ugettext as _
-from transaction.models import PersonalAccountBalance
+from transaction.models import PersonalAccountBalance, Salary
 from account.models import Contact, Company, Employee, EmployeeList
 from html5lib import filters
 from datetime import datetime, time, date, timedelta
 from rest_framework import exceptions
 from django.utils.decorators import classonlymethod
+from django.dispatch import Signal
+from django.dispatch.dispatcher import receiver
+from django.db.models.signals import pre_save, post_save
+from django.db.models.deletion import CASCADE
 
 # Create your models here.
 class Project(TimeStampModel):
@@ -142,19 +146,11 @@ class EmployeeAssignment(TimeStampModel):
     
 class Pay(PersonalAccountBalance):
     employee_assignment = models.OneToOneField(EmployeeAssignment, related_name="pays")
-
+#     salary = models.OneToOneField(Salary, related_name="pays")
+    
     def __init__(self, *args, **kwargs):
         super(Pay, self).__init__(*args, **kwargs)
         self.note = "pay"
-
-    @property
-    def amount(self):
-        return self.employee_assignment.hours*self.employee_assignment.employee.salaries.hourly
- 
-    @amount.setter
-    def amount(self, value):
-        self.hours = int(round(value * self.employee_assignment.employee.salaries.hourly))
-        return self.amount
     
     @classonlymethod
     def pay(cls, assignment, employee, date, amount):
@@ -165,3 +161,12 @@ class Pay(PersonalAccountBalance):
             return None
         return this.save()
    
+   
+@receiver(post_save, sender=EmployeeAssignment)
+def assignment_endorsed(instance, created, **kwargs):
+    if created:
+        pay = Pay(employee_assignment=instance, employee=instance.employee, income=instance.hours, expense=0, date=instance.create_time, note="", create_time=instance.create_time)
+        pay.save()
+    else:
+        Pay.objects.filter(employee_assignment=instance.employee_assignment).update(employee_assignment=instance.employee_assignment, employee=instance.employee, income=instance.hours, expense=0, date=instance.create_time, note="", create_time=instance.create_time)
+
