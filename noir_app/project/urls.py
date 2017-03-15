@@ -6,6 +6,7 @@ router = routers.DefaultRouter()
 router.register(r'assignment', views.AssignmentViewSet)
 router.register(r'employee_assignment', views.EmployeeAssignmentViewSet)
 router.register(r'project', views.ProjectViewSet)
+router.register(r'pay', views.PayViewSet)
 
 urlpatterns = (
     url(r'^', include(router.urls)),

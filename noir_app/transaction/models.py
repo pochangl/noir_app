@@ -9,7 +9,7 @@ from account.models import Company, Employee
 from django.dispatch import Signal
 from django.dispatch.dispatcher import receiver
 from django.db.models.signals import pre_save, post_save
-from django.db.models.deletion import CASCADE
+from django.db.models.deletion import CASCADE, DO_NOTHING, PROTECT
 
 # Create your models here.
 
@@ -64,7 +64,18 @@ class Salary(TimeStampModel):
     overtime = models.PositiveIntegerField() # overtime pay加班時薪
     start_time = models.DateTimeField()
     
+    def save(self, *args, **kwargs):
+        if self.id is None:
+            super(Salary, self).save(*args, **kwargs)
+            
+    def delete(self, *args, **kwargs):
+        #still can delete. :(
+        return False
     
+    def __str__(self):
+        return "%s: %s" % (self.employee.contact.name, self.start_time.date())\
+ 
+ 
 class PersonalIncome(PersonalAccountBalance):
     class Meta:
         abstract =True
