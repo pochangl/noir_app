@@ -64,6 +64,9 @@ class Salary(TimeStampModel):
     overtime = models.PositiveIntegerField() # overtime pay加班時薪
     start_time = models.DateTimeField()
     
+    class Meta:
+        unique_together = (("employee", "start_time"),)
+        
     def save(self, *args, **kwargs):
         if self.id is None:
             super(Salary, self).save(*args, **kwargs)
@@ -73,7 +76,7 @@ class Salary(TimeStampModel):
         return False
     
     def __str__(self):
-        return "%s: %s" % (self.employee.contact.name, self.start_time.date())\
+        return "%s: %s" % (self.employee.contact.name, self.start_time.date())
  
  
 class PersonalIncome(PersonalAccountBalance):

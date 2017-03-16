@@ -147,23 +147,11 @@ class EmployeeAssignment(TimeStampModel):
     
 class Pay(PersonalAccountBalance):
     employee_assignment = models.OneToOneField(EmployeeAssignment, related_name="pays")
-#     employee_assignment = models.OneToOneField('project.EmployeeAssignment', through="account.Employee", related_name="pays")
-    salary = models.ForeignKey(Salary, related_name="pays") #whatif the salary is deleted?
-#     salary = models.ManyToManyField('transaction.Salary', through="project.Pay.employee_assignment", related_name='pays')
+    salary = models.ForeignKey(Salary, related_name="pays", null=True, blank=True) #whatif the salary is deleted?
 
-#     class Meta:
-#         check_employee = {"employee_assignment.employee.id":salary.employee.id}
-        
     def __init__(self, *args, **kwargs):
         super(Pay, self).__init__(*args, **kwargs)
         self.note = "pay"
-
-#     @property
-#     def salary(self):
-#         try:
-#             return self.salary.order_by('-start_time')[0]   #filter date
-#         except IndexError:
-#             return None
         
     @classonlymethod
     def pay(cls, assignment, employee, date, amount):
@@ -173,27 +161,28 @@ class Pay(PersonalAccountBalance):
         except EmployeeAssignment.DoesNotExist:
             return None
         return this.save()
-   
-    @classonlymethod
-    def get_salary(cls, employee, hourly, overtime, start_time):
-        super(Pay, cls).get_salary(employee=employee, start_time=start_time)
+    
+    
+@receiver(post_save, sender=EmployeeAssignment)
+def assignment_endorsed(instance, created, **kwargs):
+    if created:
         try:
-            self.salary = Salary.objects.get(employee=employee)
-        except Salary.DoesNotExist:
-            return None
-#         used_salary = self.salary.order_by(self.salary.start_time)
-        return this.save()
-    
-    
-# @receiver(post_save, sender=EmployeeAssignment)
-# def assignment_endorsed(instance, created, **kwargs):
-#     if created:
-#         pay = Pay(employee_assignment=instance, employee=instance.employee, income=instance.hours, expense=0, date=instance.create_time, note="", create_time=instance.create_time)
-#         try:
-#             self.salary = Salary.objects.get(employee=employee)
-#         except Salary.DoesNotExist:
-#             return None
-#         pay.save()
-#     else:
-#         Pay.objects.filter(employee_assignment=instance.employee_assignment).update(employee_assignment=instance.employee_assignment, employee=instance.employee, income=instance.hours, expense=0, date=instance.create_time, note="", create_time=instance.create_time)
-
+            last_salary = Salary.objects.order_by("-start_time").filter(employee=instance.employee, start_time__lte=instance.work_date)[0]
+        except:
+            raise "No Reference Salary."
+        try:
+            last_pay = Pay.objects.order_by("-date").filter(employee=instance.employee, date__lte=instance.work_date)[0]
+            last_balance = last_pay.balance
+        except:
+            last_balance = 0
+        new_income = instance.hours * last_salary.hourly + instance.overtime * last_salary.overtime
+        new_balance = last_balance + new_income
+        pay = Pay(employee_assignment=instance, employee=instance.employee, salary=last_salary, balance=new_balance, income=new_income, expense=0, date=instance.work_date, note="pay", create_time=datetime.now)
+        pay.save()
+    else:
+        pay = Pay.objects.order_by("-date").filter(employee_assignment=instance, date__lte=instance.work_date)[0]
+        old_income = pay.income
+        new_income = instance.hours * pay.salary.hourly + instance.overtime * pay.salary.overtime
+        pay.balance = pay.balance + (new_income - old_income)
+        pay.income = new_income
+        pay.save()
