@@ -29,7 +29,7 @@ export class InsuranceDateRangePage {
   click () {
     this.nav.push(
       InsuranceRecordsPage,
-      {'date_from': this.date_from, 'date_to': this.date_to}
+      {'date_0': this.date_from, 'date_1': this.date_to}
     );
   }
 }

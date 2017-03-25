@@ -17,14 +17,9 @@ export class InsuranceRecordsPage {
     this.date_from = params.data.date_from;
     this.date_to = params.data.date_to;
     this.insurances = new InsuranceList(api);
-    this.insurances.filter({
-      date_from: this.date_from,
-      date_to: this.date_to
-    });
+    this.insurances.filter(params.data);
   }
   ionViewWillEnter () {
-    this.insurances.fetch();
+    this.insurances.fetch().then(() => {console.log(this.insurances)});
   }
-  // click (personal_account_balance) {
-  // }
 }

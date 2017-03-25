@@ -1,14 +1,17 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Api } from '../../providers/api/api';
-import { InsuranceEmployeeList, Insurance, ActiveWorkerList} from './models';
+import { InsuranceEmployeeList, Insurance, InsuranceList, ActiveWorkerList} from './models';
 
 @Component({templateUrl: 'list.html', providers: [Api]})
 export class InsuranceListPage {
     insuranced_employees: InsuranceEmployeeList;
     employees: ActiveWorkerList;
-    still_insuranced_employees: Array<Insurance>
+    still_insuranced_employees: Array<Insurance>;
+    insurances: InsuranceList;
     date: any;
+    removes = [];
+    adds = [];
 
     constructor(
         protected nav: NavController,
@@ -18,6 +21,11 @@ export class InsuranceListPage {
         this.date = params.get('date').date
         this.employees = new ActiveWorkerList(api);
         this.insuranced_employees = new InsuranceEmployeeList(api);
+        this.insurances = new InsuranceList(api)
+        this.insurances.filter({
+          date_0: this.date,
+          date_1: this.date
+        })
         this.employees.filter({
           date: this.date
         });
@@ -29,6 +37,15 @@ export class InsuranceListPage {
       this.refresh();
     }
     refresh () {
+      this.insurances.fetch().then(() => {
+        this.adds = this.insurances.objects.filter(insurance => {
+          console.log(insurance.action)
+          return insurance.action === 'add';
+        });
+        this.removes = this.insurances.objects.filter(insurance => insurance.action === 'remove');
+        console.log(this.adds)
+        console.log(this.removes)
+      });
       this.insuranced_employees.fetch().then(
         () => {
           this.employees.fetch().then(() => this.update());

@@ -15,7 +15,7 @@
   </ion-segment>
   <ion-segment *ngFor="let week of month.get().weeks">
     <ion-segment-button value="{{ day.value }}" *ngFor="let day of week.days" (click)="selectDate(day)">
-      <span *ngIf="day.value" [attr.danger]="highlight(day) ? true : null">{{ day.value }}</span>
+      <span *ngIf="day.value" [color]="highlight(day) ? 'danger' : 'primary'">{{ day.value }}</span>
     </ion-segment-button>
   </ion-segment>
   <ion-segment>

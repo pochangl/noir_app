@@ -165,22 +165,23 @@ class Pay(PersonalAccountBalance):
     
 @receiver(post_save, sender=EmployeeAssignment)
 def assignment_endorsed(instance, created, **kwargs):
+    #find date range between selected date and the days after the selected date
+    #re-calculate all datas
+    #
     if created:
+        last_salary = Salary.objects.get(employee=instance.employee, start_time__lte=instance.work_date).latest('start_time')
         try:
-            last_salary = Salary.objects.order_by("-start_time").filter(employee=instance.employee, start_time__lte=instance.work_date)[0]
-        except:
-            raise "No Reference Salary."
-        try:
-            last_pay = Pay.objects.order_by("-date").filter(employee=instance.employee, date__lte=instance.work_date)[0]
-            last_balance = last_pay.balance
-        except:
+            last_pay = Pay.objects.get(employee=instance.employee, date__lte=instance.work_date).latest('date')
+        except Pay.DoexNotExist:
             last_balance = 0
+        else:
+            last_balance = last_pay.balance
         new_income = instance.hours * last_salary.hourly + instance.overtime * last_salary.overtime
         new_balance = last_balance + new_income
         pay = Pay(employee_assignment=instance, employee=instance.employee, salary=last_salary, balance=new_balance, income=new_income, expense=0, date=instance.work_date, note="pay", create_time=datetime.now)
         pay.save()
     else:
-        pay = Pay.objects.order_by("-date").filter(employee_assignment=instance, date__lte=instance.work_date)[0]
+        pay = Pay.objects.get(employee_assignment=instance, date__lte=instance.work_date).latest('date')
         old_income = pay.income
         new_income = instance.hours * pay.salary.hourly + instance.overtime * pay.salary.overtime
         pay.balance = pay.balance + (new_income - old_income)

@@ -19,12 +19,19 @@ class BaseAccountBalance(TimeStampModel):
     expense = models.PositiveIntegerField(default=0)
     note = models.CharField(max_length=1024, blank=True, default="")
     date = models.DateField(default=datetime.now) # 實際收入/支出日期
-
+    is_account_settled = models.BooleanField(default=False)
+    
     @classonlymethod
     def withdraw(cls, amount):
         raise NotImplemented()
 
-
+    def settle_account (self):
+        #filter data by date
+        #each data's is_account_settled = True
+        self.is_account_settled = True
+        self.save()
+        
+        
 class AccountBalance(BaseAccountBalance):
     due_to = models.OneToOneField(BaseAccountBalance, unique=True, on_delete=CASCADE, related_name="account_balance")
     # 公司總計帳戶
@@ -48,8 +55,8 @@ class PersonalAccountBalance(OthersAccountBalance):
     @classonlymethod
     def pay(cls, employee, date, amount):
         return PersonalAccountBalance.objects.create(employee=employee, date=date, income=amount, note=pay)
-
-
+    
+    
 class PersonalWithdraw(PersonalAccountBalance):
     signature = models.ImageField(upload_to="signature", null=True, blank=True)
 
@@ -67,13 +74,9 @@ class Salary(TimeStampModel):
     class Meta:
         unique_together = (("employee", "start_time"),)
         
-    def save(self, *args, **kwargs):
-        if self.id is None:
-            super(Salary, self).save(*args, **kwargs)
-            
-    def delete(self, *args, **kwargs):
-        #still can delete. :(
-        return False
+#     def save(self, *args, **kwargs):
+#         if self.id is None:
+#             super(Salary, self).save(*args, **kwargs)
     
     def __str__(self):
         return "%s: %s" % (self.employee.contact.name, self.start_time.date())

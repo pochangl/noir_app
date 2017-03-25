@@ -38,7 +38,6 @@ v1_api = Api(api_name='v1')
 
 v1_api.register(AssignmentDateResource())
 v1_api.register(ScheduleResource())
-v1_api.register(DayOffResource())
 
 
 urlpatterns = (
@@ -50,5 +49,6 @@ urlpatterns = (
     url(r'^api/v1/transaction/', include('transaction.urls')),
     url(r'^api/v1/schedule/', include('schedule.urls')),
     url(r'^api/v1/insurance/', include('insurance.urls')),
+    url(r'^api/v1/schedule/', include('schedule.urls')),
     url(r'^api/', include(v1_api.urls)),
 )

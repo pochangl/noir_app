@@ -5,18 +5,36 @@ export class Employee extends BaseEmployee {
     is_insuranced: Boolean = false
 }
 
+class InsurancedEmployee extends Employee {
+  is_insuranced: Boolean = true
+}
+
 export class Insurance extends Model {
   resource_name = 'insurance'
   date: string;
   employee: Employee;
   is_insuranced = true;
+  action = 'None'
+
   fields =  [
     'date',
+    'action',
+    'create_time',
     {
-      name: 'employees',
+      name: 'employee',
       cls: Employee
     }
   ]
+  get action_literal () {
+    switch (this.action) {
+      case 'add':
+        return '加保';
+      case 'remove':
+        return '退保'
+      default:
+        return '未知動作'
+    }
+  }
   serializeEmployee () {
     let obj:any = this.employee.serialize();
     obj.date = this.date;
@@ -48,7 +66,7 @@ export class InsuranceList extends ModelList<Insurance> {
 }
 
 export class InsuranceEmployeeList extends ModelList<Insurance> {
-  model = Employee;
+  model = InsurancedEmployee;
   resource_name = 'insurance/employees'
 }
 

@@ -3,18 +3,14 @@ from django.utils import timezone
 from django.db.models import Max, F
 from django.utils.dateparse import parse_date
 from rest_framework import mixins, generics, views
-from . import serializers, models
+from . import serializers, models, filters
 from account.views import EmployeeListView, EmployeeView
 
 
 class RecentInsuranceListView(generics.ListAPIView):
-    serializer_class = serializers.InsuranceSerializer
     queryset = models.Insurance.objects.all()
-
-    def get_queryset(self):
-        now = timezone.now()
-        yesterday = now.date() - datetime.timedelta(days=2)
-        return super(RecentInsuranceListView, self).get_queryset().filter(date__gte=yesterday)
+    serializer_class = serializers.InsuranceSerializer
+    filter_class = filters.InsuranceFilter
 
 
 class InsuranceEmployeeListView(EmployeeListView):
@@ -26,17 +22,29 @@ class InsuranceEmployeeListView(EmployeeListView):
 
 
 class AddInsuranceView(EmployeeView):
-    def get_employee(self):
+    @property
+    def employee(self):
         return self.queryset.model.objects.get(id=self.request.data['id'])
 
-    def get_date(self):
+    @property
+    def date(self):
         return parse_date(self.request.data['date'])
 
+    @property
+    def insurance(self):
+        try:
+            return models.Insurance.objects.get(employee=self.employee, date=self.date)
+        except models.Insurance.DoesNotExist:
+             return models.Insurance.objects.create(employee=self.employee, date=self.date, action='add')
+
     def perform_create(self, serializer):
-        models.Insurance.add([self.get_employee()], self.get_date())
+        insurance = self.insurance
+        insurance.action = 'add'
+        insurance.save()
 
 
 class RemoveInsuranceView(AddInsuranceView):
     def perform_create(self, serializer):
-        models.Insurance.remove([self.get_employee()], self.get_date())
-
+        insurance = self.insurance
+        insurance.action = 'remove'
+        insurance.save()
