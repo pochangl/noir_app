@@ -23,10 +23,8 @@ export class AddAssignmentPage {
     }
 
     add () {
-<<<<<<< HEAD
-      this.assignment.end_datetime = this.assignment.start_datetime;
-=======
->>>>>>> origin/master
+      // end_datetime可能會比start_datetime還早的問題？
+      // this.assignment.end_datetime = this.assignment.start_datetime;
       this.assignment.create().then(() => {
         this.nav.pop();
       });
