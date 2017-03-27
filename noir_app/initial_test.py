@@ -1,6 +1,6 @@
 #-*- coding: utf-8 -*-
 from account.models import RegistrationToken, Contact, Company, Employee
-from project.models import Project, EmployeeAssignment, Assignment
+from project.models import Project, EmployeeAssignment, Assignment, Salary
 # from transaction.models import Transaction, Receivable, PayCheck
 from schedule.models import DayOff
 import datetime
@@ -54,20 +54,36 @@ pProject2 = Project(contact=pAccount2, company=pAccountC2, name="MoonLand")
 pProject2.save()
 
 
+pSalary1 = Salary(employee=pAccountE1, hourly=100, overtime=133, start_time="1111-01-01")
+pSalary1.save()
+pSalary2 = Salary(employee=pAccountE2, hourly=100, overtime=133, start_time="1111-01-01")
+pSalary2.save()
+pSalary3 = Salary(employee=pAccountE3, hourly=100, overtime=133, start_time="1111-01-01")
+pSalary3.save()
+pSalary4 = Salary(employee=pAccountE4, hourly=100, overtime=133, start_time="1111-01-01")
+pSalary4.save()
+pSalary5 = Salary(employee=pAccountE1, hourly=100, overtime=133, start_time="2000-01-01")
+pSalary5.save()
+pSalary6 = Salary(employee=pAccountE2, hourly=100, overtime=133, start_time="2000-01-01")
+pSalary6.save()
+pSalary7 = Salary(employee=pAccountE3, hourly=100, overtime=133, start_time="2000-01-01")
+pSalary7.save()
+pSalary8 = Salary(employee=pAccountE4, hourly=100, overtime=133, start_time="2000-01-01")
+pSalary8.save()
+
+
+
+
 pProjectA1 = Assignment(project=pProject1, comment="",
-                       start_datetime="2016-01-01 08:00", end_datetime="2016-01-01 17:00",
                        number_needed="1")
 pProjectA1.save()
 pProjectA2 = Assignment(project=pProject2, comment="",
-                       start_datetime="2016-01-01 08:00", end_datetime="2016-01-01 17:00",
                        number_needed="1")
 pProjectA2.save()
 pProjectA3 = Assignment(project=pProject2, comment="",
-                       start_datetime="2016-01-02 08:00", end_datetime="2016-01-02 17:00",
                        number_needed="1")
 pProjectA3.save()
 pProjectA4 = Assignment(project=pProject1, comment="",
-                       start_datetime="2016-01-02 08:00", end_datetime="2016-01-02 17:00",
                        number_needed="1")
 pProjectA4.save()
 

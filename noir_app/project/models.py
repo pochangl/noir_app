@@ -91,7 +91,7 @@ class Assignment(TimeStampModel):
 
         # remove irrelevant employees
         not_involed = self.employees.exclude(employee__in=employees)
-        self.employees.remove(not_invoved)
+        self.employees.remove(not_involed)
 
         # add relevant employees
         relevents = set(employees) - self.employees.all()
@@ -141,12 +141,26 @@ class EmployeeAssignment(TimeStampModel):
     def work_date(self):
         return self.assignment.start_datetime.date()
     
+    def save(self, *args, **kwargs):
+        super(EmployeeAssignment, self).save(*args, **kwargs)
+        try:
+            corresponding_pay = Pay.objects.get(employee_assignment=self, employee=self.employee)
+        except Pay.DoesNotExist:
+            corresponding_pay = Pay(employee_assignment=self, employee=self.employee)
+        try:
+#             corresponding_pay.salary = Salary.objects.get(employee=self.employee, start_time__lte=self.work_date).latest('start_time')[0]    #this shows error
+            corresponding_pay.salary = Salary.objects.order_by("-start_time").filter(employee=self.employee, start_time__lte=self.work_date)[0]
+            corresponding_pay.income = corresponding_pay.employee_assignment.hours * corresponding_pay.salary.hourly + corresponding_pay.employee_assignment.overtime * corresponding_pay.salary.overtime
+        except Salary.DoesNotExist:
+            pass
+        return corresponding_pay.save()
+        
     def __str__(self):
         return "%s: %s" % (self.assignment.project.name, self.employee.contact.name)
     
     
 class Pay(PersonalAccountBalance):
-    employee_assignment = models.OneToOneField(EmployeeAssignment, related_name="pays")
+    employee_assignment = models.OneToOneField(EmployeeAssignment, on_delete=CASCADE, related_name="pays")
     salary = models.ForeignKey(Salary, related_name="pays", null=True, blank=True) #whatif the salary is deleted?
 
     def __init__(self, *args, **kwargs):
@@ -163,27 +177,35 @@ class Pay(PersonalAccountBalance):
         return this.save()
     
     
-@receiver(post_save, sender=EmployeeAssignment)
-def assignment_endorsed(instance, created, **kwargs):
-    #find date range between selected date and the days after the selected date
-    #re-calculate all datas
-    #
-    if created:
-        last_salary = Salary.objects.get(employee=instance.employee, start_time__lte=instance.work_date).latest('start_time')
-        try:
-            last_pay = Pay.objects.get(employee=instance.employee, date__lte=instance.work_date).latest('date')
-        except Pay.DoexNotExist:
-            last_balance = 0
-        else:
-            last_balance = last_pay.balance
-        new_income = instance.hours * last_salary.hourly + instance.overtime * last_salary.overtime
-        new_balance = last_balance + new_income
-        pay = Pay(employee_assignment=instance, employee=instance.employee, salary=last_salary, balance=new_balance, income=new_income, expense=0, date=instance.work_date, note="pay", create_time=datetime.now)
-        pay.save()
-    else:
-        pay = Pay.objects.get(employee_assignment=instance, date__lte=instance.work_date).latest('date')
-        old_income = pay.income
-        new_income = instance.hours * pay.salary.hourly + instance.overtime * pay.salary.overtime
-        pay.balance = pay.balance + (new_income - old_income)
-        pay.income = new_income
-        pay.save()
+# @receiver(post_save, sender=EmployeeAssignment)
+# def assignment_endorsed(instance, created, **kwargs):
+#     #find date range between selected date and the days after the selected date
+#     #re-calculate all datas
+#     if created:
+# #         AttributeError: 'Salary' object has no attribute 'latest'
+# #         last_salary = Salary.objects.get(employee=instance.employee, start_time__lte=instance.work_date).latest('start_time')
+#         try:
+#             last_salary = Salary.objects.order_by("-start_time").filter(employee=instance.employee, start_time__lte=instance.work_date)[0]
+#         except Salary.DoesNotExist:
+#             return None
+# #             IndexError: list index out of range => this bug has not been fixed yet
+#         try:
+# #             IndexError: list index out of range
+# #             last_pay = Pay.objects.get(employee=instance.employee, date__lte=instance.work_date).latest('date')
+#             last_pay = Pay.objects.order_by("-date").filter(employee=instance.employee, date__lte=instance.work_date)[0]
+#         except Pay.DoesNotExist:
+#             last_balance = 0
+#         else:
+#             last_balance = last_pay.balance
+#         new_income = instance.hours * last_salary.hourly + instance.overtime * last_salary.overtime
+#         new_balance = last_balance + new_income
+#         pay = Pay(employee_assignment=instance, employee=instance.employee, salary=last_salary, balance=new_balance, income=new_income, expense=0, date=instance.work_date, note="pay", create_time=datetime.now)
+#         pay.save()
+#     else:
+# #         pay = Pay.objects.get(employee_assignment=instance, date__lte=instance.work_date).latest('date')
+#         pay = Pay.objects.order_by("-date").filter(employee_assignment=instance, date__lte=instance.work_date)[0]
+#         old_income = pay.income
+#         new_income = instance.hours * pay.salary.hourly + instance.overtime * pay.salary.overtime
+#         pay.balance = pay.balance + (new_income - old_income)
+#         pay.income = new_income
+#         pay.save()

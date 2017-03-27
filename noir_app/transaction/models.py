@@ -25,11 +25,16 @@ class BaseAccountBalance(TimeStampModel):
     def withdraw(cls, amount):
         raise NotImplemented()
 
-    def settle_account (self):
-        #filter data by date
-        #each data's is_account_settled = True
-        self.is_account_settled = True
-        self.save()
+    # self.settling_status will get current status, so here we use property
+    @property
+    def settling_status(self):
+        return BaseAccountBalance.objects.get(id=self.id).is_account_settled
+        
+    def save(self, *args, **kwargs):
+        if self.id is None or self.settling_status is False:
+            super(BaseAccountBalance, self).save(*args, **kwargs)
+        else:
+            pass    # if account have been settled, don't save the changes
         
         
 class AccountBalance(BaseAccountBalance):
@@ -69,14 +74,27 @@ class Salary(TimeStampModel):
     employee = models.ForeignKey(Employee, related_name="salaries")
     hourly = models.PositiveIntegerField() # hourly pay正常時薪
     overtime = models.PositiveIntegerField() # overtime pay加班時薪
-    start_time = models.DateTimeField()
+    start_time = models.DateTimeField(default=datetime.now)
     
     class Meta:
         unique_together = (("employee", "start_time"),)
-        
+
+#     @property
+#     def last_settled_date(self):
+# #         super(Salary, cls).last_settled_date(employee=employee,start_time=start_time)
+#         try:
+# #             'PersonalAccountBalance' object has no attribute 'latest' => it shows error, if only one data!
+# #             MultipleObjectsReturned: get() returned more than one Salary -- it returned 2! => don't know why
+#             return PersonalAccountBalance.objects.get(employee=self.employee, is_account_settled=True).latest('date')
+# #             return PersonalAccountBalance.objects.order_by('-date').filter(employee=self.employee, is_account_settled=True)[0].date
+#         except PersonalAccountBalance.DoesNotExist:
+#             return None
+    
 #     def save(self, *args, **kwargs):
-#         if self.id is None:
+#         if self.id is None or self.start_time is self.last_settled_date:
 #             super(Salary, self).save(*args, **kwargs)
+#         else:
+#             pass    # if account have been settled, don't save the changes
     
     def __str__(self):
         return "%s: %s" % (self.employee.contact.name, self.start_time.date())
