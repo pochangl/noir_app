@@ -36,6 +36,8 @@ class BaseAccountBalance(TimeStampModel):
         else:
             pass    # if account have been settled, don't save the changes
         
+class UnsettledAccountList(BaseAccountBalance):
+    pass
         
 class AccountBalance(BaseAccountBalance):
     due_to = models.OneToOneField(BaseAccountBalance, unique=True, on_delete=CASCADE, related_name="account_balance")

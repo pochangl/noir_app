@@ -11,7 +11,7 @@ from rest_framework import exceptions
 from django.utils.decorators import classonlymethod
 from django.dispatch import Signal
 from django.dispatch.dispatcher import receiver
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import post_save, pre_delete
 from django.db.models.deletion import CASCADE
 from tensorflow.python.ops import check_ops
 
@@ -141,19 +141,26 @@ class EmployeeAssignment(TimeStampModel):
     def work_date(self):
         return self.assignment.start_datetime.date()
     
-    def save(self, *args, **kwargs):
-        super(EmployeeAssignment, self).save(*args, **kwargs)
-        try:
-            corresponding_pay = Pay.objects.get(employee_assignment=self, employee=self.employee)
-        except Pay.DoesNotExist:
-            corresponding_pay = Pay(employee_assignment=self, employee=self.employee)
-        try:
-#             corresponding_pay.salary = Salary.objects.get(employee=self.employee, start_time__lte=self.work_date).latest('start_time')[0]    #this shows error
-            corresponding_pay.salary = Salary.objects.order_by("-start_time").filter(employee=self.employee, start_time__lte=self.work_date)[0]
-            corresponding_pay.income = corresponding_pay.employee_assignment.hours * corresponding_pay.salary.hourly + corresponding_pay.employee_assignment.overtime * corresponding_pay.salary.overtime
-        except Salary.DoesNotExist:
-            pass
-        return corresponding_pay.save()
+#     def save(self, *args, **kwargs):
+# #         is_settled = False
+# #         try:
+# #             is_settled = PersonalAccountBalance.objects.get(employee_assignment=self, employee=self.employee).is_account_settled
+# #         except PersonalAccountBalance.DoesNotExist:
+# #             pass
+# #         except is_settled is True:
+# #             raise "Error! This record has been settled."
+#         super(EmployeeAssignment, self).save(*args, **kwargs)
+#         try:
+#             corresponding_pay = Pay.objects.get(employee_assignment=self, employee=self.employee)
+#         except Pay.DoesNotExist:
+#             corresponding_pay = Pay(employee_assignment=self, employee=self.employee)
+#         try:
+# #             corresponding_pay.salary = Salary.objects.get(employee=self.employee, start_time__lte=self.work_date).latest('start_time')[0]    #this shows error
+#             corresponding_pay.salary = Salary.objects.order_by("-start_time").filter(employee=self.employee, start_time__lte=self.work_date)[0]
+#             corresponding_pay.income = corresponding_pay.employee_assignment.hours * corresponding_pay.salary.hourly + corresponding_pay.employee_assignment.overtime * corresponding_pay.salary.overtime
+#         except Salary.DoesNotExist:
+#             pass
+#         return corresponding_pay.save()
         
     def __str__(self):
         return "%s: %s" % (self.assignment.project.name, self.employee.contact.name)
@@ -176,7 +183,26 @@ class Pay(PersonalAccountBalance):
             return None
         return this.save()
     
-    
+@receiver(pre_delete, sender=EmployeeAssignment)
+def ea_deleted(instance, **kwargs):
+    if Pay.objects.get(employee_assignment=instance, employee=instance.employee).is_account_settled is True:
+        raise Exception("Error! This Record Has Been Settled.")
+
+@receiver(post_save, sender=EmployeeAssignment)
+def ea_saved(instance, created, **kwargs):
+    try:
+        corresponding_pay = Pay.objects.get(employee_assignment=instance, employee=instance.employee)
+    except Pay.DoesNotExist:
+        corresponding_pay = Pay(employee_assignment=instance, employee=instance.employee)
+    try:
+#             corresponding_pay.salary = Salary.objects.get(employee=instance.employee, start_time__lte=instance.work_date).latest('start_time')[0]    #this shows error
+        corresponding_pay.salary = Salary.objects.order_by("-start_time").filter(employee=instance.employee, start_time__lte=instance.work_date)[0]
+        corresponding_pay.income = corresponding_pay.employee_assignment.hours * corresponding_pay.salary.hourly + corresponding_pay.employee_assignment.overtime * corresponding_pay.salary.overtime
+    except Salary.DoesNotExist:
+        pass
+    return corresponding_pay.save()
+
+        
 # @receiver(post_save, sender=EmployeeAssignment)
 # def assignment_endorsed(instance, created, **kwargs):
 #     #find date range between selected date and the days after the selected date
