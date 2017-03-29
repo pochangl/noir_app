@@ -29,15 +29,20 @@ class BaseAccountBalance(TimeStampModel):
     @property
     def settling_status(self):
         return BaseAccountBalance.objects.get(id=self.id).is_account_settled
+
+    @property
+    def latest_settled_record(self):
+        try:
+            return PersonalAccountBalance.objects.order_by("-date").filter(is_account_settled=True, employee=self.employee)[0]
+        except IndexError:
+            return None
         
     def save(self, *args, **kwargs):
         if self.id is None or self.settling_status is False:
             super(BaseAccountBalance, self).save(*args, **kwargs)
         else:
             pass    # if account have been settled, don't save the changes
-        
-class UnsettledAccountList(BaseAccountBalance):
-    pass
+
         
 class AccountBalance(BaseAccountBalance):
     due_to = models.OneToOneField(BaseAccountBalance, unique=True, on_delete=CASCADE, related_name="account_balance")
@@ -63,6 +68,13 @@ class PersonalAccountBalance(OthersAccountBalance):
     def pay(cls, employee, date, amount):
         return PersonalAccountBalance.objects.create(employee=employee, date=date, income=amount, note=pay)
     
+    @property
+    def unsettled_record_list(self, employee):
+        try:
+            return PersonalAccountBalance.objects.order_by("-date").filter(is_account_settled=False, employee=employee, date__gte=latest_settled_record.date)
+        except PersonalAccountBalance.DoesNotExist:
+            return None
+
     
 class PersonalWithdraw(PersonalAccountBalance):
     signature = models.ImageField(upload_to="signature", null=True, blank=True)
@@ -80,23 +92,6 @@ class Salary(TimeStampModel):
     
     class Meta:
         unique_together = (("employee", "start_time"),)
-
-#     @property
-#     def last_settled_date(self):
-# #         super(Salary, cls).last_settled_date(employee=employee,start_time=start_time)
-#         try:
-# #             'PersonalAccountBalance' object has no attribute 'latest' => it shows error, if only one data!
-# #             MultipleObjectsReturned: get() returned more than one Salary -- it returned 2! => don't know why
-#             return PersonalAccountBalance.objects.get(employee=self.employee, is_account_settled=True).latest('date')
-# #             return PersonalAccountBalance.objects.order_by('-date').filter(employee=self.employee, is_account_settled=True)[0].date
-#         except PersonalAccountBalance.DoesNotExist:
-#             return None
-    
-#     def save(self, *args, **kwargs):
-#         if self.id is None or self.start_time is self.last_settled_date:
-#             super(Salary, self).save(*args, **kwargs)
-#         else:
-#             pass    # if account have been settled, don't save the changes
     
     def __str__(self):
         return "%s: %s" % (self.employee.contact.name, self.start_time.date())
