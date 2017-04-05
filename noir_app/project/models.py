@@ -177,13 +177,20 @@ class Pay(PersonalAccountBalance):
         # first, do rebalance_account
         # and then settle the account
         pass
-    
+
+
+@receiver(pre_delete, sender=Salary)
+@receiver(pre_save, sender=Salary)
+def check_last_settled_date(instance, **kwargs):
+    if instance.start_time.date() < Pay.objects.get(employee=instance.employee).latest_settled_record.date:
+        raise Exception("Error! This (Salary) Record Has Been Settled.")
     
 @receiver(pre_delete, sender=EmployeeAssignment)
-def ea_deleted(instance, **kwargs):
+@receiver(pre_save, sender=EmployeeAssignment)
+def check_last_settled_date(instance, **kwargs):
     if Pay.objects.get(employee_assignment=instance, employee=instance.employee).is_account_settled is True:
-        raise Exception("Error! This Record Has Been Settled.")
-
+        raise Exception("Error! This (EA) Record Has Been Settled.")
+    
 @receiver(pre_save, sender=EmployeeAssignment)
 def ea_saved(instance, **kwargs):
     try:
@@ -194,7 +201,6 @@ def ea_saved(instance, **kwargs):
         corresponding_pay = Pay.objects.get(employee_assignment=instance, employee=instance.employee)
         if corresponding_pay.date < corresponding_pay.latest_settled_record.date:
             raise Exception("Error! Cannot Add Record Before Last Settle Account Date.")
-        
         
 @receiver(post_save, sender=EmployeeAssignment)
 def ea_saved(instance, created, **kwargs):

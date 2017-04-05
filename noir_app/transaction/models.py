@@ -41,7 +41,8 @@ class BaseAccountBalance(TimeStampModel):
         if self.id is None or self.settling_status is False:
             super(BaseAccountBalance, self).save(*args, **kwargs)
         else:
-            pass    # if account have been settled, don't save the changes
+            # if account have been settled, don't save the changes
+            raise Exception("Error! This (BaseAccountBalance) Record Has Been Settled.")
 
         
 class AccountBalance(BaseAccountBalance):
