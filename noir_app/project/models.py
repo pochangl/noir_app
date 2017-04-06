@@ -177,14 +177,29 @@ def rebalance_unsettled_records(instance, **kwargs):
 @receiver(pre_delete, sender=Salary)
 @receiver(pre_save, sender=Salary)
 def check_last_settled_date(instance, **kwargs):
-    if instance.start_time.date() < Pay.objects.get(employee=instance.employee).latest_settled_record.date:
-        raise Exception("Oops! This (Salary) Record Has Been Settled.")
+    try:
+        latest_record = Pay.objects.get(employee=instance.employee).latest_settled_record
+    except Pay.DoesNotExist:
+        pass    # 第一筆資料無Pay可查時,pass
+    else:
+        if latest_record is None:
+            pass
+        elif instance.start_time.date() < latest_record.date:
+            raise Exception("Oops! This (Salary) Record Has Been Settled.")
+
     
 @receiver(pre_delete, sender=EmployeeAssignment)
 @receiver(pre_save, sender=EmployeeAssignment)
 def check_last_settled_date(instance, **kwargs):
-    if Pay.objects.get(employee_assignment=instance, employee=instance.employee).is_account_settled is True:
-        raise Exception("Oops! This (EA) Record Has Been Settled.")
+    try:
+        latest_record = Pay.objects.get(employee=instance.employee).latest_settled_record
+    except Pay.DoesNotExist:
+        pass    # 第一筆資料無Pay可查時,pass
+    else:
+        if latest_record is None:
+            pass
+        elif latest_record.is_account_settled is True:
+            raise Exception("Oops! This (EA) Record Has Been Settled.")
     
 @receiver(pre_save, sender=EmployeeAssignment)
 def ea_saved(instance, **kwargs):
@@ -192,10 +207,11 @@ def ea_saved(instance, **kwargs):
         corresponding_salary = Salary.objects.order_by("-start_time").filter(employee=instance.employee, start_time__lte=instance.work_date)[0]
     except Salary.DoesNotExist:
         raise Exception("Oops! This Employee Do Not Have Any Salary Data.")
-    if Pay.objects.get(employee_assignment=instance, employee=instance.employee).id is not None:
-        corresponding_pay = Pay.objects.get(employee_assignment=instance, employee=instance.employee)
-        if corresponding_pay.date < corresponding_pay.latest_settled_record.date:
-            raise Exception("Oops! Cannot Add Record Before Last Settle Account Date.")
+    else:
+        if Pay.objects.get(employee_assignment=instance, employee=instance.employee).id is not None:
+            corresponding_pay = Pay.objects.get(employee_assignment=instance, employee=instance.employee)
+            if corresponding_pay.date < corresponding_pay.latest_settled_record.date:
+                raise Exception("Oops! Cannot Add Record Before Last Settle Account Date.")
         
 @receiver(post_save, sender=EmployeeAssignment)
 def ea_saved(instance, created, **kwargs):
