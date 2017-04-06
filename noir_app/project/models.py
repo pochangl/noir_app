@@ -160,47 +160,42 @@ class Pay(PersonalAccountBalance):
             return None
         return this.save()
     
-    def recalculate_income(self):
-        recalculated_record = Pay.objects.filter(id=self.id)
-        return recalculated_record.employee_assignment.hours * recalculated_record.salary.hourly + recalculated_record.employee_assignment.overtime * recalculated_record.salary.overtime
-    
-    def rebalance_account(self, employee):
-        prev_record = self.latest_settled_record
-        for record in unsettled_record_list.filter(employee=employee):
-            rebalanced_record = PersonalAccountBalance.objects.filter(id=record.id)
-            rebalanced_record.income = record.pay.recalculate_income()
-            rebalanced_record.balance = prev_record.balance + rebalanced_record.income
-            rebalanced_record.save()
-            prev_record = rebalanced_record
-            
-    def settling_account(self):
-        # first, do rebalance_account
-        # and then settle the account
-        pass
+#     def recalculate_income(self):
+#         recalculated_record = Pay.objects.filter(id=self.id)
+#         return recalculated_record.employee_assignment.hours * recalculated_record.salary.hourly + recalculated_record.employee_assignment.overtime * recalculated_record.salary.overtime
+#             
+#     def settling_account(self):
+#         # first, do rebalance_account
+#         # and then settle the account
+#         pass
 
+
+@receiver(post_save, sender=PersonalAccountBalance)
+def rebalance_unsettled_records(instance, **kwargs):
+    instance.rebalance_unsettled_records()  # Rebalance unsettled records after the data saved.
 
 @receiver(pre_delete, sender=Salary)
 @receiver(pre_save, sender=Salary)
 def check_last_settled_date(instance, **kwargs):
     if instance.start_time.date() < Pay.objects.get(employee=instance.employee).latest_settled_record.date:
-        raise Exception("Error! This (Salary) Record Has Been Settled.")
+        raise Exception("Oops! This (Salary) Record Has Been Settled.")
     
 @receiver(pre_delete, sender=EmployeeAssignment)
 @receiver(pre_save, sender=EmployeeAssignment)
 def check_last_settled_date(instance, **kwargs):
     if Pay.objects.get(employee_assignment=instance, employee=instance.employee).is_account_settled is True:
-        raise Exception("Error! This (EA) Record Has Been Settled.")
+        raise Exception("Oops! This (EA) Record Has Been Settled.")
     
 @receiver(pre_save, sender=EmployeeAssignment)
 def ea_saved(instance, **kwargs):
     try:
         corresponding_salary = Salary.objects.order_by("-start_time").filter(employee=instance.employee, start_time__lte=instance.work_date)[0]
     except Salary.DoesNotExist:
-        raise Exception("Error! This Employee Do Not Have Any Salary Data.")
+        raise Exception("Oops! This Employee Do Not Have Any Salary Data.")
     if Pay.objects.get(employee_assignment=instance, employee=instance.employee).id is not None:
         corresponding_pay = Pay.objects.get(employee_assignment=instance, employee=instance.employee)
         if corresponding_pay.date < corresponding_pay.latest_settled_record.date:
-            raise Exception("Error! Cannot Add Record Before Last Settle Account Date.")
+            raise Exception("Oops! Cannot Add Record Before Last Settle Account Date.")
         
 @receiver(post_save, sender=EmployeeAssignment)
 def ea_saved(instance, created, **kwargs):
