@@ -20,8 +20,6 @@ export class Contact extends Model {
     new_employee.contact.id = this.id;
     new_employee.is_active = true;
     return new Promise<any>((resolve, reject) => {
-      console.log(new_contact);
-      console.log(new_employee);
       new_contact.create().then(() => {
       }).catch(() => {
         reject();
