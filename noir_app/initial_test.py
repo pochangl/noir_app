@@ -1,6 +1,6 @@
 #-*- coding: utf-8 -*-
 from account.models import RegistrationToken, Contact, Company, Employee
-from project.models import Project, EmployeeAssignment, Assignment
+from project.models import Project, EmployeeAssignment, Assignment, Salary
 # from transaction.models import Transaction, Receivable, PayCheck
 from schedule.models import DayOff
 import datetime
@@ -54,22 +54,42 @@ pProject2 = Project(contact=pAccount2, company=pAccountC2, name="MoonLand")
 pProject2.save()
 
 
-pProjectA1 = Assignment(project=pProject1, comment="",
-                       start_datetime="2016-01-01 08:00", end_datetime="2016-01-01 17:00",
-                       number_needed="1")
+tSalary1 = Salary(employee=pAccountE1, hourly=100, overtime=133, start_time="1111-01-01")
+tSalary1.save()
+tSalary2 = Salary(employee=pAccountE2, hourly=100, overtime=133, start_time="1111-01-01")
+tSalary2.save()
+tSalary3 = Salary(employee=pAccountE3, hourly=100, overtime=133, start_time="1111-01-01")
+tSalary3.save()
+tSalary4 = Salary(employee=pAccountE4, hourly=100, overtime=133, start_time="1111-01-01")
+tSalary4.save()
+tSalary5 = Salary(employee=pAccountE1, hourly=100, overtime=133, start_time="2000-01-01")
+tSalary5.save()
+tSalary6 = Salary(employee=pAccountE2, hourly=100, overtime=133, start_time="2000-01-01")
+tSalary6.save()
+tSalary7 = Salary(employee=pAccountE3, hourly=100, overtime=133, start_time="2000-01-01")
+tSalary7.save()
+tSalary8 = Salary(employee=pAccountE4, hourly=100, overtime=133, start_time="2000-01-01")
+tSalary8.save()
+
+
+
+pProjectA1 = Assignment(project=pProject1, comment="", number_needed="2")
 pProjectA1.save()
-pProjectA2 = Assignment(project=pProject2, comment="",
-                       start_datetime="2016-01-01 08:00", end_datetime="2016-01-01 17:00",
-                       number_needed="1")
+pProjectA2 = Assignment(project=pProject2, comment="", number_needed="2")
 pProjectA2.save()
-pProjectA3 = Assignment(project=pProject2, comment="",
-                       start_datetime="2016-01-02 08:00", end_datetime="2016-01-02 17:00",
-                       number_needed="1")
-pProjectA3.save()
-pProjectA4 = Assignment(project=pProject1, comment="",
-                       start_datetime="2016-01-02 08:00", end_datetime="2016-01-02 17:00",
-                       number_needed="1")
-pProjectA4.save()
+# pProjectA1 = Assignment(project=pProject1, comment="", number_needed="2",
+#                     start_datetime="2017-04-01T08:00:00.000000Z", end_datetime="2017-04-01T17:00:00.000000Z")
+# pProjectA1.save()
+# pProjectA2 = Assignment(project=pProject2, comment="", number_needed="2",
+#                     start_datetime="2017-04-01T08:00:00.000000Z", end_datetime="2017-04-01T17:00:00.000000Z")
+# pProjectA2.save()
+# pProjectA3 = Assignment(project=pProject1, comment="", number_needed="2",
+#                     start_datetime="2017-04-06T08:00:00.000000Z", end_datetime="2017-04-06T17:00:00.000000Z")
+# pProjectA3.save()
+# pProjectA4 = Assignment(project=pProject2, comment="", number_needed="2",
+#                     start_datetime="2017-04-06T08:00:00.000000Z", end_datetime="2017-04-06T17:00:00.000000Z")
+# pProjectA4.save()
+
 
 pProjectEA1 = EmployeeAssignment(employee=pAccountE1, assignment=pProjectA1)
 pProjectEA1.save()
@@ -79,29 +99,29 @@ pProjectEA3 = EmployeeAssignment(employee=pAccountE3, assignment=pProjectA2)
 pProjectEA3.save()
 pProjectEA4 = EmployeeAssignment(employee=pAccountE4, assignment=pProjectA1)
 pProjectEA4.save()
-pProjectEA5 = EmployeeAssignment(employee=pAccountE1, assignment=pProjectA3)
-pProjectEA5.save()
-pProjectEA6 = EmployeeAssignment(employee=pAccountE2, assignment=pProjectA3)
-pProjectEA6.save()
-pProjectEA7 = EmployeeAssignment(employee=pAccountE3, assignment=pProjectA4)
-pProjectEA7.save()
-pProjectEA8 = EmployeeAssignment(employee=pAccountE4, assignment=pProjectA4)
-pProjectEA8.save()
+# pProjectEA5 = EmployeeAssignment(employee=pAccountE1, assignment=pProjectA3)
+# pProjectEA5.save()
+# pProjectEA6 = EmployeeAssignment(employee=pAccountE2, assignment=pProjectA3)
+# pProjectEA6.save()
+# pProjectEA7 = EmployeeAssignment(employee=pAccountE3, assignment=pProjectA4)
+# pProjectEA7.save()
+# pProjectEA8 = EmployeeAssignment(employee=pAccountE4, assignment=pProjectA4)
+# pProjectEA8.save()
 
 #schedule設定
 pScheduleD1 = DayOff(employee=pAccountE1,
                     start_datetime="2016-02-03 08:00",
-                    end_datetime="2016-02-02 17:00")
+                    end_datetime="2016-02-03 17:00")
 pScheduleD1.save()
 pScheduleD2 = DayOff(employee=pAccountE2,
                     start_datetime="2016-02-03 08:00",
-                    end_datetime="2016-02-02 17:00")
+                    end_datetime="2016-02-03 17:00")
 pScheduleD2.save()
 pScheduleD3 = DayOff(employee=pAccountE3,
                     start_datetime="2016-02-03 08:00",
-                    end_datetime="2016-02-02 17:00")
+                    end_datetime="2016-02-03 17:00")
 pScheduleD3.save()
 pScheduleD4 = DayOff(employee=pAccountE4,
                     start_datetime="2016-02-03 08:00",
-                    end_datetime="2016-02-02 17:00")
+                    end_datetime="2016-02-03 17:00")
 pScheduleD4.save()

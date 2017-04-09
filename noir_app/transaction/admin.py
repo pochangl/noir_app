@@ -8,3 +8,5 @@ admin.site.register(AccountBalance)
 admin.site.register(PersonalAccountBalance)
 admin.site.register(PersonalWithdraw)
 admin.site.register(Salary)
+
+        

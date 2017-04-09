@@ -23,6 +23,8 @@ export class AddAssignmentPage {
     }
 
     add () {
+      // end_datetime可能會跨過很多天的問題？
+      this.assignment.end_datetime = this.assignment.start_datetime;
       this.assignment.create().then(() => {
         this.nav.pop();
       });

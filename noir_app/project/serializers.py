@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from account.serializers import CompanySerializer, EmployeeSerializer
-
 from . import models
 from utils.serializers import PositiveFloatField
 
@@ -55,4 +54,13 @@ class EmployeeAssignmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.EmployeeAssignment
-        fields = ('id', 'employee', 'hours', 'overtime', 'assignment', 'work_date',)
+        fields = ('id', 'employee', 'hours', 'overtime', 'assignment', 'work_date')
+
+class PaySerializer(serializers.ModelSerializer):
+    employee_assignment = EmployeeAssignmentSerializer(read_only=True)
+    employee = EmployeeSerializer(read_only=True)
+ 
+    class Meta:
+        model = models.Pay
+        fields = ('id', 'balance', 'income', 'expense', 'note', 'date', 'employee_assignment', 'employee', 'salary')
+        

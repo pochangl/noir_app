@@ -121,3 +121,7 @@ class ActiveWorkerView(EmployeeListView):
         end_of_the_date = date + datetime.timedelta(hours=23, minutes=59)
         return queryset.filter(assignments__start_datetime__range=(date, end_of_the_date))
     
+class PayViewSet(viewsets.ModelViewSet, generics.ListAPIView):
+    queryset = models.Pay.objects.all()
+    serializer_class = serializers.PaySerializer
+    

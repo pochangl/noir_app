@@ -3,12 +3,17 @@ from django.db import models
 from django.db.models import Max
 from utils.models import TimeStampModel, EndorsedModel, VersionedModel
 from django.utils.translation import ugettext as _
-from transaction.models import PersonalAccountBalance
+from transaction.models import PersonalAccountBalance, Salary
 from account.models import Contact, Company, Employee, EmployeeList
 from html5lib import filters
 from datetime import datetime, time, date, timedelta
 from rest_framework import exceptions
 from django.utils.decorators import classonlymethod
+from django.dispatch import Signal
+from django.dispatch.dispatcher import receiver
+from django.db.models.signals import post_save, pre_delete, pre_save
+from django.db.models.deletion import CASCADE
+from tensorflow.python.ops import check_ops
 
 # Create your models here.
 class Project(TimeStampModel):
@@ -60,7 +65,6 @@ class Assignment(TimeStampModel):
         except IndexError:
             return None
 
-
     def propose(self, user, employees):
         if len(employees) is 0:
             raise ProposedEmployeeList.NoEmployee()
@@ -86,7 +90,7 @@ class Assignment(TimeStampModel):
 
         # remove irrelevant employees
         not_involed = self.employees.exclude(employee__in=employees)
-        self.employees.remove(not_invoved)
+        self.employees.remove(not_involed)
 
         # add relevant employees
         relevents = set(employees) - self.employees.all()
@@ -96,7 +100,6 @@ class Assignment(TimeStampModel):
     @property
     def time_range(self):
         return self.start_datetime, self.end_datetime
-    
     
     def __str__(self):
         return "%s: %s" % (self.project.name, self.start_datetime.date())
@@ -136,15 +139,19 @@ class EmployeeAssignment(TimeStampModel):
     @property
     def work_date(self):
         return self.assignment.start_datetime.date()
+        
+    def __str__(self):
+        return "%s: %s" % (self.assignment.project.name, self.employee.contact.name)
     
     
 class Pay(PersonalAccountBalance):
-    employee_assignment = models.OneToOneField(EmployeeAssignment, related_name="pays")
+    employee_assignment = models.OneToOneField(EmployeeAssignment, on_delete=CASCADE, related_name="pays")
+    salary = models.ForeignKey(Salary, related_name="pays", null=True, blank=True) #whatif the salary is deleted?
 
     def __init__(self, *args, **kwargs):
         super(Pay, self).__init__(*args, **kwargs)
         self.note = "pay"
-
+        
     @classonlymethod
     def pay(cls, assignment, employee, date, amount):
         super(Pay, cls).pay(employee=employee, date=date, amount=amount)
@@ -153,4 +160,67 @@ class Pay(PersonalAccountBalance):
         except EmployeeAssignment.DoesNotExist:
             return None
         return this.save()
-   
+    
+#     def recalculate_income(self):
+#         recalculated_record = Pay.objects.filter(id=self.id)
+#         return recalculated_record.employee_assignment.hours * recalculated_record.salary.hourly + recalculated_record.employee_assignment.overtime * recalculated_record.salary.overtime
+#             
+#     def settling_account(self):
+#         # first, do rebalance_account
+#         # and then settle the account
+#         pass
+
+
+@receiver(post_save, sender=PersonalAccountBalance)
+def rebalance_unsettled_records(instance, **kwargs):
+    instance.rebalance_unsettled_records()  # Rebalance unsettled records after the data saved.
+
+@receiver(pre_delete, sender=Salary)
+@receiver(pre_save, sender=Salary)
+def check_last_settled_date(instance, **kwargs):
+    try:
+        latest_record = Pay.objects.get(employee=instance.employee).latest_settled_record
+    except Pay.DoesNotExist:
+        pass    # 第一筆資料無Pay可查時,pass
+    else:
+        if latest_record is None:
+            pass
+        elif instance.start_time.date() < latest_record.date:
+            raise Exception("Oops! This (Salary) Record Has Been Settled.")
+
+    
+@receiver(pre_delete, sender=EmployeeAssignment)
+@receiver(pre_save, sender=EmployeeAssignment)
+def check_last_settled_date(instance, **kwargs):
+    try:
+        latest_record = Pay.objects.get(employee=instance.employee).latest_settled_record
+    except Pay.DoesNotExist:
+        pass    # 第一筆資料無Pay可查時,pass
+    else:
+        if latest_record is None:
+            pass
+        elif latest_record.is_account_settled is True:
+            raise Exception("Oops! This (EA) Record Has Been Settled.")
+    
+@receiver(pre_save, sender=EmployeeAssignment)
+def ea_saved(instance, **kwargs):
+    try:
+        corresponding_salary = Salary.objects.order_by("-start_time").filter(employee=instance.employee, start_time__lte=instance.work_date)[0]
+    except Salary.DoesNotExist:
+        raise Exception("Oops! This Employee Do Not Have Any Salary Data.")
+    else:
+        if Pay.objects.get(employee_assignment=instance, employee=instance.employee).id is not None:
+            corresponding_pay = Pay.objects.get(employee_assignment=instance, employee=instance.employee)
+            if corresponding_pay.date < corresponding_pay.latest_settled_record.date:
+                raise Exception("Oops! Cannot Add Record Before Last Settle Account Date.")
+        
+@receiver(post_save, sender=EmployeeAssignment)
+def ea_saved(instance, created, **kwargs):
+    try:
+        corresponding_pay = Pay.objects.get(employee_assignment=instance, employee=instance.employee)
+    except Pay.DoesNotExist:
+        corresponding_pay = Pay(employee_assignment=instance, employee=instance.employee)
+#     corresponding_pay.salary = Salary.objects.get(employee=instance.employee, start_time__lte=instance.work_date).latest('start_time')[0]    #this shows error
+    corresponding_pay.salary = Salary.objects.order_by("-start_time").filter(employee=instance.employee, start_time__lte=instance.work_date)[0]
+    corresponding_pay.income = corresponding_pay.employee_assignment.hours * corresponding_pay.salary.hourly + corresponding_pay.employee_assignment.overtime * corresponding_pay.salary.overtime
+    return corresponding_pay.save()
