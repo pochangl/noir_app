@@ -23,7 +23,7 @@ class Project(TimeStampModel):
 
     def __str__(self):
         return self.name
-    
+
 
 class ProposedEmployeeList(EndorsedModel, VersionedModel, EmployeeList):
     # bug proposed list can conflict
@@ -100,7 +100,7 @@ class Assignment(TimeStampModel):
     @property
     def time_range(self):
         return self.start_datetime, self.end_datetime
-    
+
     def __str__(self):
         return "%s: %s" % (self.project.name, self.start_datetime.date())
 
@@ -120,7 +120,7 @@ class EmployeeAssignment(TimeStampModel):
     @property
     def hours(self):
         return self.minutes/60.0
- 
+
     @hours.setter
     def hours(self, value):
         self.minutes = int(round(value * 60))
@@ -129,7 +129,7 @@ class EmployeeAssignment(TimeStampModel):
     @property
     def overtime(self):
         return self.overminutes/60.0
-    
+
     @overtime.setter
     def overtime(self, value):
         self.overminutes = int(round(value * 60))
@@ -138,11 +138,11 @@ class EmployeeAssignment(TimeStampModel):
     @property
     def work_date(self):
         return self.assignment.start_datetime.date()
-        
+
     def __str__(self):
         return "%s: %s" % (self.assignment.project.name, self.employee.contact.name)
-    
-    
+
+
 class Pay(PersonalAccountBalance):
     employee_assignment = models.OneToOneField(EmployeeAssignment, on_delete=CASCADE, related_name="pays")
     salary = models.ForeignKey(Salary, related_name="pays", null=True, blank=True) #whatif the salary is deleted?
@@ -150,7 +150,7 @@ class Pay(PersonalAccountBalance):
     def __init__(self, *args, **kwargs):
         super(Pay, self).__init__(*args, **kwargs)
         self.note = "pay"
-        
+
     @classonlymethod
     def pay(cls, assignment, employee, date, amount):
         super(Pay, cls).pay(employee=employee, date=date, amount=amount)
@@ -159,26 +159,26 @@ class Pay(PersonalAccountBalance):
         except EmployeeAssignment.DoesNotExist:
             return None
         return this.save()
-    
+
 #     def recalculate_income(self):
 #         recalculated_record = Pay.objects.filter(id=self.id)
 #         return recalculated_record.employee_assignment.hours * recalculated_record.salary.hourly + recalculated_record.employee_assignment.overtime * recalculated_record.salary.overtime
-#             
+#
 #     def settling_account(self):
 #         # first, do rebalance_account
 #         # and then settle the account
 #         pass
 
 
-@receiver(post_save, sender=PersonalAccountBalance)
-def rebalance_unsettled_records(instance, **kwargs):
-    instance.rebalance_unsettled_records()  # Rebalance unsettled records after the data saved.
+# @receiver(post_save, sender=PersonalAccountBalance)
+# def rebalance_unsettled_records(instance, **kwargs):
+#     instance.rebalance_unsettled_records()  # Rebalance unsettled records after the data saved.
 
 @receiver(pre_delete, sender=Salary)
 @receiver(pre_save, sender=Salary)
 def check_last_settled_date(instance, **kwargs):
     try:
-        latest_record = Pay.objects.get(employee=instance.employee).latest_settled_record
+        latest_record = Pay.latest_settled_record(employee=instance.employee)
     except Pay.DoesNotExist:
         pass    # 第一筆資料無Pay可查時,pass
     else:
@@ -187,32 +187,32 @@ def check_last_settled_date(instance, **kwargs):
         elif instance.start_time.date() < latest_record.date:
             raise Exception("Oops! This (Salary) Record Has Been Settled.")
 
-    
+
 @receiver(pre_delete, sender=EmployeeAssignment)
 @receiver(pre_save, sender=EmployeeAssignment)
 def check_last_settled_date(instance, **kwargs):
     try:
-        latest_record = Pay.objects.get(employee=instance.employee).latest_settled_record
+        latest_record = Pay.latest_settled_record(employee=instance.employee)
     except Pay.DoesNotExist:
         pass    # 第一筆資料無Pay可查時,pass
     else:
         if latest_record is None:
             pass
-        elif latest_record.is_account_settled is True:
+        elif latest_record.is_settled is True:
             raise Exception("Oops! This (EA) Record Has Been Settled.")
-    
+
 @receiver(pre_save, sender=EmployeeAssignment)
 def ea_saved(instance, **kwargs):
     try:
-        corresponding_salary = Salary.objects.order_by("-start_time").filter(employee=instance.employee, start_time__lte=instance.work_date)[0]
+        corresponding_salary = Salary.objects.order_by("-start_time").get(employee=instance.employee, start_time__lte=instance.work_date)
     except Salary.DoesNotExist:
         raise Exception("Oops! This Employee Do Not Have Any Salary Data.")
     else:
         if Pay.objects.get(employee_assignment=instance, employee=instance.employee).id is not None:
             corresponding_pay = Pay.objects.get(employee_assignment=instance, employee=instance.employee)
-            if corresponding_pay.date < corresponding_pay.latest_settled_record.date:
+            if corresponding_pay.date < PersonalAccountBalance.latest_settled_record(instance.employee).date:
                 raise Exception("Oops! Cannot Add Record Before Last Settle Account Date.")
-        
+
 @receiver(post_save, sender=EmployeeAssignment)
 def ea_saved(instance, created, **kwargs):
     try:
