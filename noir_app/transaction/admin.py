@@ -7,13 +7,18 @@ class AccountBalanceAdmin(admin.ModelAdmin):
 
 class PersonalAccountBalanceAdmin(admin.ModelAdmin):
     list_display = ('id', 'employee', 'balance', 'income', 'expense', 'date', 'is_settled')
+    list_filter = ("employee",)
 
-
+class SalaryAdmin(admin.ModelAdmin):
+    list_display = ('id', 'employee', 'hourly', 'overtime', 'start_time')
+    list_filter = ("employee",)
+    
+    
 admin.site.register(BaseAccountBalance, AccountBalanceAdmin)
 admin.site.register(AccountBalance, AccountBalanceAdmin)
 # admin.site.register(OthersAccountBalance)
 admin.site.register(PersonalAccountBalance, PersonalAccountBalanceAdmin)
 admin.site.register(PersonalWithdraw, AccountBalanceAdmin)
-admin.site.register(Salary)
+admin.site.register(Salary, SalaryAdmin)
 
         

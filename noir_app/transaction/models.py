@@ -42,7 +42,7 @@ class BaseAccountBalance(TimeStampModel):
             # if account have been settled, don't save the changes
             raise  AccountSettledException("Oops! This (BaseAccountBalance) Record Has Been Settled.")
 
-
+        
 # 用pay_given方法,會使BaseAccountBalance的income/expense相反, 待討論如何修正
 class AccountBalance(BaseAccountBalance):
     due_to = models.OneToOneField(BaseAccountBalance, on_delete=CASCADE, related_name="account_balance")
@@ -88,6 +88,9 @@ class PersonalAccountBalance(OthersAccountBalance):
             return PersonalAccountBalance.objects.order_by("date").filter(is_settled=False, employee=employee, date__gte=latest_settled_date)
         except IndexError:
             return None
+
+    def settle_account(self, employee, to_date):
+        pass
     
 #     # recalculate all records' balances, which is not settled yet.
 #     def rebalance_unsettled_records(self):
