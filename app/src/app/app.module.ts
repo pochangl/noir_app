@@ -35,6 +35,7 @@ import { WageDateRangePage } from '../pages/transaction/wage_date_range';
 import { WageEmployeesPage } from '../pages/transaction/wage_employees';
 import { WorkHourDateRangePage } from '../pages/transaction/work_hour_date_range';
 import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees';
+import { SettlingAccountsPage } from '../pages/transaction/settling_accounts_page';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees'
     WageDateRangePage,
     WageEmployeesPage,
     WorkHourDateRangePage,
-    WorkHourEmployeesPage
+    WorkHourEmployeesPage,
+    SettlingAccountsPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -113,7 +115,8 @@ import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees'
     WageDateRangePage,
     WageEmployeesPage,
     WorkHourDateRangePage,
-    WorkHourEmployeesPage
+    WorkHourEmployeesPage,
+    SettlingAccountsPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AuthService]
 })

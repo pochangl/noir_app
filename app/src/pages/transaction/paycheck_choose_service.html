@@ -4,10 +4,6 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>薪資業務</ion-title>
-    <ion-buttons end>
-      <button ion-button (click)="transaction.settle_accounts()" color="dark"><ion-icon name="ios-build-outline"></ion-icon>關帳</button>
-    </ion-buttons>
-  </ion-navbar>
   </ion-navbar>
 </ion-header>
 
@@ -16,5 +12,6 @@
   <ion-list>
 	  <button ion-item (click)="work_hour_record()">出勤工時</button>
   	<button ion-item (click)="payment_record()">給薪紀錄</button>
+  	<button ion-item (click)="settling_accounts()">關帳介面</button>
   </ion-list>
 </ion-content>

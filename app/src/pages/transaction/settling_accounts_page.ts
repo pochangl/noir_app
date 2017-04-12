@@ -1,14 +1,12 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Api} from '../../providers/api/api';
-import {WorkHourDateRangePage} from './work_hour_date_range';
-import {WageDateRangePage} from './wage_date_range';
-import {SettlingAccountsPage} from './settling_accounts_page';
 import {PersonalAccountBalnaceList} from './models';
 
-@Component({templateUrl: 'paycheck_choose_service.html',providers: [Api]})
-export class PaycheckChooseServicePage {
+@Component({templateUrl: 'settling_accounts_page.html',providers: [Api]})
+export class SettlingAccountsPage {
   personal_account_balances: PersonalAccountBalnaceList;
+  to_date: string;
 
   constructor(
     private nav: NavController,
@@ -20,13 +18,7 @@ export class PaycheckChooseServicePage {
   ionViewWillEnter () {
     this.personal_account_balances.fetch();
   }
-  work_hour_record () {
-    this.nav.push(WorkHourDateRangePage);
-  }
-  payment_record () {
-    this.nav.push(WageDateRangePage);
-  }
-  settling_accounts () {
-    this.nav.push(SettlingAccountsPage);
+  settle_accounts(to_date) {
+    this.personal_account_balances.settle_account(to_date);
   }
 }

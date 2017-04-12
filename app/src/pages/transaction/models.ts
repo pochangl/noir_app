@@ -21,6 +21,12 @@ export class PersonalAccountBalnace extends Model {
 export class PersonalAccountBalnaceList extends ModelList<PersonalAccountBalnace> {
   resource_name = 'transaction/personal_account_balance';
   model = PersonalAccountBalnace;
+  settle_account (to_date) {
+    this.api.post({
+      resource_name: 'transaction/personal_account_balance',
+      to_date: to_date
+    }, this.serialize()).subscribe(this.fetch);
+  }
 }
 export class MyPaycheck extends Model {
     employee: Employee

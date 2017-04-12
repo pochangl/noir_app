@@ -1,0 +1,13 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>關帳介面</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="SettlingAccountsPage">
+    <ion-item>
+      <ion-label>請選擇關帳日: </ion-label>
+      <ion-datetime [(ngModel)]="to_date"  displayFormat="YYYY-MM-DD HH:mm" pickerFormat="YYYY-MM-DD HH:mm"></ion-datetime>
+    </ion-item>
+    <button (click)="settle_accounts()" ion-button full>執行關帳</button>
+</ion-content>
