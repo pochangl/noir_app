@@ -35,6 +35,7 @@ class AssignmentSerializer(serializers.ModelSerializer):
     project = ProjectSerializer()
     employees = EmployeeSerializer(many=True, read_only=True)
     proposed = ProposedEmployeeList(source="latest_proposed_employee_list", read_only=True, allow_null=True)
+    number_needed = PositiveFloatField()
 
     class Meta:
         model = models.Assignment

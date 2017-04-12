@@ -24,7 +24,8 @@ export class WorkHourEmployeesPage {
     this.employee_assignments = new EmployeeAssignmentList(api);
     this.employee_assignments.filter({
       employee: this.employee.id,
-      assignment__start_datetime: this.date_from
+      date_from: this.date_from,
+      date_to: this.date_to
     });
   }
   ionViewWillEnter () {
