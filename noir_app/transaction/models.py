@@ -36,6 +36,8 @@ class BaseAccountBalance(TimeStampModel):
     def save(self, *args, **kwargs):
         if self.id is None or self.settling_status is False:
             super(BaseAccountBalance, self).save(*args, **kwargs)
+        elif self.is_settled is False:
+            super(BaseAccountBalance, self).save(*args, **kwargs)
         else:
             # if account have been settled, don't save the changes
             raise  AccountSettledException("Oops! This (BaseAccountBalance) Record Has Been Settled.")
@@ -76,12 +78,15 @@ class PersonalAccountBalance(OthersAccountBalance):
             return None
 
 
-    @property
-    def unsettled_records(self):
+    @classonlymethod
+    def unsettled_records(cls, employee):
+        '''
+            bug: When latest_settled_record is None.
+        '''
         try:
-            # bug: When latest_settled_record is None.
-            return PersonalAccountBalance.objects.order_by("date").filter(is_settled=False, employee=self.employee, date__gte=PersonalAccountBalance.latest_settled_record(self.employee).date)
-        except PersonalAccountBalance.DoesNotExist:
+            latest_settled_date = PersonalAccountBalance.latest_settled_record(employee).date
+            return PersonalAccountBalance.objects.order_by("date").filter(is_settled=False, employee=employee, date__gte=latest_settled_date)
+        except IndexError:
             return None
     
 #     # recalculate all records' balances, which is not settled yet.

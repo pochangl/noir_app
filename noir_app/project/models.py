@@ -160,10 +160,24 @@ class Pay(PersonalAccountBalance):
             return None
         return this.save()
 
-#     def recalculate_income(self):
-#         recalculated_record = Pay.objects.filter(id=self.id)
-#         return recalculated_record.employee_assignment.hours * recalculated_record.salary.hourly + recalculated_record.employee_assignment.overtime * recalculated_record.salary.overtime
-#
+    def recalculate_income(self, employee):
+        unsettled_pays = Pay.objects.unsettled_records(employee=employee)
+        for unsettled_pay in unsettled_pays:
+            try:
+                unsettled_ea = unsettled_pay.employee_assignment
+            except EmployeeAssignment.DoesNotExist:
+                return None
+            try:
+                unsettled_salary = unsettled_pay.salary
+            except Salary.DoesNotExist:
+                return None
+            recal_income = unsettled_ea.hours * unsettled_salary.hourly + unsettled_ea.overtime * unsettled_salary.overtime
+            if unsettled_pay.income == recal_income:
+                pass
+            else:
+                unsettled_pay.income = recal_income
+                unsettled_pay.save()
+
 #     def settling_account(self):
 #         # first, do rebalance_account
 #         # and then settle the account
