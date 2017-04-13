@@ -42,8 +42,34 @@ class BaseAccountBalance(TimeStampModel):
             # if account have been settled, don't save the changes
             raise  AccountSettledException("Oops! This (BaseAccountBalance) Record Has Been Settled.")
 
+    def latest_settled_record(self, employee=None):
+        if employee is None:
+            try:
+                self.objects.get(is_settled=True).latest("date")            
+            except:
+                BaseAccountBalance.DoesNotExist
+        else:
+            try:
+                self.objects.get(employee=employee, is_settled=True).latest("date")            
+            except:
+                BaseAccountBalance.DoesNotExist
+            
+    def unsettled_records(self, from_date=None, to_date=None):
+        try:
+            return self.objects.order_by("date").filter(is_settled=False, date__gte=from_date, date__lte=to_date)
+        except IndexError:
+            return None
         
-# 用pay_given方法,會使BaseAccountBalance的income/expense相反, 待討論如何修正
+    def settle_all_records(self, from_date=None, to_date=None):
+#         for record in self.unsettled_records(from_date, to_date):
+#         for record in self.objects.order_by("date").filter(is_settled=False, date__gte=from_date, date__lte=to_date):
+#         if self.objects.order_by("date").filter(is_settled=False, date__gte=from_date, date__lte=to_date)[0]:
+#             record.is_settled = True
+#             print record
+#             record.save()
+        pass
+            
+        
 class AccountBalance(BaseAccountBalance):
     due_to = models.OneToOneField(BaseAccountBalance, on_delete=CASCADE, related_name="account_balance")
     # 公司總計帳戶
@@ -67,30 +93,20 @@ class PersonalAccountBalance(OthersAccountBalance):
     def pay(cls, employee, date, amount):
         return PersonalAccountBalance.objects.create(employee=employee, date=date, income=amount, note=pay)
     
-    @classonlymethod
-    def latest_settled_record(cls, employee):
-        """
-            PersonalAccountBalance.latest_settled_record(employee)
-        """
-        try:
-            return cls.objects.order_by("-date").filter(is_settled=True, employee=employee)[0]
-        except IndexError:
-            return None
+#     @classonlymethod
+#     def latest_settled_record(cls, employee):
+#         """
+#             PersonalAccountBalance.latest_settled_record(employee)
+#         """
+#         try:
+#             return cls.objects.order_by("-date").filter(is_settled=True, employee=employee)[0]
+#         except IndexError:
+#             return None
 
 
-    @classonlymethod
-    def unsettled_records(cls, employee):
-        '''
-            bug: When latest_settled_record is None.
-        '''
-        try:
-            latest_settled_date = PersonalAccountBalance.latest_settled_record(employee).date
-            return PersonalAccountBalance.objects.order_by("date").filter(is_settled=False, employee=employee, date__gte=latest_settled_date)
-        except IndexError:
-            return None
-
-    def settle_account(self, employee, to_date):
-        pass
+# 
+#     def settle_account(self, employee, to_date):
+#         pass
     
 #     # recalculate all records' balances, which is not settled yet.
 #     def rebalance_unsettled_records(self):
@@ -111,17 +127,6 @@ class PersonalAccountBalance(OthersAccountBalance):
 #         else:
 #             pass    # 若無相對應資料則pass
 
-
-    # remove specific record, and minus all balances after the record.
-    def remove_record(self):
-        pass
-    
-    # insert specific record, and add all balances after the record.
-    def insert_record(self):
-        pass
-    
-    def setting_account(self):
-        pass
     
     
 class PersonalWithdraw(PersonalAccountBalance):
