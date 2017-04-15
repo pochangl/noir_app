@@ -13,11 +13,12 @@ export class BaseAccountBalance extends Model {
   note: string;
   date: string;
 
-  settle_all_records (from_date, to_date) {
+  settle_all_records () {
     this.api.post({
-      resource_name: 'transaction/personal_account_balance',
-      from_date: from_date,
-      to_date: to_date
+      resource_name: 'transaction/settle_account',
+      id: 1
+      // from_date: from_date,
+      // to_date: to_date
     }, this.serialize()).subscribe(this.fetch);
   }
 }
@@ -41,17 +42,10 @@ export class PersonalAccountBalance extends Model {
 }
 
 export class PersonalAccountBalanceList extends ModelList<PersonalAccountBalance> {
-  resource_name = 'transaction/personal_account_balance';
+  resource_name = 'transaction/settle_account';
   model = PersonalAccountBalance;
-
-  settle_all_records (from_date, to_date) {
-    this.api.post({
-      resource_name: 'transaction/personal_account_balance',
-      from_date: from_date,
-      to_date: to_date
-    }, this.serialize()).subscribe(this.fetch);
-  }
 }
+
 export class MyPaycheck extends Model {
     employee: Employee
     send_data (obj) {}

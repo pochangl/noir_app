@@ -3,6 +3,7 @@
 from django.db import models
 from utils.models import TimeStampModel
 from datetime import datetime, time, date
+from django.utils import timezone
 from django.utils.decorators import classonlymethod
 from tastypie.admin import ABSTRACT_APIKEY
 from account.models import Company, Employee
@@ -21,7 +22,7 @@ class BaseAccountBalance(TimeStampModel):
     income = models.PositiveIntegerField(default=0)
     expense = models.PositiveIntegerField(default=0)
     note = models.CharField(max_length=1024, blank=True, default="")
-    date = models.DateField(default=datetime.now) # 實際收入/支出日期
+    date = models.DateTimeField(default=timezone.now) # 實際收入/支出日期
     is_settled = models.BooleanField(default=False)
 
     @classonlymethod
@@ -42,15 +43,15 @@ class BaseAccountBalance(TimeStampModel):
             # if account have been settled, don't save the changes
             raise  AccountSettledException("Oops! This (BaseAccountBalance) Record Has Been Settled.")
 
-    def latest_settled_record(self, employee=None):
+    def latest_settled_record(self):
         if employee is None:
             try:
-                self.objects.get(is_settled=True).latest("date")            
+                return self.objects.get(is_settled=True).latest("date")            
             except:
                 BaseAccountBalance.DoesNotExist
         else:
             try:
-                self.objects.get(employee=employee, is_settled=True).latest("date")            
+                return self.objects.get(employee=employee, is_settled=True).latest("date")            
             except:
                 BaseAccountBalance.DoesNotExist
             
@@ -60,14 +61,14 @@ class BaseAccountBalance(TimeStampModel):
         except IndexError:
             return None
         
-    def settle_all_records(self, from_date=None, to_date=None):
+    def settle_all_records(self):
 #         for record in self.unsettled_records(from_date, to_date):
 #         for record in self.objects.order_by("date").filter(is_settled=False, date__gte=from_date, date__lte=to_date):
 #         if self.objects.order_by("date").filter(is_settled=False, date__gte=from_date, date__lte=to_date)[0]:
 #             record.is_settled = True
 #             print record
 #             record.save()
-        pass
+        return None
             
         
 class AccountBalance(BaseAccountBalance):

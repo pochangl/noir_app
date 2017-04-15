@@ -11,3 +11,10 @@ class PersonalAccountBalanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.PersonalAccountBalance
         fields = ('balance', 'income', 'expense', 'note', 'date', 'employee',)
+
+class BaseAccountBalanceSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = models.BaseAccountBalance
+        fields = ('balance', 'income', 'expense', 'note', 'date',)
+        

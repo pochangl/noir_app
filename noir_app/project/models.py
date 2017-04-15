@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models import Max
 from utils.models import TimeStampModel, EndorsedModel, VersionedModel
 from django.utils.translation import ugettext as _
-from transaction.models import PersonalAccountBalance, Salary
+from transaction.models import BaseAccountBalance, PersonalAccountBalance, Salary
 from account.models import Contact, Company, Employee, EmployeeList
 from html5lib import filters
 from datetime import datetime, time, date, timedelta
@@ -189,7 +189,8 @@ class Pay(PersonalAccountBalance):
 @receiver(pre_save, sender=Salary)
 def check_last_settled_date(instance, **kwargs):
     try:
-        latest_record = Pay.latest_settled_record(employee=instance.employee)
+#         latest_record = Pay.latest_settled_record(employee=instance.employee)
+        latest_record = Pay.objects.get(employee=instance.employee, is_settled=True).latest("date")
     except Pay.DoesNotExist:
         pass    # 第一筆資料無Pay可查時,pass
     else:
@@ -203,7 +204,8 @@ def check_last_settled_date(instance, **kwargs):
 @receiver(pre_save, sender=EmployeeAssignment)
 def check_last_settled_date(instance, **kwargs):
     try:
-        latest_record = Pay.latest_settled_record(employee=instance.employee)
+#         latest_record = Pay.latest_settled_record(employee=instance.employee)
+        latest_record = Pay.objects.get(employee=instance.employee, is_settled=True).latest("date")
     except Pay.DoesNotExist:
         pass    # 第一筆資料無Pay可查時,pass
     else:
@@ -221,7 +223,11 @@ def ea_saved(instance, **kwargs):
     else:
         if Pay.objects.get(employee_assignment=instance, employee=instance.employee).id is not None:
             corresponding_pay = Pay.objects.get(employee_assignment=instance, employee=instance.employee)
-            if corresponding_pay.date < PersonalAccountBalance.latest_settled_record(instance.employee).date:
+            '''
+                bug: pab_latest_record is None
+            '''
+            pab_latest_record = PersonalAccountBalance.objects.get(employee=instance.employee, is_settled=True).latest("date")
+            if corresponding_pay.date < pab_latest_record.date:
                 raise Exception("Oops! Cannot Add Record Before Last Settle Account Date.")
 
 @receiver(post_save, sender=EmployeeAssignment)
