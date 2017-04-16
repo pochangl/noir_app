@@ -22,7 +22,7 @@ class BaseAccountBalance(TimeStampModel):
     income = models.PositiveIntegerField(default=0)
     expense = models.PositiveIntegerField(default=0)
     note = models.CharField(max_length=1024, blank=True, default="")
-    date = models.DateTimeField(default=timezone.now) # 實際收入/支出日期
+    date = models.DateField(default=datetime.now) # 實際收入/支出日期
     is_settled = models.BooleanField(default=False)
 
     @classonlymethod
@@ -70,10 +70,8 @@ class BaseAccountBalance(TimeStampModel):
 #                 print record
 #                 record.save()
 
-#         self.is_settled = True
-#         self.save()
-        raise Exception('setting done.')
-        return None
+        self.is_settled = True
+        return self.save()
             
         
 class AccountBalance(BaseAccountBalance):

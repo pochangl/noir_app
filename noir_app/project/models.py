@@ -187,32 +187,35 @@ class Pay(PersonalAccountBalance):
 
 @receiver(pre_delete, sender=Salary)
 @receiver(pre_save, sender=Salary)
-def check_last_settled_date(instance, **kwargs):
+def check_last_settled_date_s(instance, **kwargs):
     try:
-#         latest_record = Pay.latest_settled_record(employee=instance.employee)
-        latest_record = Pay.objects.get(employee=instance.employee, is_settled=True).latest("date")
-    except Pay.DoesNotExist:
-        pass    # 第一筆資料無Pay可查時,pass
+        # if someone's pay has only one record, get method will counter error.
+#         latest_record = Pay.objects.get(employee=instance.employee, is_settled=True).latest("date")
+        latest_record = Pay.objects.order_by("-date").filter(employee=instance.employee, is_settled=True)[0]
+    except IndexError:
+        raise Exception("IndexError.")
     else:
-        if latest_record is None:
-            pass
-        elif instance.start_time.date() < latest_record.date:
-            raise Exception("Oops! This (Salary) Record Has Been Settled.")
+        print latest_record.date
+        print instance.start_time.date()
+        if latest_record.date is None:
+            raise Exception("Oops! Latest Settled Date Is None Type.")
+        elif latest_record.date > instance.start_time.date():
+            raise Exception("Oops! This (Salary) Record Is Before Latest Settled Date.")
 
 
 @receiver(pre_delete, sender=EmployeeAssignment)
 @receiver(pre_save, sender=EmployeeAssignment)
-def check_last_settled_date(instance, **kwargs):
+def check_last_settled_date_ea(instance, **kwargs):
     try:
 #         latest_record = Pay.latest_settled_record(employee=instance.employee)
-        latest_record = Pay.objects.get(employee=instance.employee, is_settled=True).latest("date")
-    except Pay.DoesNotExist:
-        pass    # 第一筆資料無Pay可查時,pass
+        latest_record = Pay.objects.order_by("-date").filter(employee=instance.employee, is_settled=True)[0]
+    except IndexError:
+        raise Exception("IndexError.")
     else:
-        if latest_record is None:
-            pass
-        elif latest_record.is_settled is True:
-            raise Exception("Oops! This (EA) Record Has Been Settled.")
+        if latest_record.date is None:
+            raise Exception("Oops! Latest Settled Date Is None Type.")
+        elif latest_record.date > instance.work_date:
+            raise Exception("Oops! This (EA) Record Is Before Latest Settled Date.")
 
 @receiver(pre_save, sender=EmployeeAssignment)
 def ea_saved(instance, **kwargs):
