@@ -14,13 +14,19 @@ export class BaseAccountBalance extends Model {
   date: string;
 
   settle_all_records () {
-    this.api.post({
+
+    this.api.put({
       resource_name: 'transaction/settle_account',
       id: 1
-      // from_date: from_date,
-      // to_date: to_date
-    }, this.serialize()).subscribe(this.fetch);
+    }, this.serialize()).subscribe(()=>this.fetch);
   }
+  //   this.api.post({
+  //     resource_name: 'transaction/settle_account',
+  //     id: 1
+  //     // from_date: from_date,
+  //     // to_date: to_date
+  //   }, this.serialize()).subscribe(()=>this.fetch);
+  // }
 }
 
 

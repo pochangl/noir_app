@@ -17,13 +17,14 @@ class PersonalAccountBalanceViewSet(viewsets.ModelViewSet, generics.ListAPIView)
 
  
 class SettleAccountListView(viewsets.ModelViewSet, generics.ListAPIView):
-    http_method_names = ['get', 'post']
+    http_method_names = ['get', 'put']
     queryset = models.BaseAccountBalance.objects.all().order_by("date")
     serializer_class = serializers.BaseAccountBalanceSerializer
 
     def get(self, *args, **kwargs):
         return self.get(*args, **kwargs)
     
-    def post(self, *args, **kwargs):
-        return self.create(*args, **kwargs)
+    def put(self, request, *args, **kwargs):
+        self.update(request, *args, **kwargs)
+        return self.get(request, *args, **kwargs)
     

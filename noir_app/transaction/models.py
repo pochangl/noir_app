@@ -63,11 +63,16 @@ class BaseAccountBalance(TimeStampModel):
         
     def settle_all_records(self):
 #         for record in self.unsettled_records(from_date, to_date):
-#         for record in self.objects.order_by("date").filter(is_settled=False, date__gte=from_date, date__lte=to_date):
-#         if self.objects.order_by("date").filter(is_settled=False, date__gte=from_date, date__lte=to_date)[0]:
-#             record.is_settled = True
-#             print record
-#             record.save()
+#         for record in BaseAccountBalance.objects.order_by("date").filter(is_settled=False, date__gte=from_date, date__lte=to_date):
+#         for record in BaseAccountBalance.objects.order_by("date").filter(is_settled=False):
+#             if record.is_settled is False:
+#                 record.is_settled = True
+#                 print record
+#                 record.save()
+
+#         self.is_settled = True
+#         self.save()
+        raise Exception('setting done.')
         return None
             
         
@@ -155,14 +160,11 @@ class PersonalIncome(PersonalAccountBalance):
     class Meta:
         abstract =True
 
-# 用此方法,會使BaseAccountBalance的income/expense相反
-# AccountBalance（公司）與PersonalAccountBalance（個人）的income/expense相反
+
 @receiver(post_save, sender=PersonalAccountBalance)
 def pay_given(instance, created, **kwargs):
     if created:
         balance = AccountBalance(due_to=instance, income=instance.expense, expense=instance.income, date=instance.date, note=instance.note)
-#         balance = AccountBalance(due_to=instance, income=instance.income, expense=instance.expense, date=instance.date, note=instance.note, create_time=instance.create_time)
         balance.save()
     else:
         AccountBalance.objects.filter(due_to=instance).update(income=instance.expense, expense=instance.income, date=instance.date, note=instance.note)
-#         AccountBalance.objects.filter(due_to=instance).update(due_to=instance, income=instance.income, expense=instance.expense, date=instance.date, note=instance.note)

@@ -239,4 +239,5 @@ def ea_saved(instance, created, **kwargs):
 #     corresponding_pay.salary = Salary.objects.get(employee=instance.employee, start_time__lte=instance.work_date).latest('start_time')[0]    #this shows error
     corresponding_pay.salary = Salary.objects.order_by("-start_time").filter(employee=instance.employee, start_time__lte=instance.work_date)[0]
     corresponding_pay.income = corresponding_pay.employee_assignment.hours * corresponding_pay.salary.hourly + corresponding_pay.employee_assignment.overtime * corresponding_pay.salary.overtime
+    corresponding_pay.date = instance.work_date
     return corresponding_pay.save()

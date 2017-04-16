@@ -130,19 +130,19 @@ export class Assignment extends BasicAssignment {
     this.api.post({
       resource_name: 'project/propose_employee',
       id: this.id
-    }, this.employees.serialize()).subscribe(this.fetch);
+    }, this.employees.serialize()).subscribe(()=>this.fetch);
   }
   confirm () {
     this.api.post({
       resource_name: 'project/confirm_employee',
       id: this.proposed.id
-    }, {}).subscribe(this.fetch);
+    }, {}).subscribe(()=>this.fetch);
   }
   endorse () {
     this.api.post({
       resource_name: 'project/endorse_employee',
       id: this.proposed.id
-    }, {}).subscribe(this.fetch);
+    }, {}).subscribe(()=>this.fetch);
   }
 }
 
