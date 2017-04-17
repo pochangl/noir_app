@@ -192,7 +192,7 @@ def check_last_settled_date_s(instance, **kwargs):
         print instance.start_time.date()
         if latest_record.date is None:
             raise Exception("Oops! Latest Settled Date Is None Type.")
-        elif latest_record.date > instance.start_time.date():
+        elif latest_record.date >= instance.start_time.date():
             raise Exception("Oops! This (Salary) Record Is Before Latest Settled Date.")
 
 
@@ -207,7 +207,7 @@ def check_last_settled_date_ea(instance, **kwargs):
     else:
         if latest_record.date is None:
             raise Exception("Oops! Latest Settled Date Is None Type.")
-        elif latest_record.date > instance.work_date:
+        elif latest_record.date >= instance.work_date:
             raise Exception("Oops! This (EA) Record Is Before Latest Settled Date.")
 
 @receiver(pre_save, sender=EmployeeAssignment)

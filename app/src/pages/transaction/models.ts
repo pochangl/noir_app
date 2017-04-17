@@ -5,7 +5,7 @@ import { Employee } from '../account/models';
 export class BaseAccountBalance extends Model {
   resource_name = 'transaction/base_account_balance';
   fields = [
-    'balance', 'income', 'expense', 'note', 'date',
+    'balance', 'income', 'expense', 'note', 'date', 'to_date'
   ];
   balance: number;
   income: number;
@@ -14,19 +14,11 @@ export class BaseAccountBalance extends Model {
   date: string;
 
   settle_all_records () {
-
     this.api.put({
       resource_name: 'transaction/settle_account',
       id: 1
     }, this.serialize()).subscribe(()=>this.fetch);
   }
-  //   this.api.post({
-  //     resource_name: 'transaction/settle_account',
-  //     id: 1
-  //     // from_date: from_date,
-  //     // to_date: to_date
-  //   }, this.serialize()).subscribe(()=>this.fetch);
-  // }
 }
 
 

@@ -24,7 +24,8 @@ class BaseAccountBalance(TimeStampModel):
     note = models.CharField(max_length=1024, blank=True, default="")
     date = models.DateField(default=datetime.now) # 實際收入/支出日期
     is_settled = models.BooleanField(default=False)
-
+#     settled_date = models.DateField(default=None, blank=True, null=True) # 關帳日期
+    
     @classonlymethod
     def withdraw(cls, amount):
         raise NotImplemented()
@@ -48,7 +49,8 @@ class BaseAccountBalance(TimeStampModel):
         try:
             latest_settled_record = BaseAccountBalance.objects.order_by("date").filter(is_settled=True)[0]
         except IndexError:
-            raise Exception("Oops! No Settled Records")
+#             raise Exception("Oops! No Settled Records")
+            return datetime.datetime(year=1, month=1, day=1)
         return latest_settled_record.date
         
     def settle_all_records(self):
@@ -83,7 +85,7 @@ class PersonalAccountBalance(OthersAccountBalance):
     @property
     def prev_balance(self):
         try:
-            prev_record = PersonalAccountBalance.objects.order_by("date").filter(is_settled=True, employee=self.employee)[0]
+            prev_record = PersonalAccountBalance.objects.order_by("-date").filter(is_settled=True, employee=self.employee)[0]
         except IndexError:
 #             raise Exception("Oops! No Settled Records")
             return 0
