@@ -8,7 +8,6 @@ import {BaseAccountBalance} from './models';
 export class SettlingAccountsPage {
   // personal_account_balances: PersonalAccountBalanceList;
   base_account_balances: BaseAccountBalance;
-  from_date: string;
   to_date: string;
 
   constructor(

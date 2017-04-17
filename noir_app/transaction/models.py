@@ -28,7 +28,7 @@ class BaseAccountBalance(TimeStampModel):
     @classonlymethod
     def withdraw(cls, amount):
         raise NotImplemented()
-
+    
     # self.settling_status will get current status, so here we use property
     @property
     def settling_status(self):
@@ -43,33 +43,15 @@ class BaseAccountBalance(TimeStampModel):
             # if account have been settled, don't save the changes
             raise  AccountSettledException("Oops! This (BaseAccountBalance) Record Has Been Settled.")
 
-    def latest_settled_record(self):
-        if employee is None:
-            try:
-                return self.objects.get(is_settled=True).latest("date")            
-            except:
-                BaseAccountBalance.DoesNotExist
-        else:
-            try:
-                return self.objects.get(employee=employee, is_settled=True).latest("date")            
-            except:
-                BaseAccountBalance.DoesNotExist
-            
-    def unsettled_records(self, from_date=None, to_date=None):
+    @property
+    def latest_settled_date(self):
         try:
-            return self.objects.order_by("date").filter(is_settled=False, date__gte=from_date, date__lte=to_date)
+            latest_settled_record = BaseAccountBalance.objects.order_by("date").filter(is_settled=True)[0]
         except IndexError:
-            return None
+            raise Exception("Oops! No Settled Records")
+        return latest_settled_record.date
         
     def settle_all_records(self):
-#         for record in self.unsettled_records(from_date, to_date):
-#         for record in BaseAccountBalance.objects.order_by("date").filter(is_settled=False, date__gte=from_date, date__lte=to_date):
-#         for record in BaseAccountBalance.objects.order_by("date").filter(is_settled=False):
-#             if record.is_settled is False:
-#                 record.is_settled = True
-#                 print record
-#                 record.save()
-
         self.is_settled = True
         return self.save()
             
@@ -90,48 +72,38 @@ class PersonalAccountBalance(OthersAccountBalance):
     # 個人的戶頭
     employee = models.ForeignKey(Employee, related_name='my_balances')
 
+# this doesn't work @@"
+#     @property
+#     def check_date(self):
+#         return self.date
+#     
+#     class Meta:
+#         unique_together = (("employee", "check_date"),)
+
+    @property
+    def prev_balance(self):
+        try:
+            prev_record = PersonalAccountBalance.objects.order_by("date").filter(is_settled=True, employee=self.employee)[0]
+        except IndexError:
+#             raise Exception("Oops! No Settled Records")
+            return 0
+        if prev_record.balance is None:
+            return 0
+        else:
+            return prev_record.balance
+    
     def __str__(self):
         return self.employee.contact.name
 
     @classonlymethod
     def pay(cls, employee, date, amount):
         return PersonalAccountBalance.objects.create(employee=employee, date=date, income=amount, note=pay)
-    
-#     @classonlymethod
-#     def latest_settled_record(cls, employee):
-#         """
-#             PersonalAccountBalance.latest_settled_record(employee)
-#         """
-#         try:
-#             return cls.objects.order_by("-date").filter(is_settled=True, employee=employee)[0]
-#         except IndexError:
-#             return None
 
-
-# 
-#     def settle_account(self, employee, to_date):
-#         pass
-    
-#     # recalculate all records' balances, which is not settled yet.
-#     def rebalance_unsettled_records(self):
-#         latest_settled_record = PersonalAccountBalance.latest_settled_record(self.employee)
-#         if latest_settled_record is not None and unsettled_records is not None:
-#             prev_balance = latest_settled_record.balance
-# #             unsettled_records = self.unsettled_records
-# #             list_length = range(len(unsettled_records))
-# #             for index in list_length:
-# #                 unsettled_records[index].balance = prev_balance + unsettled_records[index].income - unsettled_records[index].expense
-# #                 unsettled_records[index].save()
-# #                 prev_balance = unsettled_records[index].balance
-#      
-#             for record in self.unsettled_records:
-#                 record.balance = prev_balance + record.income - record.expense
-#                 record.save()
-#                 prev_balance = record.balance
-#         else:
-#             pass    # 若無相對應資料則pass
-
-    
+    # recalculate all records' balances, which is not settled yet.
+    def rebalance(self):
+        self.balance = self.prev_balance + self.income - self.expense
+        self.save()
+                    
     
 class PersonalWithdraw(PersonalAccountBalance):
     signature = models.ImageField(upload_to="signature", null=True, blank=True)

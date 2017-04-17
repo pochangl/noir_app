@@ -5,7 +5,7 @@ import { Employee } from '../account/models';
 export class BaseAccountBalance extends Model {
   resource_name = 'transaction/base_account_balance';
   fields = [
-    'balance', 'income', 'expense', 'note', 'date'
+    'balance', 'income', 'expense', 'note', 'date',
   ];
   balance: number;
   income: number;

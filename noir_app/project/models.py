@@ -160,30 +160,23 @@ class Pay(PersonalAccountBalance):
             return None
         return this.save()
 
-#     def recalculate_income(self, from_date, to_date):
-#         unsettled_pays = Pay.objects.unsettled_records()
-#         for unsettled_pay in unsettled_pays:
-#             try:
-#                 unsettled_ea = unsettled_pay.employee_assignment
-#             except EmployeeAssignment.DoesNotExist:
-#                 return None
-#             try:
-#                 unsettled_salary = unsettled_pay.salary
-#             except Salary.DoesNotExist:
-#                 return None
-#             recal_income = unsettled_ea.hours * unsettled_salary.hourly + unsettled_ea.overtime * unsettled_salary.overtime
-#             if unsettled_pay.income == recal_income:
-#                 pass
-#             else:
-#                 unsettled_pay.income = recal_income
-#                 unsettled_pay.save()
+    def recalculate_income(self):
+        try:
+            unsettled_ea = self.employee_assignment
+        except EmployeeAssignment.DoesNotExist:
+            raise Exception("Oops! Pay has no EmployeeAssignment.")
+        try:
+            latest_salary = Salary.objects.order_by("-start_time").filter(start_time__lte=self.date, employee=self.employee)[0]
+        except Salary.DoesNotExist:
+            raise Exception("Oops! Pay has no Salary.")
+        recal_income = unsettled_ea.hours * latest_salary.hourly + unsettled_ea.overtime * latest_salary.overtime
+        if self.income == recal_income:
+            pass
+        else:
+            self.salary = latest_salary
+            self.income = recal_income
+            return self.save()
 
-
-
-
-# @receiver(post_save, sender=PersonalAccountBalance)
-# def rebalance_unsettled_records(instance, **kwargs):
-#     instance.rebalance_unsettled_records()  # Rebalance unsettled records after the data saved.
 
 @receiver(pre_delete, sender=Salary)
 @receiver(pre_save, sender=Salary)
@@ -193,7 +186,7 @@ def check_last_settled_date_s(instance, **kwargs):
 #         latest_record = Pay.objects.get(employee=instance.employee, is_settled=True).latest("date")
         latest_record = Pay.objects.order_by("-date").filter(employee=instance.employee, is_settled=True)[0]
     except IndexError:
-        raise Exception("IndexError.")
+        pass    # 第一筆資料無Pay可查時,pass
     else:
         print latest_record.date
         print instance.start_time.date()
@@ -210,7 +203,7 @@ def check_last_settled_date_ea(instance, **kwargs):
 #         latest_record = Pay.latest_settled_record(employee=instance.employee)
         latest_record = Pay.objects.order_by("-date").filter(employee=instance.employee, is_settled=True)[0]
     except IndexError:
-        raise Exception("IndexError.")
+        pass    # 第一筆資料無Pay可查時,pass
     else:
         if latest_record.date is None:
             raise Exception("Oops! Latest Settled Date Is None Type.")

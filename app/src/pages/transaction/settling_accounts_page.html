@@ -6,11 +6,7 @@
 
 <ion-content padding class="SettlingAccountsPage">
     <ion-item>
-      <ion-label>關帳日 From: </ion-label>
-      <ion-datetime [(ngModel)]="from_date"  displayFormat="YYYY-MM-DD HH:mm" pickerFormat="YYYY-MM-DD HH:mm"></ion-datetime>
-    </ion-item>
-    <ion-item>
-      <ion-label>關帳日 To: </ion-label>
+      <ion-label>請選擇關帳日: </ion-label>
       <ion-datetime [(ngModel)]="to_date"  displayFormat="YYYY-MM-DD HH:mm" pickerFormat="YYYY-MM-DD HH:mm"></ion-datetime>
     </ion-item>
     <button (click)="settle_all_records()" ion-button full>執行關帳</button>
