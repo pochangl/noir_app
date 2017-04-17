@@ -6,7 +6,8 @@ import {BaseAccountBalance} from './models';
 @Component({templateUrl: 'settling_accounts_page.html',providers: [Api]})
 export class SettlingAccountsPage {
   base_account_balances: BaseAccountBalance;
-  to_date: string;
+  select_settle_date: string;
+  today: string = new Date().toISOString();
 
   constructor(
     private nav: NavController,
@@ -14,14 +15,16 @@ export class SettlingAccountsPage {
     private api: Api
   ) {
     this.base_account_balances = new BaseAccountBalance(this.api);
-      // var today = new Date();
-      // var year = today.getFullYear();
-      // var month = today.getMonth() + 1;
   }
   ionViewWillEnter () {
     this.base_account_balances.fetch();
   }
-  settle_all_records() {
+  settle_all_records(select_settle_date) {
+    console.log(this.today);
+    console.log(select_settle_date);
+    if (select_settle_date > this.today) {
+      alert('關帳日不可大於今日.')
+    }
     this.base_account_balances.settle_all_records();
   }
 }
