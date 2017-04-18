@@ -49,7 +49,7 @@ export class AuthenticatedUrl extends APIUrl {
     var params = new URLSearchParams('');
     if (!!this.urlParams) {
         for (var key in this.urlParams) {
-            params.set(key, this.urlParams[key].id ? this.urlParams[key].id : this.urlParams[key]);
+            params.set(key, this.urlParams[key] && this.urlParams[key].id ? this.urlParams[key].id : this.urlParams[key]);
         }
     }
     params.set('username', this.username);

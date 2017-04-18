@@ -8,5 +8,6 @@ router.register(r'personal_account_balance', views.PersonalAccountBalanceViewSet
 
 urlpatterns = (
     url(r'^', include(router.urls)),
-    url(r'settle_account/(?P<pk>\d+)/', views.SettleAccountListView.as_view({'get': 'list'})),
+#     url(r'^settle_account/(?P<pk>\d+)/', views.SettleAccountListView.as_view({'get': 'list'})),
+    url(r'^settle_account/', views.SettleAccountListView.as_view({'post': 'create'})),
 )

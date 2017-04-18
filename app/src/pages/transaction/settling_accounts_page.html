@@ -9,5 +9,5 @@
       <ion-label>請選擇關帳日: </ion-label>
       <ion-datetime [(ngModel)]="select_settle_date"  displayFormat="YYYY-MM-DD HH:mm" pickerFormat="YYYY-MM-DD HH:mm"></ion-datetime>
     </ion-item>
-    <button (click)="settle_all_records(select_settle_date)" ion-button full>執行關帳</button>
+    <button (click)="settle_all_records()" ion-button full>執行關帳</button>
 </ion-content>

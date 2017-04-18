@@ -37,9 +37,9 @@ class BaseAccountBalance(TimeStampModel):
     
     def save(self, *args, **kwargs):
         if self.id is None or self.settling_status is False:
-            super(BaseAccountBalance, self).save(*args, **kwargs)
+            return super(BaseAccountBalance, self).save(*args, **kwargs)
         elif self.is_settled is False:
-            super(BaseAccountBalance, self).save(*args, **kwargs)
+            return super(BaseAccountBalance, self).save(*args, **kwargs)
         else:
             # if account have been settled, don't save the changes
             raise  AccountSettledException("Oops! This (BaseAccountBalance) Record Has Been Settled.")
@@ -50,7 +50,7 @@ class BaseAccountBalance(TimeStampModel):
             latest_settled_record = BaseAccountBalance.objects.order_by("date").filter(is_settled=True)[0]
         except IndexError:
 #             raise Exception("Oops! No Settled Records")
-            return datetime.datetime(year=1, month=1, day=1)
+            return datetime(1, 1, 1)
         return latest_settled_record.date
         
     def settle_all_records(self):
@@ -74,18 +74,10 @@ class PersonalAccountBalance(OthersAccountBalance):
     # 個人的戶頭
     employee = models.ForeignKey(Employee, related_name='my_balances')
 
-# this doesn't work @@"
-#     @property
-#     def check_date(self):
-#         return self.date
-#     
-#     class Meta:
-#         unique_together = (("employee", "check_date"),)
-
     @property
     def prev_balance(self):
         try:
-            prev_record = PersonalAccountBalance.objects.order_by("-date").filter(is_settled=True, employee=self.employee)[0]
+            prev_record = PersonalAccountBalance.objects.order_by("-date", 'id').filter(is_settled=True, employee=self.employee)[0]
         except IndexError:
 #             raise Exception("Oops! No Settled Records")
             return 0
@@ -104,7 +96,7 @@ class PersonalAccountBalance(OthersAccountBalance):
     # recalculate all records' balances, which is not settled yet.
     def rebalance(self):
         self.balance = self.prev_balance + self.income - self.expense
-        self.save()
+        return self.save()
                     
     
 class PersonalWithdraw(PersonalAccountBalance):

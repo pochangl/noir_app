@@ -4,11 +4,11 @@ from . import models
 
 
 class BaseAccountBalanceFilter(django_filters.FilterSet):
-#     settled_date = django_filters.DateFilter(name='date', lookup_expr='lte')
+    settle_date = django_filters.Filter(method=filter_date)
   
     class Meta:
         model = models.BaseAccountBalance
-        fields = ('is_settled',)
+        fields = ('is_settled', 'settle_date')
           
           
 # class PersonalAccountBalanceFilter(django_filters.FilterSet):

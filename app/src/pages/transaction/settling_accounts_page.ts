@@ -19,12 +19,10 @@ export class SettlingAccountsPage {
   ionViewWillEnter () {
     this.base_account_balances.fetch();
   }
-  settle_all_records(select_settle_date) {
-    console.log(this.today);
-    console.log(select_settle_date);
-    if (select_settle_date > this.today) {
+  settle_all_records() {
+    if (this.select_settle_date > this.today) {
       alert('關帳日不可大於今日.')
     }
-    this.base_account_balances.settle_all_records();
+    this.base_account_balances.settle_all_records(this.select_settle_date);
   }
 }

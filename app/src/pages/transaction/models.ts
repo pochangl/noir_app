@@ -7,17 +7,17 @@ export class BaseAccountBalance extends Model {
   fields = [
     'balance', 'income', 'expense', 'note', 'date', 'to_date'
   ];
-  balance: number;
-  income: number;
-  expense: number;
-  note: string;
-  date: string;
+  balance: number = 0;
+  income: number = 0;
+  expense: number = 0;
+  note: string = '';
+  date: string = '';
 
-  settle_all_records () {
-    this.api.put({
+  settle_all_records (select_settle_date) {
+    this.api.post({
       resource_name: 'transaction/settle_account',
-      id: 1
-    }, this.serialize()).subscribe(()=>this.fetch);
+      urlParams: {select_settle_date: select_settle_date}
+    }, this.serialize()).subscribe(()=>{this.fetch()});
   }
 }
 
