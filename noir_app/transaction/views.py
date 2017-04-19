@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from account.models import Employee
 from project.models import Pay
 from transaction.models import BaseAccountBalance, PersonalAccountBalance
-import datetime, time
+# import datetime, time
 from django.http.response import HttpResponse
 from datetime import date, datetime
 
@@ -34,6 +34,9 @@ class SettleAccountListView(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         get_settle_date = request.query_params.get('select_settle_date', date)
         select_settle_date = datetime.strptime(get_settle_date, "%Y-%m-%dT%H:%M:%SZ").date()
+        today_date = datetime.now().date()
+        if today_date < select_settle_date:
+            raise Exception("Oops! Please Check The Selected Settle Date.")
 
         unsettled_records = models.BaseAccountBalance.objects.filter(is_settled=False, date__lte=select_settle_date)
         unsettled_pays = Pay.objects.order_by("-date").filter(is_settled=False, date__gte=self.latest_settled_date, date__lte=select_settle_date)
