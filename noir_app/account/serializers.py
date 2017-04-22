@@ -52,23 +52,23 @@ class CredentialSerializer(serializers.Serializer):
         fields = ('username', 'password')
 
 
-class SignupSerializer(CredentialSerializer):
-    def validate_username(self, username):
-        '''
-            check whether a user has already exist
-        '''
-        try:
-            User.objects.get(username=username)
-        except User.DoesNotExist:
-            return username
-        else:
-            raise serializers.ValidationError(_('The username %s has been used') % username)
-
-    def create(self, validated_data):
-        '''
-            user creationg
-        '''
-        return User.objects.create_user(**validated_data)
+# class SignupSerializer(CredentialSerializer):
+#     def validate_username(self, username):
+#         '''
+#             check whether a user has already exist
+#         '''
+#         try:
+#             User.objects.get(username=username)
+#         except User.DoesNotExist:
+#             return username
+#         else:
+#             raise serializers.ValidationError(_('The username %s has been used') % username)
+# 
+#     def create(self, validated_data):
+#         '''
+#             user creationg
+#         '''
+#         return User.objects.create_user(**validated_data)
 
 
 class LoginSerializer(CredentialSerializer):

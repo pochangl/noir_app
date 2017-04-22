@@ -18,7 +18,7 @@ class BaseAccountBalanceViewSet(viewsets.ModelViewSet, generics.ListAPIView):
 class PersonalAccountBalanceViewSet(viewsets.ModelViewSet, generics.ListAPIView):
     queryset = models.PersonalAccountBalance.objects.all().order_by("date")
     serializer_class = serializers.PersonalAccountBalanceSerializer
-#     filter_class = filters.PersonalAccountBalanceFilter
+    filter_class = filters.PersonalAccountBalanceFilter
 
  
 class SettleAccountListView(viewsets.ModelViewSet):

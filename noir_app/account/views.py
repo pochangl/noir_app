@@ -53,20 +53,20 @@ class UserView(generics.RetrieveAPIView):
         return self.request.user
 
 
-class SignupView(generics.CreateAPIView):
-    '''
-        description:
-            signup api
-            only unauthenticated can use this function
-        fields:
-            username:
-                username
-            password:
-                account pasword
-    '''
-    queryset = get_user_model().objects.all()
-    serializer_class = serializers.SignupSerializer
-    permission_classes = (AnonymousOnlyPermission,)
+# class SignupView(generics.CreateAPIView):
+#     '''
+#         description:
+#             signup api
+#             only unauthenticated can use this function
+#         fields:
+#             username:
+#                 username
+#             password:
+#                 account pasword
+#     '''
+#     queryset = get_user_model().objects.all()
+#     serializer_class = serializers.SignupSerializer
+#     permission_classes = (AnonymousOnlyPermission,)
 
 
 class AuthView(mixins.CreateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):

@@ -20,7 +20,7 @@ export class WageEmployeesPage {
     this.employee = params.data.employee;
     this.date_from = params.data.date_from;
     this.date_to = params.data.date_to;
-    this.employee_name = this.employee.contact.name;
+    this.employee_name = params.data.employee.contact.name;
     this.personal_account_balances = new PersonalAccountBalanceList(api);
     this.personal_account_balances.filter({
       employee: this.employee.id,
@@ -29,9 +29,6 @@ export class WageEmployeesPage {
     });
   }
   ionViewWillEnter () {
-    this.employee.fetch();
     this.personal_account_balances.fetch();
-  }
-  click (personal_account_balance) {
   }
 }

@@ -3,9 +3,6 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/general/home';
 import { LoginPage } from '../pages/general/login';
-import { RegisterPage } from '../pages/general/register';
-
-import { AuthService } from '../providers/auth-service';
 
 import { AccInfoChooseServicePage } from '../pages/account/acc_info_choose_service';
 import { AccInfoEmplyeesPage } from '../pages/account/acc_info_employees';
@@ -42,7 +39,6 @@ import { SettlingAccountsPage } from '../pages/transaction/settling_accounts_pag
     MyApp,
     HomePage,
     LoginPage,
-    RegisterPage,
 
     AccInfoChooseServicePage,
     AccInfoEmplyeesPage,
@@ -84,7 +80,6 @@ import { SettlingAccountsPage } from '../pages/transaction/settling_accounts_pag
     MyApp,
     HomePage,
     LoginPage,
-    RegisterPage,
 
     AccInfoChooseServicePage,
     AccInfoEmplyeesPage,
@@ -118,6 +113,6 @@ import { SettlingAccountsPage } from '../pages/transaction/settling_accounts_pag
     WorkHourEmployeesPage,
     SettlingAccountsPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AuthService]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
 export class AppModule {}

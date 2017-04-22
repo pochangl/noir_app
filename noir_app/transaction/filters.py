@@ -11,10 +11,12 @@ class BaseAccountBalanceFilter(django_filters.FilterSet):
         fields = ('is_settled', 'settle_date')
           
           
-# class PersonalAccountBalanceFilter(django_filters.FilterSet):
-#     date_to = django_filters.DateFilter(name='date', lookup_expr='lte')
-#  
-#     class Meta:
-#         model = models.PersonalAccountBalance
-#         fields = ('employee', 'date_to',)
+class PersonalAccountBalanceFilter(django_filters.FilterSet):
+    employee = django_filters.ModelChoiceFilter(queryset=models.Employee.objects.all(), required=True)
+    date_from = django_filters.DateFilter(name='date', lookup_expr='gte')
+    date_to = django_filters.DateFilter(name='date', lookup_expr='lte')
+  
+    class Meta:
+        model = models.PersonalAccountBalance
+        fields = ('employee', 'date_from', 'date_to',)
         

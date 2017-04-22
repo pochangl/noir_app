@@ -40,7 +40,7 @@ export class PersonalAccountBalance extends Model {
 }
 
 export class PersonalAccountBalanceList extends ModelList<PersonalAccountBalance> {
-  resource_name = 'transaction/settle_account';
+  resource_name = 'transaction/personal_account_balance';
   model = PersonalAccountBalance;
 }
 
