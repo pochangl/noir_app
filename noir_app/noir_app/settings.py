@@ -122,17 +122,16 @@ STATIC_URL = '/static/'
 TASTYPIE_FULL_DEBUG = True
 
 REG_EXP_DURATION = 600 # app token
-REG_TOKEN_LENGTH = 8 
+REG_TOKEN_LENGTH = 8
 
 if 'test' in sys.argv:
-        # django rest framework settings
+    # django rest framework settings
     REST_FRAMEWORK = {
         'DEFAULT_PERMISSION_CLASSES': (
             'rest_framework.permissions.IsAuthenticated',
         )
     }
 else:
-
     REST_FRAMEWORK = {
         'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
         'DEFAULT_AUTHENTICATION_CLASSES': (
