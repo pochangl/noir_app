@@ -3,9 +3,6 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/general/home';
 import { LoginPage } from '../pages/general/login';
-import { RegisterPage } from '../pages/general/register';
-
-import { AuthService } from '../providers/auth-service';
 
 import { AccInfoChooseServicePage } from '../pages/account/acc_info_choose_service';
 import { AccInfoEmplyeesPage } from '../pages/account/acc_info_employees';
@@ -35,13 +32,13 @@ import { WageDateRangePage } from '../pages/transaction/wage_date_range';
 import { WageEmployeesPage } from '../pages/transaction/wage_employees';
 import { WorkHourDateRangePage } from '../pages/transaction/work_hour_date_range';
 import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees';
+import { SettlingAccountsPage } from '../pages/transaction/settling_accounts_page';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     LoginPage,
-    RegisterPage,
 
     AccInfoChooseServicePage,
     AccInfoEmplyeesPage,
@@ -72,7 +69,8 @@ import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees'
     WageDateRangePage,
     WageEmployeesPage,
     WorkHourDateRangePage,
-    WorkHourEmployeesPage
+    WorkHourEmployeesPage,
+    SettlingAccountsPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -82,7 +80,6 @@ import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees'
     MyApp,
     HomePage,
     LoginPage,
-    RegisterPage,
 
     AccInfoChooseServicePage,
     AccInfoEmplyeesPage,
@@ -113,8 +110,9 @@ import { WorkHourEmployeesPage } from '../pages/transaction/work_hour_employees'
     WageDateRangePage,
     WageEmployeesPage,
     WorkHourDateRangePage,
-    WorkHourEmployeesPage
+    WorkHourEmployeesPage,
+    SettlingAccountsPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AuthService]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
 export class AppModule {}

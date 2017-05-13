@@ -5,10 +5,11 @@ import {HomePage} from '../pages/general/home';
 import {LoginPage} from '../pages/general/login';
 
 @Component({templateUrl: 'app.html'})
+// @Component({template: `<ion-nav [root]="rootPage"></ion-nav>`})
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  // make HelloIonicPage the root (or first) page
+  // make LoginPage the root (or first) page
   rootPage: any = LoginPage;
   pages: Array<{title: string, component: any}>;
 

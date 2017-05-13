@@ -20,17 +20,15 @@ export class WorkHourEmployeesPage {
     this.employee = params.data.employee;
     this.date_from = params.data.date_from;
     this.date_to = params.data.date_to;
-    this.employee_name = this.employee.contact.name;
+    this.employee_name = params.data.employee.contact.name;
     this.employee_assignments = new EmployeeAssignmentList(api);
     this.employee_assignments.filter({
       employee: this.employee.id,
-      assignment__start_datetime: this.date_from
+      date_from: this.date_from,
+      date_to: this.date_to
     });
   }
   ionViewWillEnter () {
-    this.employee.fetch();
     this.employee_assignments.fetch();
-  }
-  click (employee_assignment) {
   }
 }

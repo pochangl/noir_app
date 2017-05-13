@@ -41,15 +41,15 @@ export class AuthenticatedUrl extends APIUrl {
     'urlParams'?: Object,
   }, force_id = false) {
     super(kwargs, force_id);
-    this.username = 'edward';
-    this.api_key = '123';
+    // this.username = 'edward';
+    // this.api_key = '123';
   }
 
   getQueryString () {
     var params = new URLSearchParams('');
     if (!!this.urlParams) {
         for (var key in this.urlParams) {
-            params.set(key, this.urlParams[key].id ? this.urlParams[key].id : this.urlParams[key]);
+            params.set(key, this.urlParams[key] && this.urlParams[key].id ? this.urlParams[key].id : this.urlParams[key]);
         }
     }
     params.set('username', this.username);
